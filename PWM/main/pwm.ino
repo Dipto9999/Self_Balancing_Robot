@@ -17,7 +17,7 @@ void setupPWM() {
   pinMode(PinBIN2, OUTPUT);
 }
 
-void readPWM(int pin) {
+void writePWM(int pin) {
   // analogRead values go from 0 to 1023
   analogWrite(pin, val / 4); // analogWrite values from 0 to 255
 }
