@@ -2,16 +2,15 @@
 #define PWM_H
 
 #include "Arduino_BMI270_BMM150.h"
+#include "mbed.h"
 
-extern int PinAIN1;
-extern int PinAIN2;
-extern int PinBIN1;
-extern int PinBIN2;
-
-extern int val;
+extern mbed::PwmOut PinAIN1;
+extern mbed::PwmOut PinAIN2;
+extern mbed::PwmOut PinBIN1;
+extern mbed::PwmOut PinBIN2;
 
 /* Function Prototypes */
 void setupPWM();
-void readPWM(int pin);
+void writePWM(mbed::PwmOut &adc_pin, float dutyCycle);
 
 #endif

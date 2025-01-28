@@ -1,23 +1,25 @@
 #include "pwm.h"
 
-// PWM 1 : Pins 3, 5
-int PinAIN1 = 3;
-int PinAIN2 = 5;
-
-// PWM 2 :  Pins 6, 9
-int PinBIN1 = 6;
-int PinBIN2 = 9;
-
-int val = 0;
+// Use the PwmOut Interface to Control Frequency and Duty Cycle.
+mbed::PwmOut PinAIN1(digitalPinToPinName(3)); // Pin 3
+mbed::PwmOut PinAIN2(digitalPinToPinName(5)); // Pin 5
+mbed::PwmOut PinBIN1(digitalPinToPinName(6)); // Pin 6
+mbed::PwmOut PinBIN2(digitalPinToPinName(9)); // Pin 9
 
 void setupPWM() {
-  pinMode(PinAIN1, OUTPUT);
-  pinMode(PinAIN2, OUTPUT);
-  pinMode(PinBIN1, OUTPUT);
-  pinMode(PinBIN2, OUTPUT);
+    PinAIN1.period(0.002); // PWM Period of 20µs (50kHz)
+    PinAIN1.write(0.5); // Initial Duty Cycle of 50%
+
+    PinAIN2.period(0.002); // PWM Period of 20µs (50kHz)
+    PinAIN2.write(0.5); // Initial Duty Cycle of 50%
+
+    PinBIN1.period(0.002); // PWM Period of 20µs (50kHz)
+    PinBIN1.write(0.5); // Initial Duty Cycle of 50%
+
+    PinBIN2.period(0.002); // PWM Period of 20µs (50kHz)
+    PinBIN2.write(0.5); // Initial Duty Cycle of 50%
 }
 
-void writePWM(int pin) {
-  // analogRead values go from 0 to 1023
-  analogWrite(pin, val / 4); // analogWrite values from 0 to 255
+void writePWM(mbed::PwmOut &adc_pin, float dutyCycle) {
+    adc_pin.write(dutyCycle);
 }
