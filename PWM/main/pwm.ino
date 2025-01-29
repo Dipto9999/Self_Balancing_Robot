@@ -7,16 +7,16 @@ mbed::PwmOut PinBIN1(digitalPinToPinName(6)); // Pin 6
 mbed::PwmOut PinBIN2(digitalPinToPinName(9)); // Pin 9
 
 void setupPWM() {
-    PinAIN1.period(0.002); // PWM Period of 20µs (50kHz)
+    PinAIN1.period_us(20); // PWM Period of 20µs (50kHz)
     PinAIN1.write(0.5); // Initial Duty Cycle of 50%
 
-    PinAIN2.period(0.002); // PWM Period of 20µs (50kHz)
+    PinAIN2.period_us(20); // PWM Period of 20µs (50kHz)
     PinAIN2.write(0.5); // Initial Duty Cycle of 50%
 
-    PinBIN1.period(0.002); // PWM Period of 20µs (50kHz)
+    PinBIN1.period_us(20); // PWM Period of 20µs (50kHz)
     PinBIN1.write(0.5); // Initial Duty Cycle of 50%
 
-    PinBIN2.period(0.002); // PWM Period of 20µs (50kHz)
+    PinBIN2.period_us(20); // PWM Period of 20µs (50kHz)
     PinBIN2.write(0.5); // Initial Duty Cycle of 50%
 }
 
