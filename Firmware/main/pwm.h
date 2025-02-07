@@ -13,4 +13,9 @@ extern mbed::PwmOut PinBIN2;
 void setupPWM();
 void writePWM(mbed::PwmOut &adc_pin, float dutyCycle);
 
+void moveForwardFastDecay(mbed::PwmOut &pwm_pin, float dutyCycle);
+void moveForwardSlowDecay(mbed::PwmOut &pwm_pin, float dutyCycle);
+void moveReverseFastDecay(mbed::PwmOut &pwm_pin, float dutyCycle);
+void moveReverseSlowDecay(mbed::PwmOut &pwm_pin, float dutyCycle);
+
 #endif
