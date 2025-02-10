@@ -2,6 +2,7 @@
 #define ANGLE_H
 
 #include "Arduino_BMI270_BMM150.h"
+#include "serial.h"
 
 struct ANGLES {
     float Accelerometer;
@@ -18,13 +19,10 @@ extern float prev_complementary_angle;
 extern float gx, gy, gz;
 extern float ax, ay, az;
 
-extern String serialMsg;
-
 /* Function Prototypes */
-void handleData(char expectedByte, String txData);
-float editAngleBounds(float angle);
-void setupSerial();
 void setupIMU();
+
+float editAngleBounds(float angle);
 void getAngles(ANGLES &Angles);
 
 #endif

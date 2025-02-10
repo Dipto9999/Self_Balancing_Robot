@@ -4,10 +4,7 @@
 #include "Arduino_BMI270_BMM150.h"
 #include "mbed.h"
 
-enum Dir {
-    FORWARD,
-    REVERSE
-};
+enum Dir { FORWARD, REVERSE };
 
 struct XIN {
     mbed::PwmOut* Pin1;

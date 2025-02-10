@@ -9,28 +9,10 @@ float prev_complementary_angle;
 float gx, gy, gz;
 float ax, ay, az = 0;
 
-String serialMsg = "";
-
-void handleData(char expectedByte, String txData) {
-  // Send Data When Rx Byte Received
-  if (Serial.available() > 0) {
-    // Read Incoming Byte
-    int rxByte = Serial.read();
-    // Receive Byte rxByte to Send Angle Data
-    if (rxByte == expectedByte) {
-      Serial.println(txData);
-    }
-  }
-}
-
 float editAngleBounds(float angle) {
   if (angle > 360) angle -= 360;
   else if (angle < 0) angle += 360;
   return angle;
-}
-
-void setupSerial() {
-  Serial.begin(9600);
 }
 
 void setupIMU() {

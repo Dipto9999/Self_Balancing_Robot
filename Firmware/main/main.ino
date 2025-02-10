@@ -1,5 +1,6 @@
 #include "angle.h"
 #include "pwm.h"
+#include "serial.h"
 
 void setup() {
     setupSerial();
@@ -7,7 +8,7 @@ void setup() {
     setupPWM();
 }
 
-ANGLES Angles = {0, 0, 0}; // Accel, Gyro, Complementary
+ANGLES Angles = {0, 0, 0}; // Accelerometer, Gyroscope, Complementary
 
 void loop() {
     getAngles(Angles);

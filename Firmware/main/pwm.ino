@@ -1,4 +1,5 @@
 #include "pwm.h"
+#include "serial.h"
 
 const int PWM_PeriodUs = 20; // 20µs Period (50kHz)
 
@@ -17,6 +18,8 @@ void setupPWM() {
     MotorA.Pin2->period_us(PWM_PeriodUs);
     MotorB.Pin1->period_us(PWM_PeriodUs);
     MotorB.Pin2->period_us(PWM_PeriodUs);
+
+    Serial.println("PWM Initialized!");
 }
 
 /*
