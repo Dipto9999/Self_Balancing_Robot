@@ -12,55 +12,54 @@ void setupPWM() {
     PinBIN1.period_us(20); // PWM Period of 20µs (50kHz)
     PinBIN2.period_us(20); // PWM Period of 20µs (50kHz)
 
-    moveForwardFastDecay(PinAIN1, 0.5);
-    moveReverseFastDecay(PinBIN1, 0.5);
+    moveForwardSlowDecay(PinAIN1, 0.5);
+    moveReverseSlowDecay(PinBIN1, 0.5);
 }
 
-void writePWM(mbed::PwmOut &pwm_pin, float dutyCycle) {
-    pwm_pin.write(dutyCycle);
+void writePWM(mbed::PwmOut &PinXIN1, float dutyCycle) {
+    PinXIN1.write(dutyCycle);
 }
 
-void moveForwardFastDecay(mbed::PwmOut &pwm_pin, float dutyCycle) {
-    if (&pwm_pin == &PinAIN1) {
-        pwm_pin.write(dutyCycle);
+void moveForwardFastDecay(mbed::PwmOut &PinXIN1, float dutyCycle) {
+    if (&PinXIN1 == &PinAIN1) {
         PinAIN2.write(0);
-    } else if (&pwm_pin == &PinBIN1) {
-        pwm_pin.write(dutyCycle);
+    } else if (&PinXIN1 == &PinBIN1) {
         PinBIN2.write(0);
     } else { // Invalid Pin
         return;
     }
+    PinXIN1.write(dutyCycle);
 }
 
-void moveForwardSlowDecay(mbed::PwmOut &pwm_pin, float dutyCycle) {
-    pwm_pin.write(1);
-    if (&pwm_pin == &PinAIN1) {
+void moveForwardSlowDecay(mbed::PwmOut &PinXIN1, float dutyCycle) {
+    if (&PinXIN1 == &PinAIN1) {
         PinAIN2.write(dutyCycle);
-    } else if (&pwm_pin == &PinBIN1) {
+    } else if (&PinXIN1 == &PinBIN1) {
         PinBIN2.write(dutyCycle);
     } else { // Invalid Pin
         return;
     }
+    PinXIN1.write(1);
 }
 
-void moveReverseFastDecay(mbed::PwmOut &pwm_pin, float dutyCycle) {
-    pwm_pin.write(0);
-    if (&pwm_pin == &PinAIN1) {
+void moveReverseFastDecay(mbed::PwmOut &PinXIN1, float dutyCycle) {
+    if (&PinXIN1 == &PinAIN1) {
         PinAIN2.write(dutyCycle);
-    } else if (&pwm_pin == &PinBIN1) {
+    } else if (&PinXIN1 == &PinBIN1) {
         PinBIN2.write(dutyCycle);
     } else { // Invalid Pin
         return;
     }
+    PinXIN1.write(0);
 }
 
-void moveReverseSlowDecay(mbed::PwmOut &pwm_pin, float dutyCycle) {
-    pwm_pin.write(1);
-    if (&pwm_pin == &PinAIN1) {
-        PinAIN2.write(dutyCycle);
-    } else if (&pwm_pin == &PinBIN1) {
-        PinBIN2.write(dutyCycle);
+void moveReverseSlowDecay(mbed::PwmOut &PinXIN1, float dutyCycle) {
+    if (&PinXIN1 == &PinAIN1) {
+        PinAIN2.write(1);
+    } else if (&PinXIN1 == &PinBIN1) {
+        PinBIN2.write(1);
     } else { // Invalid Pin
         return;
     }
+    PinXIN1.write(dutyCycle);
 }
