@@ -1,17 +1,21 @@
 #include "angle.h"
 #include "pwm.h"
+#include "ble.h"
 #include "serial.h"
+
 
 void setup() {
     setupSerial();
     setupIMU();
     setupPWM();
+    setupBLE();
 }
 
 ANGLES Angles = {0, 0, 0}; // Accelerometer, Gyroscope, Complementary
 
 void loop() {
     getAngles(Angles);
+    driveMotors(Angles.Complementary, 0.75);
 
     // Serial.print("Accel: ");
     // Serial.println(Angles.Accelerometer);
@@ -28,5 +32,5 @@ void loop() {
     String(Angles.Complementary, 2);
   handleData('A', serialMsg);
 
-  driveMotors(Angles.Complementary, 0.75);
+  handleBLE();
 }
