@@ -24,4 +24,6 @@ void setupPWM();
 void moveFastDecay(XIN &motor, Dir dir, float dutyCycle);
 void moveSlowDecay(XIN &motor, Dir dir, float dutyCycle);
 
+void driveMotors(float angle, float speed);
+
 #endif

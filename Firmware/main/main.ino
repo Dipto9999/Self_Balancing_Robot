@@ -4,7 +4,7 @@
 void setup() {
     setupSerial();
     setupIMU();
-    // setupPWM();
+    setupPWM();
 }
 
 ANGLES Angles = {0, 0, 0}; // Accel, Gyro, Complementary
@@ -26,4 +26,6 @@ void loop() {
     String(Angles.Gyroscope, 2) + " " +
     String(Angles.Complementary, 2);
   handleData('A', serialMsg);
+
+  driveMotors(Angles.Complementary, 0.75);
 }

@@ -30,7 +30,7 @@ float editAngleBounds(float angle) {
 }
 
 void setupSerial() {
-  Serial.begin(115200);
+  Serial.begin(9600);
 }
 
 void setupIMU() {

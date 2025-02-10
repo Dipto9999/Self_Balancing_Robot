@@ -44,3 +44,25 @@ void moveSlowDecay(XIN &motor, Dir dir, float dutyCycle) {
         motor.Pin2->write(1);
     }
 }
+
+void driveMotors(float angle, float speed) {
+    float dutyCycle = speed;
+
+    if (angle >= 195) { // Hard Right (angle ≥ 195)
+        moveFastDecay(MotorA, FORWARD, dutyCycle); // Hold Motor A High
+        moveFastDecay(MotorB, REVERSE, 1); // Drive Motor B in Reverse
+    } else if (angle <= 165) { // Hard Left (angle ≤ 165)
+        moveFastDecay(MotorB, FORWARD, dutyCycle); // Hold Motor B High
+        moveFastDecay(MotorA, REVERSE, 1); // Drive Motor A in Reverse
+    } else if (angle >= 185) { // Slight Right (angle ≥ 185 && angle < 195)
+        moveFastDecay(MotorA, FORWARD, dutyCycle); // Hold Motor A High
+        moveFastDecay(MotorB, REVERSE, 0.5); // Drive Motor A in Reverse
+    } else if (angle <= 175) { // Slight Left (angle ≤ 175 && angle > 165)
+        moveFastDecay(MotorB, FORWARD, dutyCycle); // Hold Motor B High
+        moveFastDecay(MotorA, REVERSE, 0.5); // Drive Motor A in Reverse
+    } else { // Drive Straight (angle ≥ 175 && angle ≤ 185)
+        moveFastDecay(MotorA, FORWARD, dutyCycle); // Hold Motor A High
+        moveFastDecay(MotorB, FORWARD, dutyCycle); // Hold Motor B High
+    }
+    return;
+}
