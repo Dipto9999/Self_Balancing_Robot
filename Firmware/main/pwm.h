@@ -4,18 +4,24 @@
 #include "Arduino_BMI270_BMM150.h"
 #include "mbed.h"
 
-extern mbed::PwmOut PinAIN1;
-extern mbed::PwmOut PinAIN2;
-extern mbed::PwmOut PinBIN1;
-extern mbed::PwmOut PinBIN2;
+enum Dir {
+    FORWARD,
+    REVERSE
+};
+
+struct XIN {
+    mbed::PwmOut* Pin1;
+    mbed::PwmOut* Pin2;
+};
+extern XIN MotorA;
+extern XIN MotorB;
+
+extern const int PWM_PeriodUs;
 
 /* Function Prototypes */
 void setupPWM();
-void writePWM(mbed::PwmOut &adc_pin, float dutyCycle);
 
-void moveForwardFastDecay(mbed::PwmOut &pwm_pin, float dutyCycle);
-void moveForwardSlowDecay(mbed::PwmOut &pwm_pin, float dutyCycle);
-void moveReverseFastDecay(mbed::PwmOut &pwm_pin, float dutyCycle);
-void moveReverseSlowDecay(mbed::PwmOut &pwm_pin, float dutyCycle);
+void moveFastDecay(XIN &motor, Dir dir, float dutyCycle);
+void moveSlowDecay(XIN &motor, Dir dir, float dutyCycle);
 
 #endif

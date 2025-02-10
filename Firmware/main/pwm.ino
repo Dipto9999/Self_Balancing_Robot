@@ -1,65 +1,49 @@
 #include "pwm.h"
 
-// Use the PwmOut Interface to Control Frequency and Duty Cycle.
-mbed::PwmOut PinAIN1(digitalPinToPinName(6)); // Pin 6
-mbed::PwmOut PinAIN2(digitalPinToPinName(9)); // Pin 9
-mbed::PwmOut PinBIN1(digitalPinToPinName(3)); // Pin 3
-mbed::PwmOut PinBIN2(digitalPinToPinName(5)); // Pin 5
+const int PWM_PeriodUs = 20; // 20µs Period (50kHz)
+
+XIN MotorA = {
+    new mbed::PwmOut(digitalPinToPinName(6)), // PinAIN1
+    new mbed::PwmOut(digitalPinToPinName(9))  // PinAIN2
+};
+
+XIN MotorB = {
+    new mbed::PwmOut(digitalPinToPinName(3)), // PinBIN1
+    new mbed::PwmOut(digitalPinToPinName(5))  // PinBIN2
+};
 
 void setupPWM() {
-    PinAIN1.period_us(20); // PWM Period of 20µs (50kHz)
-    PinAIN2.period_us(20); // PWM Period of 20µs (50kHz)
-    PinBIN1.period_us(20); // PWM Period of 20µs (50kHz)
-    PinBIN2.period_us(20); // PWM Period of 20µs (50kHz)
+    MotorA.Pin1->period_us(PWM_PeriodUs);
+    MotorA.Pin2->period_us(PWM_PeriodUs);
+    MotorB.Pin1->period_us(PWM_PeriodUs);
+    MotorB.Pin2->period_us(PWM_PeriodUs);
 
-    // moveForwardSlowDecay(PinAIN1, 0.5);
-    moveReverseSlowDecay(PinBIN1, 0.5);
+    moveSlowDecay(MotorA, FORWARD, 0.5); // Initialize Motors
+    moveFastDecay(MotorB, REVERSE, 0.5); // Initialize Motors
 }
 
-void writePWM(mbed::PwmOut &PinXIN1, float dutyCycle) {
-    PinXIN1.write(dutyCycle);
-}
-
-void moveForwardFastDecay(mbed::PwmOut &PinXIN1, float dutyCycle) {
-    if (&PinXIN1 == &PinAIN1) {
-        PinAIN2.write(0);
-    } else if (&PinXIN1 == &PinBIN1) {
-        PinBIN2.write(0);
-    } else { // Invalid Pin
-        return;
+/*
+ * Fast Decay: Hold Primary Input at PWM Duty Cycle, Secondary Input Low.
+ */
+void moveFastDecay(XIN &motor, Dir dir, float dutyCycle) {
+    if (dir == FORWARD) {
+        motor.Pin1->write(dutyCycle);
+        motor.Pin2->write(0);
+    } else if (dir == REVERSE) {
+        motor.Pin1->write(0);
+        motor.Pin2->write(dutyCycle);
     }
-    PinXIN1.write(dutyCycle);
 }
 
-void moveForwardSlowDecay(mbed::PwmOut &PinXIN1, float dutyCycle) {
-    if (&PinXIN1 == &PinAIN1) {
-        PinAIN2.write(dutyCycle);
-    } else if (&PinXIN1 == &PinBIN1) {
-        PinBIN2.write(dutyCycle);
-    } else { // Invalid Pin
-        return;
+/*
+ * Slow Decay: Hold Primary Input High, Secondary Input at PWM Duty Cycle.
+ */
+void moveSlowDecay(XIN &motor, Dir dir, float dutyCycle) {
+    if (dir == FORWARD) {
+        motor.Pin1->write(1);
+        motor.Pin2->write(dutyCycle);
+    } else if (dir == REVERSE) {
+        motor.Pin1->write(dutyCycle);
+        motor.Pin2->write(1);
     }
-    PinXIN1.write(1);
-}
-
-void moveReverseFastDecay(mbed::PwmOut &PinXIN1, float dutyCycle) {
-    if (&PinXIN1 == &PinAIN1) {
-        PinAIN2.write(dutyCycle);
-    } else if (&PinXIN1 == &PinBIN1) {
-        PinBIN2.write(dutyCycle);
-    } else { // Invalid Pin
-        return;
-    }
-    PinXIN1.write(0);
-}
-
-void moveReverseSlowDecay(mbed::PwmOut &PinXIN1, float dutyCycle) {
-    if (&PinXIN1 == &PinAIN1) {
-        PinAIN2.write(1);
-    } else if (&PinXIN1 == &PinBIN1) {
-        PinBIN2.write(1);
-    } else { // Invalid Pin
-        return;
-    }
-    PinXIN1.write(dutyCycle);
 }
