@@ -4,7 +4,7 @@
 void setup() {
     setupSerial();
     setupIMU();
-    setupPWM();
+    // setupPWM();
 }
 
 ANGLES Angles = {0, 0, 0}; // Accel, Gyro, Complementary

@@ -42,13 +42,13 @@ class Serial(serial.Serial) :
         print('Serial Port is Open')
 
 class StripChart :
-    def __init__(self, conn, data_size = 50) :
+    def __init__(self, conn, data_size = 50, ylim = 360) :
         self.conn = conn
         self.fig = plt.figure(
             figsize = (900 / 100, 755 / 100)
         )
 
-        self.data_size = data_size
+        self.data_size, self.ylim = data_size, ylim
 
         self.t_data = []
         self.accelerometer_data = []
@@ -59,8 +59,8 @@ class StripChart :
         self.ax.set_title('Angle Strip-Chart')
         self.ax.grid()
 
-        self.ax.set_ylim(90, 270) # Angle Expected (90°, 270°)
-        self.ax.set_yticks(range(90, 280, 10)) # Angle Increments (10°)
+        self.ax.set_ylim(0, self.ylim) # Angle Expected to be Between 0° and 360°
+        self.ax.set_yticks(range(0, self.ylim + 1, 15))
 
         self.ax.set_xlabel('Samples')
         self.ax.set_ylabel('Angle (°)')

@@ -30,7 +30,7 @@ float editAngleBounds(float angle) {
 }
 
 void setupSerial() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 }
 
 void setupIMU() {
@@ -82,8 +82,8 @@ void getAngles(ANGLES &Angles) {
   complementary_angle = k * (prev_complementary_angle + gx * 1 / IMU.gyroscopeSampleRate()) + (1 - k) * accel_angle;
   complementary_angle = editAngleBounds(complementary_angle);
 
-  // prev_gyro_angle = gyro_angle;
-  // prev_complementary_angle = complementary_angle;
+  prev_gyro_angle = gyro_angle;
+  prev_complementary_angle = complementary_angle;
 
   // Update Angles
   Angles.Accelerometer = accel_angle;
