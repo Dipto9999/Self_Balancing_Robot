@@ -6,10 +6,6 @@ float k = 0.6;
 float prev_gyro_angle;
 float prev_complementary_angle;
 
-float complementary_angle = 0;
-float accel_angle = 0;
-float gyro_angle = 0;
-
 float gx, gy, gz;
 float ax, ay, az = 0;
 
@@ -34,7 +30,7 @@ float editAngleBounds(float angle) {
 }
 
 void setupSerial() {
-  Serial.begin(115200);
+  Serial.begin(9600);
 }
 
 void setupIMU() {
@@ -59,7 +55,9 @@ void setupIMU() {
   }
 }
 
-void getAngles(float angles[3]) {
+void getAngles(ANGLES &Angles) {
+  float accel_angle, gyro_angle, complementary_angle;
+
   while (!IMU.gyroscopeAvailable());
   IMU.readGyroscope(gx, gy, gz);
 
@@ -84,16 +82,11 @@ void getAngles(float angles[3]) {
   complementary_angle = k * (prev_complementary_angle + gx * 1 / IMU.gyroscopeSampleRate()) + (1 - k) * accel_angle;
   complementary_angle = editAngleBounds(complementary_angle);
 
-  // Send Data
-  // serialMsg = String(accel_angle, 2) + " " +
-  //   String(gyro_angle, 2) + " " +
-  //   String(complementary_angle, 2);
-  // handleData('A', serialMsg);
-
   // prev_gyro_angle = gyro_angle;
   // prev_complementary_angle = complementary_angle;
 
-  angles[0] = accel_angle;
-  angles[1] = gyro_angle;
-  angles[2] = complementary_angle;
+  // Update Angles
+  Angles.Accelerometer = accel_angle;
+  Angles.Gyroscope = gyro_angle;
+  Angles.Complementary = complementary_angle;
 }

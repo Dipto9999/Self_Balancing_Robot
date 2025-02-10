@@ -17,9 +17,6 @@ void setupPWM() {
     MotorA.Pin2->period_us(PWM_PeriodUs);
     MotorB.Pin1->period_us(PWM_PeriodUs);
     MotorB.Pin2->period_us(PWM_PeriodUs);
-
-    moveSlowDecay(MotorA, FORWARD, 0.5); // Initialize Motors
-    moveFastDecay(MotorB, REVERSE, 0.5); // Initialize Motors
 }
 
 /*

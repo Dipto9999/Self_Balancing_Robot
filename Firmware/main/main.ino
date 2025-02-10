@@ -7,17 +7,23 @@ void setup() {
     setupPWM();
 }
 
-float angles[3] = {0, 0, 0};
+ANGLES Angles = {0, 0, 0}; // Accel, Gyro, Complementary
 
 void loop() {
-    getAngles(angles);
+    getAngles(Angles);
 
     // Serial.print("Accel: ");
-    // Serial.println(angles[0]);
+    // Serial.println(Angles.Accelerometer);
 
     // Serial.print("Gyro: ");
-    // Serial.println(angles[1]);
+    // Serial.println(Angles.Gyroscope);
 
     // Serial.print("Complementary: ");
-    // Serial.println(angles[2]);
+    // Serial.println(Angles.Complementary);
+
+  // Send Data
+  serialMsg = String(Angles.Accelerometer, 2) + " " +
+    String(Angles.Gyroscope, 2) + " " +
+    String(Angles.Complementary, 2);
+  handleData('A', serialMsg);
 }
