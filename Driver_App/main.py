@@ -9,18 +9,20 @@ from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
 from home_page import HomePageLayout
 from dashboard_page import DashboardPageLayout
 
+import datetime as dt
+
 class AppLayout(TabbedPanel):
     def __init__(self, app, **kwargs):
         super().__init__(**kwargs)
 
         # Home Tab
         home_tab = TabbedPanelItem(text = 'Home')
-        home_tab.add_widget(HomePageLayout(app))
+        home_tab.add_widget(app.home_page)
         self.add_widget(home_tab)
 
         # Dashboard Tab
         dashboard_tab = TabbedPanelItem(text = 'Dashboard')
-        dashboard_tab.add_widget(DashboardPageLayout())
+        dashboard_tab.add_widget(app.dashboard_page)
         self.add_widget(dashboard_tab)
 
         self.default_tab = home_tab
@@ -33,10 +35,22 @@ class DriverApp(App):
         td.Thread(target = self._start_async_loop, daemon = True).start() # Start Event Loop in Separate Thread
 
         # Configure Window
-        Window.size = (1000, 700)
+        Window.size = (1000, 800)
         Window.resizable = False
+
         self.title = "Robot Driver App"
+        self.home_page = HomePageLayout(app = self)
+        self.dashboard_page = DashboardPageLayout(app = self)
         return AppLayout(app = self)
+
+    def on_stop(self):
+        """Close Serial Connection on Application Exit."""
+        if self.dashboard_page.conn is not None and self.dashboard_page.conn.isOpen():
+            self.dashboard_page.conn.close() # Close Serial Connection When Plot Closedconn.close() # Close Serial Connection When Plot Closed
+
+            fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
+            self.dashboard_page.strip_chart.save_logs(fig_name)
+            self.dashboard_page.strip_chart.save_fig(fig_name)
 
     def _start_async_loop(self):
         """Start Asyncio Event Loop."""

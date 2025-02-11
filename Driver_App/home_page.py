@@ -249,10 +249,11 @@ class TestApp(App):
         td.Thread(target = self._start_async_loop, daemon = True).start() # Start Event Loop in Separate Thread
 
         # Configure Window
-        Window.size = (1000, 700)
+        Window.size = (1000, 800)
         Window.resizable = False
         self.title = "Arduino Bluetooth Driver"
-        return HomePageLayout(app = self)
+        self.home_page = HomePageLayout(app = self)
+        return self.home_page
 
     def _start_async_loop(self):
         """Start Asyncio Event Loop."""
