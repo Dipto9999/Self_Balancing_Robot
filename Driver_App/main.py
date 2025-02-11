@@ -2,6 +2,8 @@ import asyncio
 import threading as td
 
 from kivy.app import App
+from kivy.core.window import Window
+
 from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
 
 from home_page import HomePageLayout
@@ -27,16 +29,17 @@ class AppLayout(TabbedPanel):
 
 class DriverApp(App):
     def build(self) -> AppLayout:
-        self.title = "Robot Driver App"
-        # Create an asyncio event loop and store it as an attribute
-        self.async_loop = asyncio.new_event_loop()
+        self.async_loop = asyncio.new_event_loop() # Create Asyncio Event Loop
+        td.Thread(target = self._start_async_loop, daemon = True).start() # Start Event Loop in Separate Thread
 
-        # Start Asyncio Event Loop in Separate Thread
-        td.Thread(target = self._start_async_loop, daemon = True).start()
+        # Configure Window
+        Window.size = (1000, 700)
+        Window.resizable = False
+        self.title = "Robot Driver App"
         return AppLayout(app = self)
 
     def _start_async_loop(self):
-        """Start the Asyncio Event Loop."""
+        """Start Asyncio Event Loop."""
         asyncio.set_event_loop(self.async_loop)
         self.async_loop.run_forever()
 

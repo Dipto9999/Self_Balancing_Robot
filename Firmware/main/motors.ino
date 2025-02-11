@@ -47,10 +47,10 @@ void balance(float angle, float speed) {
 }
 
 void driveMotors(const char* bleBuff) {
-    if (!strcmp(bleBuff, "A")) currentPWM = ConfigMotor.RPM_25;
-    else if (!strcmp(bleBuff, "B")) currentPWM = ConfigMotor.RPM_50;
-    else if (!strcmp(bleBuff, "C")) currentPWM = ConfigMotor.RPM_75;
-    else if (!strcmp(bleBuff, "D")) currentPWM = ConfigMotor.RPM_100;
+    if (!strcmp(bleBuff, "^")) currentPWM = ConfigMotor.RPM_25;
+    else if (!strcmp(bleBuff, "v")) currentPWM = ConfigMotor.RPM_50;
+    else if (!strcmp(bleBuff, "<")) currentPWM = ConfigMotor.RPM_75;
+    else if (!strcmp(bleBuff, ">")) currentPWM = ConfigMotor.RPM_100;
 
     balance(Angles.Complementary, currentPWM);
 }
