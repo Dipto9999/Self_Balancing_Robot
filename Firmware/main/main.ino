@@ -36,7 +36,11 @@ void loop() {
   serialMsg = String(Angles.Accelerometer, 2) + " " +
     String(Angles.Gyroscope, 2) + " " +
     String(Angles.Complementary, 2);
-  handleData('A', serialMsg);
+
+  // Wait for BLE Connection to Send Data Back to Raspberry Pi
+  while ((central) && (central.connected())) {
+    handleData('A', serialMsg);
+  }
 
   if (handleBLE()) {
     driveMotors(buffBLE);

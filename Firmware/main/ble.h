@@ -9,6 +9,7 @@
 
 extern BLEService customService;
 extern BLECharacteristic customCharacteristic;
+extern BLEDevice central;
 
 extern char buffBLE[BUFFER_SIZE];
 

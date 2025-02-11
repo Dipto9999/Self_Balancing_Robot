@@ -99,7 +99,7 @@ class StripChart:
                 if len(self.sample_data) > 0:
                     self.sample_data.append(self.sample_data[-1]+1)
                 else:
-                    self.sample_data.append(1)
+                    self.sample_data.append(0)
                 self.accelerometer_data.append(accelerometer_angle)
                 self.gyroscope_data.append(gyroscope_angle)
                 self.complementary_data.append(complementary_angle)
@@ -109,10 +109,11 @@ class StripChart:
             self.missed += 1
 
         if self.missed > 100: # Stop Updating After 10s of Missed Data
-            self.conn.reconnect()
-            self.stop()
-            self.stop_event.clear()
+            self.conn.reconnect() # Reconnect Serial Connection
+            self.stop() # Stop Serial Thread
+            self.stop_event.clear() # Clear Stop Event
 
+            # Restart Serial Thread
             self.thread = td.Thread(target = self.rx_angle, daemon = True)
             self.thread.start()
 
@@ -180,10 +181,10 @@ class StripChart:
             # Read Angle Data
             try:
                 arduinoStream = str(read_serial()).rstrip('\r')
-                print(f"Incoming Value: {arduinoStream}")
+                # print(f"Incoming Value: {arduinoStream}")
 
                 self.data_queue.put(arduinoStream)
-                print("Data Queue Size:", self.data_queue.qsize())
+                # print("Data Queue Size:", self.data_queue.qsize())
             except serial.SerialException:
                 self.conn.reconnect()
             except ValueError:

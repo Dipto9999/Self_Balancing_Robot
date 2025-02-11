@@ -7,6 +7,7 @@ BLECharacteristic customCharacteristic(
     BLERead | BLEWrite | BLENotify, BUFFER_SIZE, false
 );
 
+BLEDevice central;
 void setupBLE() {
   pinMode(LED_BUILTIN, OUTPUT); // Init Built-in LED to Indicate Connection Status
 
@@ -31,29 +32,23 @@ void setupBLE() {
 char buffBLE[BUFFER_SIZE];
 
 bool handleBLE() {
-  BLEDevice central = BLE.central();
+  central = BLE.central();
 
-  if (central) {
-    // Serial.print("Connected to Central: ");
-    // Serial.println(central.address());
+  while ((central) && (central.connected())) { // While BLE Device is Connected
+    if (customCharacteristic.written()) {
+      int length = customCharacteristic.valueLength();
+      const unsigned char* receivedData = customCharacteristic.value();
 
-    while (central.connected()) {
-      if (customCharacteristic.written()) {
-        int length = customCharacteristic.valueLength();
-        const unsigned char* receivedData = customCharacteristic.value();
+      memcpy(buffBLE, receivedData, length);
+      buffBLE[length] = '\0'; // Null-Terminated
 
-        memcpy(buffBLE, receivedData, length);
-        buffBLE[length] = '\0'; // Null-Terminated
+      // Serial.print("Received Data: ");
+      // Serial.println(buffBLE);
 
-        Serial.print("Received Data: ");
-        Serial.println(buffBLE);
-
-        customCharacteristic.writeValue("BLE RX"); // Send Acknowledgement
-        return true; // Data Received
-      }
+      customCharacteristic.writeValue("BLE RX"); // Send Acknowledgement
+      return true; // Data Received
     }
-    digitalWrite(LED_BUILTIN, HIGH); // Turn On LED when Disconnected
-    // Serial.println("Disconnected from Central.");
   }
+  digitalWrite(LED_BUILTIN, HIGH); // Turn On LED when Disconnected
   return false; // Disconnected
 }
