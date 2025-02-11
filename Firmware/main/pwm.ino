@@ -3,6 +3,13 @@
 
 const int PWM_PeriodUs = 20; // 20µs Period (50kHz)
 
+MotorPWM MotorSpeeds = {
+    0.4, // 25% of RPM
+    0.6, // 50% of RPM
+    0.7, // 75% of RPM
+    1.0 // 100% of RPM
+};
+
 XIN MotorA = {
     new mbed::PwmOut(digitalPinToPinName(6)), // PinAIN1
     new mbed::PwmOut(digitalPinToPinName(9))  // PinAIN2

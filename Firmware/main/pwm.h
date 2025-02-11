@@ -6,6 +6,14 @@
 
 enum Dir { FORWARD, REVERSE };
 
+struct MotorPWM {
+    float RPM_25Pct;
+    float RPM_50Pct;
+    float RPM_75Pct;
+    float RPM_100Pct;
+};
+extern MotorPWM MotorSpeeds;
+
 struct XIN {
     mbed::PwmOut* Pin1;
     mbed::PwmOut* Pin2;
