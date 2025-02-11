@@ -12,7 +12,7 @@ from IPython.display import display
 ### Classes ###
 ###############
 
-class Serial(serial.Serial) :
+class ArduinoSerial(serial.Serial) :
     def __init__(self, port = 'COM3', baudrate = 9600):
         super().__init__(port = port, baudrate = baudrate)
 
@@ -171,7 +171,7 @@ class StripChart :
             pass
 
 if __name__ == "__main__":
-    conn = Serial()
+    conn = ArduinoSerial()
     time.sleep(2) # Time Delay for Arduino Serial Initialization
 
     stripchat = StripChart(conn = conn)

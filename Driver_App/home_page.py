@@ -15,6 +15,8 @@ from kivy.uix.widget import Widget
 
 from kivy.clock import Clock
 
+from arduinoSerial import *
+
 from bleak import BleakScanner, BleakClient
 from bleak.exc import BleakError
 

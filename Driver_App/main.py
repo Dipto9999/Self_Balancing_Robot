@@ -3,8 +3,9 @@ import threading as td
 
 from kivy.app import App
 from kivy.core.window import Window
-
 from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
+
+from arduinoSerial import *
 
 from home_page import HomePageLayout
 from dashboard_page import DashboardPageLayout
@@ -34,6 +35,13 @@ class DriverApp(App):
         self.async_loop = asyncio.new_event_loop() # Create Asyncio Event Loop
         td.Thread(target = self._start_async_loop, daemon = True).start() # Start Event Loop in Separate Thread
 
+        # Serial Connection
+        try:
+            self.conn = ArduinoSerial(port = 'COM3', baudrate = 9600)
+        except serial.SerialException as serial_error:
+            print("Serial Connection Error:", str(serial_error))
+            self.conn = None
+
         # Configure Window
         Window.size = (1000, 800)
         Window.resizable = False
@@ -41,12 +49,13 @@ class DriverApp(App):
         self.title = "Robot Driver App"
         self.home_page = HomePageLayout(app = self)
         self.dashboard_page = DashboardPageLayout(app = self)
+
         return AppLayout(app = self)
 
     def on_stop(self):
         """Close Serial Connection on Application Exit."""
-        if self.dashboard_page.conn is not None and self.dashboard_page.conn.isOpen():
-            self.dashboard_page.conn.close() # Close Serial Connection When Plot Closedconn.close() # Close Serial Connection When Plot Closed
+        if self.conn is not None and self.conn.isOpen():
+            self.conn.close() # Close Serial Connection When Plot Closedconn.close() # Close Serial Connection When Plot Closed
 
             fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
             self.dashboard_page.strip_chart.save_logs(fig_name)
