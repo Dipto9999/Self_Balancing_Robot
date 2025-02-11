@@ -17,13 +17,13 @@ float editAngleBounds(float angle) {
 
 void setupIMU() {
   if (!IMU.begin()) {
-    Serial.println("Failed to initialize IMU!");
+    // Serial.println("Failed to Initialize IMU!");
     while (1);
   }
 
-  Serial.println("IMU initialized!");
-  Serial.println("Reading raw data from gyroscope and accelerometer...");
-  Serial.println("Gyroscope (rad/s) | Accelerometer (g)");
+  // Serial.println("IMU Initialized!");
+  // Serial.println("Reading Raw Data from Gyroscope and Accelerometer...");
+  // Serial.println("Gyroscope (rad/s) | Accelerometer (g)");
 
   while (az == 0) {
     if (IMU.accelerationAvailable()) {
