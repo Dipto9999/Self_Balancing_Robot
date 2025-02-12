@@ -11,6 +11,7 @@ extern BLEService customService;
 extern BLECharacteristic customCharacteristic;
 extern BLEDevice central;
 
+extern bool connectSuccess;
 extern char buffBLE[BUFFER_SIZE];
 
 /* Function Prototypes */

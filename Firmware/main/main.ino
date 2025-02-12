@@ -37,12 +37,15 @@ void loop() {
     String(Angles.Gyroscope, 2) + " " +
     String(Angles.Complementary, 2);
 
-  // Wait for BLE Connection to Send Data Back to Raspberry Pi
-  while ((central) && (central.connected())) {
-    handleData('A', serialMsg);
-  }
 
-  if (handleBLE()) {
-    driveMotors(buffBLE);
-  }
+    // Wait for BLE Connection to Send Data Back to Raspberry Pi
+    if (handleBLE()) driveMotors(buffBLE);
+
+    if (connectSuccess) {
+      handleData('A', serialMsg);
+      // Serial.println(serialMsg);
+    }
+
+  // Serial.print("Current PWM: ");
+  // Serial.println(currentPWM);
 }

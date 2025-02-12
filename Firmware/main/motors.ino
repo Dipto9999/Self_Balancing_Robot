@@ -1,11 +1,14 @@
 #include "motors.h"
 
+
+// At 6V, 289 RPM = 100% Duty Cycle
 ConfigPWM ConfigMotor = {
-    0.4, // 25% of RPM
-    0.6, // 50% of RPM
-    0.7, // 75% of RPM
-    1.0 // 100% of RPM
+    0.1, // 85 RPM = 25%
+    0.375, // 143.5 RPM = 50%
+    0.75, // 215 RPM = 75%
+    1.0 // 289 RPM (Max) = 100%
 };
+
 
 XIN MotorA = {
     new mbed::PwmOut(digitalPinToPinName(6)), // PinAIN1
@@ -20,7 +23,7 @@ XIN MotorB = {
 float currentPWM;
 void setupMotors() {
     setupPWM(); // Initialize PWM Pins
-    currentPWM = ConfigMotor.RPM_50; // Set Default PWM Value
+    currentPWM = ConfigMotor.RPM_100; // Set Default PWM Value
     Serial.println("Motors Initialized!");
 }
 

@@ -106,10 +106,11 @@ class HomePageLayout(BoxLayout):
         self.btn_down = Button(text = "\u2193", disabled = True, font_name = "DejaVuSans.ttf")
 
         # Provide Command Attributes to Buttons
-        self.btn_up.command = "^"
-        self.btn_down.command = "v"
-        self.btn_left.command = "<"
-        self.btn_right.command = ">"
+
+        self.btn_up.command = "^" # 122 RPM = 25%
+        self.btn_down.command = "v" # 143.5 RPM = 50%
+        self.btn_left.command = "<" # 215 RPM = 75%
+        self.btn_right.command = ">" # 289 RPM (Max) = 100%
 
         # Add Widgets to Button Layout
         btn_grid.add_widget(Widget())

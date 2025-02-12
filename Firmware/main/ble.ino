@@ -8,6 +8,8 @@ BLECharacteristic customCharacteristic(
 );
 
 BLEDevice central;
+bool connectSuccess = false;
+
 void setupBLE() {
   pinMode(LED_BUILTIN, OUTPUT); // Init Built-in LED to Indicate Connection Status
 
@@ -34,19 +36,22 @@ char buffBLE[BUFFER_SIZE];
 bool handleBLE() {
   central = BLE.central();
 
-  while ((central) && (central.connected())) { // While BLE Device is Connected
-    if (customCharacteristic.written()) {
-      int length = customCharacteristic.valueLength();
-      const unsigned char* receivedData = customCharacteristic.value();
+  while (central) { // While Central Device is Detected
+    connectSuccess = true;
+    if (central.connected()) { // If Device is Actively Connected
+      if (customCharacteristic.written()) {
+        int length = customCharacteristic.valueLength();
+        const unsigned char* receivedData = customCharacteristic.value();
 
-      memcpy(buffBLE, receivedData, length);
-      buffBLE[length] = '\0'; // Null-Terminated
+        memcpy(buffBLE, receivedData, length);
+        buffBLE[length] = '\0'; // Null-Terminated
 
-      // Serial.print("Received Data: ");
-      // Serial.println(buffBLE);
+        // Serial.print("Received Data: ");
+        // Serial.println(buffBLE);
 
-      customCharacteristic.writeValue("BLE RX"); // Send Acknowledgement
-      return true; // Data Received
+        customCharacteristic.writeValue("BLE RX"); // Send Acknowledgement
+        return true; // Data Received
+      }
     }
   }
   digitalWrite(LED_BUILTIN, HIGH); // Turn On LED when Disconnected
