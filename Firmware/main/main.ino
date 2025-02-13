@@ -1,32 +1,22 @@
 #include "angle.h"
-#include "pwm.h"
+#include "motors.h"
 #include "ble.h"
 #include "serial.h"
-#include "buttons.h"
+// #include "buttons.h"
 
 void setup() {
     setupSerial();
     setupIMU();
-    setupPWM();
+    setupMotors();
     setupBLE();
-    setupButtons();
+    // setupButtons();
 }
 
 ANGLES Angles = {0, 0, 0}; // Accelerometer, Gyroscope, Complementary
 
-
-static int pwmIndex = 0;
-float pwmValues[] = {
-  MotorSpeeds.RPM_25Pct,
-  MotorSpeeds.RPM_50Pct,
-  MotorSpeeds.RPM_75Pct,
-  MotorSpeeds.RPM_100Pct
-};
-float current_pwm = pwmValues[pwmIndex];
-
 void loop() {
     getAngles(Angles);
-    driveMotors(Angles.Complementary, current_pwm);
+    balanceRobot(Angles.Complementary, currentPWM);
 
     // Serial.print("Accel: ");
     // Serial.println(Angles.Accelerometer);
@@ -37,10 +27,10 @@ void loop() {
     // Serial.print("Complementary: ");
     // Serial.println(Angles.Complementary);
 
-    if (handleButtons()) {
-      pwmIndex = (pwmIndex + 1) % (sizeof(pwmValues) / sizeof(pwmValues[0])); ; // Cycle through RPM Values
-      current_pwm = pwmValues[pwmIndex];
-    }
+    // if (handleButtons()) {
+    //   configIndex = (configIndex + 1) % (sizeof(configVals) / sizeof(configVals[0])); ; // Cycle through RPM Values
+    //   currentPWM = configVals[configIndex];
+    // }
 
   // Send Data
   serialMsg = String(Angles.Accelerometer, 2) + " " +
@@ -48,5 +38,8 @@ void loop() {
     String(Angles.Complementary, 2);
   handleData('A', serialMsg);
 
-  handleBLE();
+  // Wait for BLE Connection to Send Data Back to Raspberry Pi
+  if (rxBLE()) overrideMotors(buffBLE);
+
+  balanceRobot(Angles.Complementary, currentPWM);
 }

@@ -12,15 +12,9 @@ from IPython.display import display
 ### Classes ###
 ###############
 
-class Serial(serial.Serial) :
-    def __init__(self,
-            port = 'COM3',
-            baudrate = 9600,
-        ):
-        super().__init__(
-            port = port,
-            baudrate = baudrate,
-        )
+class ArduinoSerial(serial.Serial) :
+    def __init__(self, port = 'COM3', baudrate = 9600):
+        super().__init__(port = port, baudrate = baudrate)
 
         if self.isOpen() :
             print('Serial Port is Open')
@@ -60,7 +54,7 @@ class StripChart :
         self.ax.grid()
 
         self.ax.set_ylim(0, self.ylim) # Angle Expected to be Between 0° and 360°
-        self.ax.set_yticks(range(0, self.ylim + 1, 15))
+        self.ax.set_yticks(range(0, self.ylim + 1, 15)) # Set Y-Ticks to 15° Intervals
 
         self.ax.set_xlabel('Samples')
         self.ax.set_ylabel('Angle (°)')
@@ -177,7 +171,7 @@ class StripChart :
             pass
 
 if __name__ == "__main__":
-    conn = Serial()
+    conn = ArduinoSerial()
     time.sleep(2) # Time Delay for Arduino Serial Initialization
 
     stripchat = StripChart(conn = conn)
