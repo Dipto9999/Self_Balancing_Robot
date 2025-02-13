@@ -107,7 +107,7 @@ class HomePageLayout(BoxLayout):
 
         # Provide Command Attributes to Buttons
 
-        self.btn_up.command = "^" # 122 RPM = 25%
+        self.btn_up.command = "^" # 85 RPM = 25%
         self.btn_down.command = "v" # 143.5 RPM = 50%
         self.btn_left.command = "<" # 215 RPM = 75%
         self.btn_right.command = ">" # 289 RPM (Max) = 100%
