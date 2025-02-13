@@ -27,8 +27,6 @@ class AppLayout(TabbedPanel):
         self.add_widget(dashboard_tab)
 
         self.default_tab = home_tab
-        # Set default tab
-
 
 class DriverApp(App):
     def build(self) -> AppLayout:
