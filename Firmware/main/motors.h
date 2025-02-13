@@ -19,7 +19,7 @@ extern float currentPWM;
 /* Function Prototypes */
 void setupMotors();
 
-void driveMotors(const char* bleBuff);
-void balance(float angle, float speed);
+void overrideMotors(const char* bleBuff);
+void balanceRobot(float angle, float speed);
 
 #endif

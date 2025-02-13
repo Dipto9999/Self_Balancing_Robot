@@ -11,12 +11,11 @@ extern BLEService customService;
 extern BLECharacteristic customCharacteristic;
 extern BLEDevice central;
 
-extern bool connectSuccess;
 extern char buffBLE[BUFFER_SIZE];
 
 /* Function Prototypes */
 extern void setupBLE();
 
-extern bool handleBLE();
+extern bool rxBLE();
 
 #endif

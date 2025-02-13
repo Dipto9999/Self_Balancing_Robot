@@ -82,7 +82,7 @@ class StripChart:
             try:
                 arduinoStream = self.data_queue.get().split(' ')
 
-                # print(f"Incoming Value: {arduinoStream}")
+                # print(f"Queue Value: {arduinoStream}")
 
                 if len(arduinoStream) != 3:
                     raise ValueError
@@ -108,14 +108,14 @@ class StripChart:
         else:
             self.missed += 1
 
-        if self.missed > 100: # Stop Updating After 10s of Missed Data
-            self.conn.reconnect() # Reconnect Serial Connection
-            self.stop() # Stop Serial Thread
-            self.stop_event.clear() # Clear Stop Event
+        if self.conn and self.missed > 100: # Stop Updating After 10s of Missed Data
+                self.conn.reconnect() # Reconnect Serial Connection
+                self.stop() # Stop Serial Thread
+                self.stop_event.clear() # Clear Stop Event
 
-            # Restart Serial Thread
-            self.thread = td.Thread(target = self.rx_angle, daemon = True)
-            self.thread.start()
+                # Restart Serial Thread
+                self.thread = td.Thread(target = self.rx_angle, daemon = True)
+                self.thread.start()
 
         # Limit Size to Trailing Data
         self.sample_data = self.sample_data[-self.data_size:]
@@ -181,10 +181,10 @@ class StripChart:
             # Read Angle Data
             try:
                 arduinoStream = str(read_serial()).rstrip('\r')
-                # print(f"Incoming Value: {arduinoStream}")
+                # print(f"RX Value: {arduinoStream}")
 
-                self.data_queue.put(arduinoStream)
                 # print("Data Queue Size:", self.data_queue.qsize())
+                self.data_queue.put(arduinoStream) # Add New Data
             except serial.SerialException:
                 self.conn.reconnect()
             except ValueError:

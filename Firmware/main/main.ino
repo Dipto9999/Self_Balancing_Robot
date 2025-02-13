@@ -16,7 +16,7 @@ ANGLES Angles = {0, 0, 0}; // Accelerometer, Gyroscope, Complementary
 
 void loop() {
     getAngles(Angles);
-    balance(Angles.Complementary, currentPWM);
+    balanceRobot(Angles.Complementary, currentPWM);
 
     // Serial.print("Accel: ");
     // Serial.println(Angles.Accelerometer);
@@ -36,16 +36,10 @@ void loop() {
   serialMsg = String(Angles.Accelerometer, 2) + " " +
     String(Angles.Gyroscope, 2) + " " +
     String(Angles.Complementary, 2);
+  handleData('A', serialMsg);
 
+  // Wait for BLE Connection to Send Data Back to Raspberry Pi
+  if (rxBLE()) overrideMotors(buffBLE);
 
-    // Wait for BLE Connection to Send Data Back to Raspberry Pi
-    if (handleBLE()) driveMotors(buffBLE);
-
-    if (connectSuccess) {
-      handleData('A', serialMsg);
-      // Serial.println(serialMsg);
-    }
-
-  // Serial.print("Current PWM: ");
-  // Serial.println(currentPWM);
+  balanceRobot(Angles.Complementary, currentPWM);
 }

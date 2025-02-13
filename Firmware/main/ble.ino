@@ -8,8 +8,6 @@ BLECharacteristic customCharacteristic(
 );
 
 BLEDevice central;
-bool connectSuccess = false;
-
 void setupBLE() {
   pinMode(LED_BUILTIN, OUTPUT); // Init Built-in LED to Indicate Connection Status
 
@@ -33,11 +31,10 @@ void setupBLE() {
 
 char buffBLE[BUFFER_SIZE];
 
-bool handleBLE() {
+bool rxBLE() {
   central = BLE.central();
 
-  while (central) { // While Central Device is Detected
-    connectSuccess = true;
+  if (central) { // If Central Device is Detected
     if (central.connected()) { // If Device is Actively Connected
       if (customCharacteristic.written()) {
         int length = customCharacteristic.valueLength();
