@@ -1,0 +1,5 @@
+../Core/Src/rfid.c:3:6:RFID_Init	16	static
+../Core/Src/rfid.c:25:6:RFID_WriteRegister	16	static
+../Core/Src/rfid.c:31:6:RFID_ReadRegister	40	static
+../Core/Src/rfid.c:51:6:RFID_AntennaOn	40	static
+../Core/Src/rfid.c:67:6:RFID_SoftReset	16	static

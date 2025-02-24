@@ -1,0 +1,6 @@
+../Core/Src/colorsensor.c:3:6:ColorSensor_Init	1
+../Core/Src/colorsensor.c:16:6:ColorSensor_EnableStatus	1
+../Core/Src/colorsensor.c:21:6:ColorSensor_RGBStartColorReceive	3
+../Core/Src/colorsensor.c:29:6:ColorSensor_ReceiveInterrupt	2
+../Core/Src/colorsensor.c:42:7:ColorSensor_CalculateColor	3
+../Core/Src/colorsensor.c:53:6:ColorSensor_Handle	1
