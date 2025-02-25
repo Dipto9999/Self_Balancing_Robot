@@ -14,7 +14,7 @@ void setupPWM() {
 /*
  * Fast Decay: Hold Primary Input at PWM Duty Cycle, Secondary Input Low.
  */
-void moveFastDecay(XIN &motor, Dir dir, float dutyCycle) {
+void moveFastDecay(XIN &motor, DirPWM dir, float dutyCycle) {
     if (dir == FORWARD) {
         motor.Pin1->write(dutyCycle);
         motor.Pin2->write(0);
@@ -27,7 +27,7 @@ void moveFastDecay(XIN &motor, Dir dir, float dutyCycle) {
 /*
  * Slow Decay: Hold Primary Input High, Secondary Input at PWM Duty Cycle.
  */
-void moveSlowDecay(XIN &motor, Dir dir, float dutyCycle) {
+void moveSlowDecay(XIN &motor, DirPWM dir, float dutyCycle) {
     if (dir == FORWARD) {
         motor.Pin1->write(1);
         motor.Pin2->write(dutyCycle);

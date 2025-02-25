@@ -1,5 +1,5 @@
 #include "angle.h"
-#include "motors.h"
+#include "controller.h"
 #include "ble.h"
 #include "serial.h"
 // #include "buttons.h"
@@ -9,37 +9,28 @@ void setup() {
     setupIMU();
     setupMotors();
     setupBLE();
+
+    // Test With Buttons
     // setupButtons();
 }
 
 ANGLES Angles = {0, 0, 0}; // Accelerometer, Gyroscope, Complementary
 
 void loop() {
-    getAngles(Angles);
-    balanceRobot(Angles.Complementary, currentPWM);
+  // Test With Buttons
+  // if (handleButtons()) {
+    // currDutyCycle = ...
+  // }
 
-    // Serial.print("Accel: ");
-    // Serial.println(Angles.Accelerometer);
+  // Wait for BLE Connection to Override Motors
+  if (rxBLE()) changeDirection(buffBLE);
 
-    // Serial.print("Gyro: ");
-    // Serial.println(Angles.Gyroscope);
-
-    // Serial.print("Complementary: ");
-    // Serial.println(Angles.Complementary);
-
-    // if (handleButtons()) {
-    //   configIndex = (configIndex + 1) % (sizeof(configVals) / sizeof(configVals[0])); ; // Cycle through RPM Values
-    //   currentPWM = configVals[configIndex];
-    // }
+  // getAngles(Angles);
+  balanceRobot(currDirection);
 
   // Send Data
   serialMsg = String(Angles.Accelerometer, 2) + " " +
     String(Angles.Gyroscope, 2) + " " +
     String(Angles.Complementary, 2);
   handleData('A', serialMsg);
-
-  // Wait for BLE Connection to Send Data Back to Raspberry Pi
-  if (rxBLE()) overrideMotors(buffBLE);
-
-  balanceRobot(Angles.Complementary, currentPWM);
 }

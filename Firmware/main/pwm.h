@@ -5,7 +5,7 @@
 #include "mbed.h"
 #include "serial.h"
 
-enum Dir { FORWARD, REVERSE };
+enum DirPWM { FORWARD, REVERSE };
 
 struct XIN {
     mbed::PwmOut* Pin1;
@@ -17,7 +17,7 @@ extern const int PWM_PeriodUs;
 /* Function Prototypes */
 void setupPWM();
 
-void moveFastDecay(XIN &motor, Dir dir, float dutyCycle);
-void moveSlowDecay(XIN &motor, Dir dir, float dutyCycle);
+void moveFastDecay(XIN &motor, DirPWM dir, float dutyCycle);
+void moveSlowDecay(XIN &motor, DirPWM dir, float dutyCycle);
 
 #endif
