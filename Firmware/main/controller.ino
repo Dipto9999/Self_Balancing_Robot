@@ -64,11 +64,11 @@ void balanceRobot(int direction) {
     // Print Control Values
     // Serial.print("Measured Angle: ");
     // Serial.println(measuredAngle);
+
     // Serial.print("Error Angle: ");
     // Serial.println(errorAngle);
     // Serial.print("Prev Error Angle: ");
     // Serial.println(prevErrorAngle);
-
     // Serial.print("Time Step: ");
     // Serial.println(dt);
 
