@@ -5,7 +5,7 @@
 #include "mbed.h"
 #include "serial.h"
 
-enum DirPWM { FORWARD, REVERSE };
+enum DirPWM { CW, CCW };
 
 struct XIN {
     mbed::PwmOut* Pin1;

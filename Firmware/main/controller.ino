@@ -20,7 +20,6 @@ XIN MotorB = {
 
 /* PID Controller Variables */
 float Kp; // Proportional Gain
-float Ki; // Integral Gain
 float Kd; // Derivative Gain
 
 float setpointAngle; // Reference Value, r_t (Angle = 180°)
@@ -28,9 +27,6 @@ float measuredAngle; // Output Value, y_t (Angle)
 
 float errorAngle; // Error Value, e_t = r_t - y_t
 float prevErrorAngle; // Previous Error Value, e_(t-1)
-
-float integralAngle; // Integral Value, ∑(e_t * dt)
-float derivativeAngle; // Derivative Value, (e_t - e_(t-1)) / dt
 
 float u_t; // Control Signal
 
@@ -45,11 +41,11 @@ void setupMotors() {
 
 void setupController() {
     Kp = 0.5; // Proportional Gain
-    Ki = 0.5; // Integral Gain
-    Kd = 0.0; // Derivative Gain
+    Kd = 0.5; // Derivative Gain
 
     setpointAngle = 180.0; // Reference Value, r_t (Angle = 180°)
-    integralAngle = 0.0;
+    errorAngle = 0.0; // Error Value, e_t = r_t - y_t
+    prevErrorAngle = 0.0; // Previous Error Value, e_(t-1)
 
     currDutyCycle = ConfigMotor.RPM_50; // Set Default PWM Value
 }
@@ -58,49 +54,97 @@ void balanceRobot(int direction) {
     float dutyCycle;
 
     getAngles(Angles); // Get Initial Angle Values
-    measuredAngle = Angles.Complementary; // Get Complementary Filter Angle
 
+    measuredAngle = Angles.Complementary; // Get Measured Angle
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
-    integralAngle += errorAngle * dt; // Calculate Integral Value
-    derivativeAngle = (errorAngle - prevErrorAngle) / dt; // Calculate Derivative Value
 
     // Calculate Control Signal
-    u_t = (Kp * errorAngle) + (Ki * integralAngle) + (Kd * derivativeAngle);
-    // TODO: Convert Control Signal to PWM Duty Cycle
-    dutyCycle = constrain(u_t, -1.0, 1.0); // Constrain Control Signal
+    u_t = (Kp * errorAngle) + (Kd * (errorAngle - prevErrorAngle) / dt);
 
-    if (dutyCycle > 0) { // Forward
-        moveFastDecay(MotorA, FORWARD, dutyCycle);
-        moveFastDecay(MotorB, FORWARD, dutyCycle);
-    } else { // Reverse
-        moveFastDecay(MotorA, REVERSE, -dutyCycle);
-        moveFastDecay(MotorB, REVERSE, -dutyCycle);
-    }
+    // Print Control Values
+    // Serial.print("Measured Angle: ");
+    // Serial.println(measuredAngle);
+    // Serial.print("Error Angle: ");
+    // Serial.println(errorAngle);
+    // Serial.print("Prev Error Angle: ");
+    // Serial.println(prevErrorAngle);
+
+    // Serial.print("Kp Component: ");
+    // Serial.println(Kp * errorAngle);
+
+    // Serial.print("Kd Component: ");
+    // Serial.println(Kd * (errorAngle - prevErrorAngle) / dt);
+    // Serial.print("Control Signal: ");
+    // Serial.println(u_t);
+
+    // TODO: Convert Control Signal to Power (i.e. PWM Duty Cycle)
+    // dutyCycle = constrain(u_t, -1.0, 1.0); // Constrain Control Signal
+    dutyCycle = 0.5;
 
     // TODO: DEPRECATED: Use PID Controller to Balance Robot
     // if (angle >= 215) { // Hard Right (angle ≥ 195)
-    //     moveFastDecay(MotorA, FORWARD, ConfigMotor.RPM_100);
-    //     moveFastDecay(MotorB, FORWARD, ConfigMotor.RPM_100);
+    //     moveFastDecay(MotorA, CW, ConfigMotor.RPM_100);
+    //     moveFastDecay(MotorB, CW, ConfigMotor.RPM_100);
     // } else if (angle <= 135) { // Hard Left (angle ≤ 165)
-    //     moveFastDecay(MotorA, REVERSE, ConfigMotor.RPM_100);
-    //     moveFastDecay(MotorB, REVERSE, ConfigMotor.RPM_100);
+    //     moveFastDecay(MotorA, CCW, ConfigMotor.RPM_100);
+    //     moveFastDecay(MotorB, CCW, ConfigMotor.RPM_100);
     // } else if (angle >= 195) { // Slight Right (angle ≥ 185 && angle < 195)
-    //     moveFastDecay(MotorA, FORWARD, ConfigMotor.RPM_75);
-    //     moveFastDecay(MotorB, FORWARD, ConfigMotor.RPM_75);
+    //     moveFastDecay(MotorA, CW, ConfigMotor.RPM_75);
+    //     moveFastDecay(MotorB, CW, ConfigMotor.RPM_75);
     // } else if (angle <= 155) { // Slight Left (angle ≤ 175 && angle > 165)
-    //     moveFastDecay(MotorB, REVERSE, ConfigMotor.RPM_75);
-    //     moveFastDecay(MotorA, REVERSE, ConfigMotor.RPM_75);
-    // } else { // Drive Straight (angle ≥ 165 && angle ≤ 195)
-    //     moveFastDecay(MotorA, FORWARD, dutyCycle);
-    //     moveFastDecay(MotorB, FORWARD, dutyCycle);
+    //     moveFastDecay(MotorB, CCW, ConfigMotor.RPM_75);
+    //     moveFastDecay(MotorA, CCW, ConfigMotor.RPM_75);
+    // } else { // FORWARD Straight (angle ≥ 165 && angle ≤ 195)
+    //     moveFastDecay(MotorA, CW, dutyCycle);
+    //     moveFastDecay(MotorB, CW, dutyCycle);
     // }
+
+    // TODO: Implement Movement Based on Control Signal (i.e. PWM Duty Cycle) and Direction
+    // if (direction == REVERSE) { // REVERSE
+        // if (dutyCycle > 0) { // FORWARD
+        //     moveFastDecay(MotorA, CW, dutyCycle);
+        //     moveFastDecay(MotorB, CW, dutyCycle);
+        // } else { // REVERSE
+        //     moveFastDecay(MotorA, CCW, -dutyCycle);
+        //     moveFastDecay(MotorB, CCW, -dutyCycle);
+        // }
+    // } else if (direction == FORWARD) { // FORWARD
+        // if (dutyCycle > 0) { // FORWARD
+        //     moveFastDecay(MotorA, CW, dutyCycle);
+        //     moveFastDecay(MotorB, CW, dutyCycle);
+        // } else { // REVERSE
+        //     moveFastDecay(MotorA, CCW, -dutyCycle);
+        //     moveFastDecay(MotorB, CCW, -dutyCycle);
+        // }
+    // }
+    // ...
+
+    prevErrorAngle = errorAngle; // Update Previous Error Value
     return;
 }
 
 void changeDirection(const char* bleBuff) {
-    if (!strcmp(bleBuff, "^")) currDirection = DRIVE;
-    else if (!strcmp(bleBuff, "v")) currDirection = BACK;
-    else if (!strcmp(bleBuff, "<")) currDirection = LEFT;
-    else if (!strcmp(bleBuff, ">")) currDirection = RIGHT;
-    // else if (!strcmp(bleBuff, "X")) currDirection = STOP;
+    // if (!strcmp(bleBuff, "^")) currDirection = FORWARD; // Drive
+    // else if (!strcmp(bleBuff, "v")) currDirection = REVERSE; // Reverse
+    // else if (!strcmp(bleBuff, "<")) currDirection = LEFT; // Turn Left
+    // else if (!strcmp(bleBuff, ">")) currDirection = RIGHT; // Turn Right
+    // else if (!strcmp(bleBuff, "X")) currDirection = PARK; // Park
+
+    // TODO: DEPRECATED: Use BLE to Change Direction
+    if (!strcmp(bleBuff, "^")) {
+        moveFastDecay(MotorA, CW, ConfigMotor.RPM_100);
+        moveFastDecay(MotorB, CCW, ConfigMotor.RPM_100);
+    }
+    else if (!strcmp(bleBuff, "v")) {
+        moveFastDecay(MotorA, CW, ConfigMotor.RPM_75);
+        moveFastDecay(MotorB, CCW, ConfigMotor.RPM_75);
+    }
+    else if (!strcmp(bleBuff, "<")) {
+        moveFastDecay(MotorA, CCW, ConfigMotor.RPM_50);
+        moveFastDecay(MotorB, CW, ConfigMotor.RPM_50);
+    }
+    else if (!strcmp(bleBuff, ">")) {
+        moveFastDecay(MotorA, CCW, ConfigMotor.RPM_25);
+        moveFastDecay(MotorB, CW, ConfigMotor.RPM_25);
+    }
 }

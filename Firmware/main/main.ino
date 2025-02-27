@@ -24,8 +24,6 @@ void loop() {
 
   // Wait for BLE Connection to Override Motors
   if (rxBLE()) changeDirection(buffBLE);
-
-  // getAngles(Angles);
   balanceRobot(currDirection);
 
   // Send Data
