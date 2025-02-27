@@ -1,0 +1,5 @@
+../Core/Src/distancesensor.c:5:6:DistanceSensor_Init	24	static
+../Core/Src/distancesensor.c:14:6:DistanceSensor_Start	16	static
+../Core/Src/distancesensor.c:20:6:DistanceSensor_Stop	16	static
+../Core/Src/distancesensor.c:26:6:DistanceSensor_InputCaptureInterrupt	16	static
+../Core/Src/distancesensor.c:59:7:DistanceSensor_GetDistance	16	static
