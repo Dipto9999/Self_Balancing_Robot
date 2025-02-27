@@ -62,20 +62,23 @@ void balanceRobot(int direction) {
     u_t = (Kp * errorAngle) + (Kd * (errorAngle - prevErrorAngle) / dt);
 
     // Print Control Values
-    // Serial.print("Measured Angle: ");
-    // Serial.println(measuredAngle);
-    // Serial.print("Error Angle: ");
-    // Serial.println(errorAngle);
-    // Serial.print("Prev Error Angle: ");
-    // Serial.println(prevErrorAngle);
+    Serial.print("Measured Angle: ");
+    Serial.println(measuredAngle);
+    Serial.print("Error Angle: ");
+    Serial.println(errorAngle);
+    Serial.print("Prev Error Angle: ");
+    Serial.println(prevErrorAngle);
 
-    // Serial.print("Kp Component: ");
-    // Serial.println(Kp * errorAngle);
+    Serial.print("Time Step: ");
+    Serial.println(dt);
 
-    // Serial.print("Kd Component: ");
-    // Serial.println(Kd * (errorAngle - prevErrorAngle) / dt);
-    // Serial.print("Control Signal: ");
-    // Serial.println(u_t);
+    Serial.print("Kp Component: ");
+    Serial.println(Kp * errorAngle);
+
+    Serial.print("Kd Component: ");
+    Serial.println(Kd * (errorAngle - prevErrorAngle) / dt);
+    Serial.print("Control Signal: ");
+    Serial.println(u_t);
 
     // TODO: Convert Control Signal to Power (i.e. PWM Duty Cycle)
     // dutyCycle = constrain(u_t, -1.0, 1.0); // Constrain Control Signal
