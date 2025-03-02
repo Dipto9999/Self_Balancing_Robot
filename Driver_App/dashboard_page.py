@@ -2,7 +2,6 @@ import threading as td
 import queue
 
 import time
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -12,9 +11,11 @@ from IPython.display import display
 
 from kivy.app import App
 from kivy.core.window import Window
+
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 
+from kivy.uix.image import Image
 from kivy.uix.widget import Widget
 from kivy.uix.label import Label
 from kivy.clock import Clock
@@ -66,7 +67,7 @@ class StripChart:
         self.fig.subplots_adjust(bottom = 0.2)
         self.ax.legend(
             loc = 'upper center',
-            bbox_to_anchor = (0.5, -0.2), # Position Above Plot with Padding
+            bbox_to_anchor = (0.5, -0.15), # Position Above Plot with Padding
             ncol = 3, framealpha = 0.9,  # 3 Columns, Transparent Background
             fontsize = 10,
         )
@@ -219,32 +220,35 @@ class StripChart:
 
 class DashboardPageLayout(GridLayout):
     def __init__(self, app, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(rows = 1, size_hint = (1, 1), **kwargs)
         self.app = app
 
-        self.spacing = 10
-        self.padding = 10
-
         self.cam_feed = PiCameraDisplay()
+        # self.cam_feed = Image(size_hint = (1, 1), allow_stretch = True)
         self.strip_chart = StripChart(conn = self.app.conn)
 
         Clock.schedule_interval(self.update_chart, StripChart.SAMPLE_RATE) # Update Plot Every 100ms
         Clock.schedule_interval(self.update_camera, 1.0 / 25.0) # Increase for Higher Update Rate (CPU permitting)
 
-        self.cam_layout = BoxLayout(orientation = "vertical")
+        self.cam_layout = BoxLayout(orientation = "vertical", spacing = 1, padding = (1, 1))
         self.cam_layout.add_widget(
-            Label(text = "Pi-Camera", size_hint_y = None, height = 30)
+            Label(text = "Pi-Camera", padding = (1, 1), size_hint = (1, 0.05))
         )
         self.cam_layout.add_widget(self.cam_feed)
 
-        self.top_layout = GridLayout(cols = 2, spacing = self.spacing, padding = self.padding)
-        self.top_layout.add_widget(Widget()) # Top Left Cell: Empty for Now
+        self.top_layout = GridLayout(cols = 2)
+        self.top_layout.add_widget(Widget())
         self.top_layout.add_widget(self.cam_layout)
 
-        self.fig_canvas = FigureCanvasKivyAgg(self.strip_chart.fig)
+        self.fig_canvas = FigureCanvasKivyAgg(self.strip_chart.fig, size_hint = (1, 1))
 
-        self.pg_layout = GridLayout(rows = 2, spacing = self.spacing, padding = self.padding)
+        self.pg_layout = GridLayout(
+            rows = 2,
+            spacing = 5,
+            size_hint = (1, 1)
+        )
         self.pg_layout.add_widget(self.top_layout)
+        # self.pg_layout.add_widget(self.cam_layout)
         self.pg_layout.add_widget(self.fig_canvas)
 
         self.add_widget(self.pg_layout)

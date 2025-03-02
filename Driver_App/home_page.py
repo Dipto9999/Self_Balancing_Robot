@@ -254,6 +254,7 @@ class TestApp(App):
         # Configure Window
         Window.size = (1000, 800)
         Window.resizable = False
+
         self.title = "Arduino Bluetooth Driver"
         self.home_page = HomePageLayout(app = self)
         return self.home_page
