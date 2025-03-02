@@ -2,23 +2,27 @@ import threading as td
 import queue
 
 import time
-from arduinoSerial import *
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import datetime as dt
+
+from IPython.display import display
 
 from kivy.app import App
 from kivy.core.window import Window
-
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.boxlayout import BoxLayout
+
+from kivy.uix.widget import Widget
 from kivy.uix.label import Label
 from kivy.clock import Clock
 
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
-import matplotlib.pyplot as plt
 
-import pandas as pd
-import numpy as np
-import datetime as dt
-
-from IPython.display import display
+from arduinoSerial import *
+from camera import PiCameraDisplay
 
 class StripChart:
     SAMPLE_RATE = 0.1 # 100ms
@@ -49,15 +53,15 @@ class StripChart:
             )
         )
 
-        self.ax.set_ylim(0, self.ylim) # Angle Expected to be Between 0° and 360°
-        self.ax.set_yticks(range(0, self.ylim + 1, 15)) # Set Y-Ticks to 15° Intervals
+        self.ax.set_ylim(0, self.ylim) # Angle Expected to be Between 0 Deg and 360 Deg
+        self.ax.set_yticks(range(0, self.ylim + 1, 15)) # Set Y-Ticks to 15 Deg Intervals
 
         self.ax.set_xlabel('Time (s)')
-        self.ax.set_ylabel('Angle (°)')
+        self.ax.set_ylabel('Angle (Deg)')
 
-        self.accelerometer_line, = self.ax.plot([], [], linestyle = 'dashed', lw = 1.5, label = 'Accelerometer Angle (°)', color = 'lightblue')
-        self.gyroscope_line, = self.ax.plot([], [], linestyle = 'dashed', lw = 1.5, label = 'Gyroscope Angle (°)', color = 'tomato')
-        self.complementary_line, = self.ax.plot([], [], lw = 1.5, label = 'Complementary Angle (°)', color = 'purple')
+        self.accelerometer_line, = self.ax.plot([], [], linestyle = 'dashed', lw = 1.5, label = 'Accelerometer Angle (Deg)', color = 'lightblue')
+        self.gyroscope_line, = self.ax.plot([], [], linestyle = 'dashed', lw = 1.5, label = 'Gyroscope Angle (Deg)', color = 'tomato')
+        self.complementary_line, = self.ax.plot([], [], lw = 1.5, label = 'Complementary Angle (Deg)', color = 'purple')
 
         self.fig.subplots_adjust(bottom = 0.2)
         self.ax.legend(
@@ -91,9 +95,9 @@ class StripChart:
                 gyroscope_angle: float = float(arduinoStream[1])
                 complementary_angle = float(arduinoStream[2])
 
-                # print(f"Accelerometer Angle: {accelerometer_angle}°")
-                # print(f"Gyroscope Angle: {gyroscope_angle}°")
-                # print(f"Complementary Angle: {complementary_angle}°")
+                # print(f"Accelerometer Angle: {accelerometer_angle} Deg")
+                # print(f"Gyroscope Angle: {gyroscope_angle} Deg")
+                # print(f"Complementary Angle: {complementary_angle} Deg")
 
                 # Append Data
                 if len(self.sample_data) > 0:
@@ -202,9 +206,9 @@ class StripChart:
         """Save Data to CSV File."""
         data_df = pd.DataFrame({
             'Sample' : self.sample_data,
-            'Accelerometer Angle (°)' : self.accelerometer_data,
-            'Gyroscope Angle (°)' : self.gyroscope_data,
-            'Complementary Angle (°)' : self.complementary_data
+            'Accelerometer Angle (Deg)' : self.accelerometer_data,
+            'Gyroscope Angle (Deg)' : self.gyroscope_data,
+            'Complementary Angle (Deg)' : self.complementary_data
         })
 
         file_path = f"Angles/LogBook/{fig_name}.csv"
@@ -218,26 +222,43 @@ class DashboardPageLayout(GridLayout):
         super().__init__(**kwargs)
         self.app = app
 
-        self.cols = 1
         self.spacing = 10
         self.padding = 10
 
+        self.cam_feed = PiCameraDisplay()
         self.strip_chart = StripChart(conn = self.app.conn)
-        self.canvas_widget = FigureCanvasKivyAgg(self.strip_chart.fig)
-        self.add_widget(self.canvas_widget)
 
         Clock.schedule_interval(self.update_chart, StripChart.SAMPLE_RATE) # Update Plot Every 100ms
+        Clock.schedule_interval(self.update_camera, 1.0 / 25.0) # Increase for Higher Update Rate (CPU permitting)
+
+        self.cam_layout = BoxLayout(orientation = "vertical")
+        self.cam_layout.add_widget(
+            Label(text = "Pi-Camera", size_hint_y = None, height = 30)
+        )
+        self.cam_layout.add_widget(self.cam_feed)
+
+        self.top_layout = GridLayout(cols = 2, spacing = self.spacing, padding = self.padding)
+        self.top_layout.add_widget(Widget()) # Top Left Cell: Empty for Now
+        self.top_layout.add_widget(self.cam_layout)
+
+        self.fig_canvas = FigureCanvasKivyAgg(self.strip_chart.fig)
+
+        self.pg_layout = GridLayout(rows = 2, spacing = self.spacing, padding = self.padding)
+        self.pg_layout.add_widget(self.top_layout)
+        self.pg_layout.add_widget(self.fig_canvas)
+
+        self.add_widget(self.pg_layout)
 
     def update_chart(self, dt):
         """Update Strip Chart."""
         self.strip_chart.update() # Update Strip Chart
-        self.canvas_widget.draw_idle() # Update Canvas
+        self.fig_canvas.draw_idle() # Update Canvas
+
+    def update_camera(self, dt):
+        self.cam_feed.update()
 
 class TestApp(App):
     def build(self):
-        # self.async_loop = asyncio.new_event_loop() # Create Asyncio Event Loop
-        # td.Thread(target = self._start_async_loop, daemon = True).start() # Start Event Loop in Separate Thread
-
         # Serial Connection
         try:
             self.conn = ArduinoSerial(port = 'COM3', baudrate = 9600)

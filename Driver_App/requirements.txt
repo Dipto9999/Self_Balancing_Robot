@@ -1,7 +1,9 @@
 bleak==0.22.3
 distlib==0.3.9
 docutils==0.21.2
-pillow==10.4.0
+pillow==11.1.0
+picamera2==0.3.25
+simplejpeg==1.8.2
 Kivy==2.3.1
 Kivy-Garden==0.1.5
 kivy_garden.matplotlib==0.1.1.dev0
@@ -9,7 +11,7 @@ matplotlib==3.9.2
 matplotlib-inline==0.1.7
 scipy==1.15.1
 seaborn==0.13.2
-numpy==2.1.2
+numpy==2.2.3
 ipython==8.28.0
 pandas==2.2.3
 pandas-datareader==0.10.0

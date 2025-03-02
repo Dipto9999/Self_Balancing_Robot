@@ -1,6 +1,9 @@
 import asyncio
 import threading as td
 
+from bleak import BleakScanner, BleakClient
+from bleak.exc import BleakError
+
 from kivy.app import App
 from kivy.core.window import Window
 
@@ -16,9 +19,6 @@ from kivy.uix.widget import Widget
 from kivy.clock import Clock
 
 from arduinoSerial import *
-
-from bleak import BleakScanner, BleakClient
-from bleak.exc import BleakError
 
 # Define UUIDs for  BLE Service and Characteristic
 SERVICE_UUID = "00000000-5EC4-4083-81CD-A10B8D5CF6EC"

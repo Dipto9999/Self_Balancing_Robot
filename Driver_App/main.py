@@ -1,16 +1,14 @@
 import asyncio
 import threading as td
+import datetime as dt
 
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
 
 from arduinoSerial import *
-
 from home_page import HomePageLayout
 from dashboard_page import DashboardPageLayout
-
-import datetime as dt
 
 class AppLayout(TabbedPanel):
     def __init__(self, app, **kwargs):
