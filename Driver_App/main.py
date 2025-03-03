@@ -1,5 +1,10 @@
 import asyncio
 import threading as td
+
+import os
+import subprocess
+import time
+
 import datetime as dt
 
 from kivy.app import App
@@ -46,6 +51,8 @@ class DriverApp(App):
         self.home_page = HomePageLayout(app = self)
         self.dashboard_page = DashboardPageLayout(app = self)
 
+        self.video_name = ""
+
         return AppLayout(app = self)
 
     def on_stop(self):
@@ -56,12 +63,47 @@ class DriverApp(App):
             fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
             self.dashboard_page.strip_chart.save_logs(fig_name)
             self.dashboard_page.strip_chart.save_fig(fig_name)
-        self.dashboard_page.cam_feed.stop_recording()
+        self.video_name = self.dashboard_page.cam_feed.stop()
 
     def _start_async_loop(self):
         """Start Asyncio Event Loop."""
         asyncio.set_event_loop(self.async_loop)
         self.async_loop.run_forever()
 
+    def convert_video(self):
+        if self.video_name == "":
+            return
+
+        input_file = f"{self.video_name}.h264"
+        video_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Videos")
+        input_file = os.path.join(video_dir, input_file)
+
+        # Output File Paths
+        mp4_file = os.path.join(video_dir, f"{self.video_name}.mp4")
+        temp_file = os.path.join(video_dir, "converted.mp4")
+
+        # Flip Video Vertically + Horizontally and Copy Audio
+        command = [
+            "ffmpeg", # Command
+            "-i", input_file, # Input File
+            "-vf", "vflip,hflip", # Vertical and Horizontal Flip
+            "-c:a", "copy", # Copy Audio
+            temp_file
+        ]
+
+        try:
+            result = subprocess.run(command, check = True, capture_output = True, text = True) # Run Command
+            print("ffmpeg Output:", result.stdout)
+            os.replace(temp_file, mp4_file)  # Replace the Temporary File with the MP4 File
+            # os.remove(input_file) # Remove the original H264 File
+            print(f"Conversion Successful. Video Saved as {mp4_file}")
+        except subprocess.CalledProcessError as e:
+            print("ffmpeg Conversion Failed:", e)
+        except OSError as e:
+            print("File Operation Failed:", e)
+
 if __name__ == "__main__":
-    DriverApp().run()
+    app = DriverApp()
+    app.run()
+
+    td.Thread(target = app.convert_video, daemon = False).start()

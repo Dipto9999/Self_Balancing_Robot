@@ -7,7 +7,6 @@ from picamera2 import Picamera2
 from picamera2.encoders import H264Encoder
 from libcamera import Transform
 
-import subprocess
 import os
 
 import datetime as dt
@@ -45,39 +44,6 @@ class CameraDisplay(Image):
     def stop_recording(self):
         if self.filename != "":
             self.camera.stop_recording()
-            self.convert_video(self.filename)
-
-    def convert_video(self, filename):
-        if not self.video:
-            return
-
-        input_file = f"{filename}.h264"
-        video_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Videos")
-        input_file = os.path.join(video_dir, input_file)
-
-        # Output File Paths
-        mp4_file = os.path.join(video_dir, f"{filename}.mp4")
-        temp_file = os.path.join(video_dir, "converted.mp4")
-
-        # Flip Video Vertically + Horizontally and Copy Audio
-        command = [
-            "ffmpeg", # Command
-            "-i", input_file, # Input File
-            "-vf", "vflip,hflip", # Vertical and Horizontal Flip
-            "-c:a", "copy", # Copy Audio
-            temp_file
-        ]
-
-        try:
-            result = subprocess.run(command, check = True, capture_output = True, text = True) # Run Command
-            print("ffmpeg Output:", result.stdout)
-            os.replace(temp_file, mp4_file)  # Replace the Temporary File with the MP4 File
-            # os.remove(input_file) # Remove the original H264 File
-            print(f"Conversion Successful. Video Saved as {mp4_file}")
-        except subprocess.CalledProcessError as e:
-            print("ffmpeg Conversion Failed:", e)
-        except OSError as e:
-            print("File Operation Failed:", e)
 
     def update(self):
         frame = self.camera.capture_array()
@@ -97,6 +63,8 @@ class CameraDisplay(Image):
         """Close Camera on Exit."""
         self.stop_recording()
         self.camera.close()
+
+        return self.filename
 
 class TestApp(App):
     def build(self):
