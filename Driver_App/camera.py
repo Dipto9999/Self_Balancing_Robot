@@ -27,13 +27,15 @@ class CameraDisplay(Image):
         )
         self.camera.configure(self.config)
         self.camera.start()
-        self.camera.start_recording(f"Camera_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}.h264")
+        self.start_recording(f"Logbook/Camera_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}.h264")
 
     def start_recording(self, filename):
-        self.camera.start_recording(filename)
+        self.output_file = open(filename, "wb")
+        self.camera.start_recording(self.output_file)
 
     def stop_recording(self):
         self.camera.stop_recording()
+        self.output_file.close()
 
     def update(self):
         frame = self.camera.capture_array()
