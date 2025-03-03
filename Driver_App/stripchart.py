@@ -1,14 +1,15 @@
 import threading as td
 import queue
 
+import os
+import serial
+
 import time
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
 from IPython.display import display
-
-import serial
 
 class StripChart:
     SAMPLE_RATE = 0.1 # 100ms
@@ -184,11 +185,15 @@ class StripChart:
 
     def save_fig(self, fig_name) :
         """Save Figure to File."""
-        file_path = f"Angles/Figures/{fig_name}.jpg"
+        file_path = os.path.join(
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "Figures"),
+            f"{fig_name}.jpg"
+        )
+
         self.fig.savefig(file_path, format = 'jpg', dpi = 800)
         print(f"Figure Saved to {file_path}")
 
-    def save_logs(self, fig_name):
+    def save_logs(self, file_name):
         """Save Data to CSV File."""
         data_df = pd.DataFrame({
             'Sample' : self.sample_data,
@@ -197,7 +202,11 @@ class StripChart:
             'Complementary Angle (Deg)' : self.complementary_data
         })
 
-        file_path = f"Angles/LogBook/{fig_name}.csv"
+        file_path = os.path.join(
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "Logbook"),
+            f"{file_name}.csv"
+        )
+
         data_df.to_csv(file_path, index = False)
 
         print(f"Data Exported to {file_path}\n\nData Preview:\n")

@@ -56,7 +56,7 @@ class DriverApp(App):
             fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
             self.dashboard_page.strip_chart.save_logs(fig_name)
             self.dashboard_page.strip_chart.save_fig(fig_name)
-            self.dashboard_page.cam_feed.convert_video()
+            self.dashboard_page.cam_feed.stop_recording()
 
     def _start_async_loop(self):
         """Start Asyncio Event Loop."""

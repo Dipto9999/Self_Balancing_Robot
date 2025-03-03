@@ -17,6 +17,7 @@ class CameraDisplay(Image):
     def __init__(self, **kwargs):
         super().__init__(size_hint = (1, 1), allow_stretch = True, **kwargs)
 
+        self.filename = ""
         self.camera = Picamera2()
 
         # Force RGB888 Output
@@ -31,29 +32,31 @@ class CameraDisplay(Image):
         )
         self.camera.configure(self.config)
         self.camera.start()
+        self.start_recording()
 
-        self.recording_path = f"Logbook/Camera_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
-        self.video = False
-        self.start_recording(f"{self.recording_path}.h264")
+    def start_recording(self):
+        self.filename = f"Recording_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
 
-    def start_recording(self, filename):
-        self.camera.start_recording(H264Encoder(bitrate = 10000000), filename)
+        video_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Videos")
+        input_file = os.path.join(video_dir, f"{self.filename}.h264")
+
+        self.camera.start_recording(H264Encoder(bitrate = 10000000), input_file)
 
     def stop_recording(self):
         self.camera.stop_recording()
-        self.video = True
+        self.convert_video(self.filename)
 
-    def convert_video(self):
+    def convert_video(self, filename):
         if not self.video:
             return
 
-        input_file = f"{self.recording_path}.h264"
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        input_file = os.path.join(base_dir, input_file)
+        input_file = f"{filename}.h264"
+        video_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Videos")
+        input_file = os.path.join(video_dir, input_file)
 
         # Output File Paths
-        mp4_file = os.path.join(base_dir, self.recording_path + ".mp4")
-        temp_file = os.path.join(base_dir, "converted.mp4")
+        mp4_file = os.path.join(video_dir, f"{filename}.mp4")
+        temp_file = os.path.join(video_dir, "converted.mp4")
 
         # Flip Video Vertically + Horizontally and Copy Audio
         command = [
@@ -68,7 +71,7 @@ class CameraDisplay(Image):
             result = subprocess.run(command, check = True, capture_output = True, text = True) # Run Command
             print("ffmpeg Output:", result.stdout)
             os.replace(temp_file, mp4_file)  # Replace the Temporary File with the MP4 File
-            os.remove(input_file) # Remove the original H264 File
+            # os.remove(input_file) # Remove the original H264 File
             print(f"Conversion Successful. Video Saved as {mp4_file}")
         except subprocess.CalledProcessError as e:
             print("ffmpeg Conversion Failed:", e)
