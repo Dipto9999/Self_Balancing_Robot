@@ -43,8 +43,9 @@ class CameraDisplay(Image):
         self.camera.start_recording(H264Encoder(bitrate = 10000000), input_file)
 
     def stop_recording(self):
-        self.camera.stop_recording()
-        self.convert_video(self.filename)
+        if self.filename != "":
+            self.camera.stop_recording()
+            self.convert_video(self.filename)
 
     def convert_video(self, filename):
         if not self.video:
