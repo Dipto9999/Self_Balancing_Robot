@@ -2,6 +2,7 @@ import asyncio
 import threading as td
 
 import os
+import shutil
 import subprocess
 import time
 
@@ -81,8 +82,11 @@ class DriverApp(App):
         input_file = os.path.join(video_dir, input_file)
 
         # Output File Paths
+        temp_file = os.path.join(video_dir, "temp.h264")
+        shutil.copy2(input_file, temp_file)
+        os.remove(input_file)
+
         mp4_file = os.path.join(video_dir, f"{self.video_name}.mp4")
-        temp_file = os.path.join(video_dir, "converted.mp4")
 
         # Flip Video Vertically + Horizontally and Copy Audio
         command = [
@@ -90,16 +94,14 @@ class DriverApp(App):
             "-i", input_file, # Input File
             "-vf", "vflip,hflip", # Vertical and Horizontal Flip
             "-c:a", "copy", # Copy Audio
-            temp_file
+            mp4_file
         ]
 
         try:
-            DETACHED_PROCESS = 0x00000008
-            CREATE_NEW_PROCESS_GROUP = 0x00000200
             subprocess.Popen(
                 command,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
+                stdout = subprocess.DEVNULL,
+                stderr = subprocess.DEVNULL,
                 preexec_fn = os.setsid  # Detach from Parent Process
             )
             print("Detached ffmpeg process started.")
