@@ -33,6 +33,7 @@ class CameraDisplay(Image):
         self.camera.start()
 
         self.recording_path = f"Logbook/Camera_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        self.video = False
         self.start_recording(f"{self.recording_path}.h264")
 
     def start_recording(self, filename):
@@ -40,8 +41,13 @@ class CameraDisplay(Image):
 
     def stop_recording(self):
         self.camera.stop_recording()
+        self.video = True
 
-    def convert_video(self, input_file):
+    def convert_video(self):
+        if not self.video:
+            return
+
+        input_file = f"{self.recording_path}.h264"
         base_dir = os.path.dirname(os.path.abspath(__file__))
         input_file = os.path.join(base_dir, input_file)
 
@@ -87,7 +93,6 @@ class CameraDisplay(Image):
         """Close Camera on Exit."""
         self.stop_recording()
         self.camera.close()
-        Clock.schedule_once(lambda dt: self.convert_video(f"{self.recording_path}.h264"), 0.5) # Convert Video
 
 class TestApp(App):
     def build(self):
