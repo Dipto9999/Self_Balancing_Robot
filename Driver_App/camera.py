@@ -4,6 +4,7 @@ from kivy.clock import Clock
 from kivy.graphics.texture import Texture
 
 from picamera2 import Picamera2
+from picamera2.encoders import H264Encoder
 from libcamera import Transform
 
 import datetime as dt
@@ -30,12 +31,10 @@ class CameraDisplay(Image):
         self.start_recording(f"Logbook/Camera_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}.h264")
 
     def start_recording(self, filename):
-        self.output_file = open(filename, "wb")
-        self.camera.start_recording(self.output_file)
+        self.camera.start_recording(H264Encoder(bitrate = 10000000), filename)
 
     def stop_recording(self):
         self.camera.stop_recording()
-        self.output_file.close()
 
     def update(self):
         frame = self.camera.capture_array()
@@ -53,7 +52,7 @@ class CameraDisplay(Image):
 
     def stop(self):
         """Close Camera on Exit."""
-        self.camera.stop_recording()
+        self.stop_recording()
         self.camera.close()
 
 class TestApp(App):
