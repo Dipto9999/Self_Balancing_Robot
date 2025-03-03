@@ -3,12 +3,12 @@ import subprocess
 
 def convert_video(filename):
     input_file = f"{filename}.h264"
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    input_file = os.path.join(base_dir, input_file)
+    logbook_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Logbook")
+    input_file = os.path.join(logbook_dir, input_file)
 
     # Output File Paths
-    mp4_file = os.path.join(base_dir, filename + ".mp4")
-    temp_file = os.path.join(base_dir, "converted.mp4")
+    mp4_file = os.path.join(logbook_dir, filename + ".mp4")
+    temp_file = os.path.join(logbook_dir, "converted.mp4")
 
     # Flip Video Vertically + Horizontally and Copy Audio
     command = [
