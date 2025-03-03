@@ -25,11 +25,11 @@ def convert_video(filename):
         result = subprocess.run(command, check = True, capture_output = True, text = True) # Run Command
         print("ffmpeg Output:", result.stdout)
         os.replace(temp_file, mp4_file)  # Replace the Temporary File with the MP4 File
-        os.remove(input_file) # Remove the original H264 File
+        # os.remove(input_file) # Remove the original H264 File
         print(f"Conversion Successful. Video Saved as {mp4_file}")
     except subprocess.CalledProcessError as e:
         print("ffmpeg Conversion Failed:", e)
     except OSError as e:
         print("File Operation Failed:", e)
 
-convert_video("Camera_Data_20250303_122913")
+convert_video("Camera_Data_20250303_125224")
