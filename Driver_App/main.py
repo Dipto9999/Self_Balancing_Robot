@@ -1,4 +1,5 @@
 import asyncio
+import multiprocessing as mp
 import threading as td
 
 import os
@@ -65,6 +66,8 @@ class DriverApp(App):
             self.dashboard_page.strip_chart.save_fig(fig_name)
         self.video_name = self.dashboard_page.cam_feed.stop()
 
+        mp.Process(target = self.convert_video, daemon = False).start()
+
     def _start_async_loop(self):
         """Start Asyncio Event Loop."""
         asyncio.set_event_loop(self.async_loop)
@@ -105,5 +108,3 @@ class DriverApp(App):
 if __name__ == "__main__":
     app = DriverApp()
     app.run()
-
-    td.Thread(target = app.convert_video, daemon = False).start()
