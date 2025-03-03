@@ -8,14 +8,14 @@ from libcamera import Transform
 
 class PiCameraDisplay(Image):
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(size_hint = (1, 1), allow_stretch = True, **kwargs)
 
         self.camera = Picamera2()
 
         # Force RGB888 Output
         config = self.camera.create_video_configuration(
             main = {
-                "size": (640, 480),
+                # "size": (640, 480),
                 # "size": (1280, 720),
                 "format": "RGB888"
             },
