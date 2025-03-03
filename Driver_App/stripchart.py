@@ -43,6 +43,8 @@ class StripChart:
         self.ax.set_ylim(0, self.ylim) # Angle Expected to be Between 0 Deg and 360 Deg
         self.ax.set_yticks(range(0, self.ylim + 1, 15)) # Set Y-Ticks to 15 Deg Intervals
 
+        self.ax.tick_params(axis = 'both', labelsize = 8)
+
         self.ax.set_xlabel('Time (s)')
         self.ax.set_ylabel('Angle (Deg)')
 
