@@ -6,22 +6,24 @@ from kivy.graphics.texture import Texture
 from picamera2 import Picamera2
 from libcamera import Transform
 
-class PiCameraDisplay(Image):
+class CameraDisplay(Image):
+    SAMPLE_RATE = 1.0 / 25.0 # 25 FPS. Increase for Higher Update Rate (CPU permitting)
     def __init__(self, **kwargs):
         super().__init__(size_hint = (1, 1), allow_stretch = True, **kwargs)
 
         self.camera = Picamera2()
 
         # Force RGB888 Output
-        config = self.camera.create_video_configuration(
+        self.config = self.camera.create_video_configuration(
             main = {
-                # "size": (640, 480),
-                # "size": (1280, 720),
+                "size": (640, 480), # Default Size
+                # "size": (1280, 720), # HD
+                # "size": (1920, 1080), # Full HD
                 "format": "RGB888"
             },
             transform = Transform(hflip = True, vflip = True)
         )
-        self.camera.configure(config)
+        self.camera.configure(self.config)
         self.camera.start()
 
     def update(self):
@@ -42,11 +44,11 @@ class PiCameraDisplay(Image):
         """Close Camera on Exit."""
         self.camera.close()
 
-class CameraApp(App):
+class TestApp(App):
     def build(self):
-        self.cam_feed = PiCameraDisplay()
+        self.cam_feed = CameraDisplay()
 
-        Clock.schedule_interval(self.update_camera, 1.0 / 25.0)
+        Clock.schedule_interval(self.update_camera, CameraDisplay.SAMPLE_RATE)
         return self.cam_feed
 
     def update_camera(self, dt):
@@ -57,4 +59,4 @@ class CameraApp(App):
         super().on_stop()
 
 if __name__ == "__main__":
-    CameraApp().run()
+    TestApp().run()

@@ -23,7 +23,7 @@ from kivy.clock import Clock
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
 from arduinoSerial import *
-from camera import PiCameraDisplay
+from camera import CameraDisplay
 
 class StripChart:
     SAMPLE_RATE = 0.1 # 100ms
@@ -223,12 +223,12 @@ class DashboardPageLayout(GridLayout):
         super().__init__(rows = 1, size_hint = (1, 1), **kwargs)
         self.app = app
 
-        self.cam_feed = PiCameraDisplay()
         # self.cam_feed = Image(size_hint = (1, 1), allow_stretch = True)
+        self.cam_feed = CameraDisplay()
         self.strip_chart = StripChart(conn = self.app.conn)
 
-        Clock.schedule_interval(self.update_chart, StripChart.SAMPLE_RATE) # Update Plot Every 100ms
-        Clock.schedule_interval(self.update_camera, 1.0 / 25.0) # Increase for Higher Update Rate (CPU permitting)
+        Clock.schedule_interval(self.update_chart, StripChart.SAMPLE_RATE) # Update Plot
+        Clock.schedule_interval(self.update_camera, CameraDisplay.SAMPLE_RATE) # Update Camera
 
         self.cam_layout = BoxLayout(orientation = "vertical", spacing = 1, padding = (1, 1))
         self.cam_layout.add_widget(
