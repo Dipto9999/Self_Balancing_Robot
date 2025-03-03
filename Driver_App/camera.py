@@ -40,11 +40,14 @@ class CameraDisplay(Image):
 
     def stop_recording(self):
         self.camera.stop_recording()
-        self.convert_video(f"{self.recording_path}.h264")
 
     def convert_video(self, input_file):
-        mp4_file = self.recording_path + ".mp4"
-        temp_file = "converted.mp4"
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        input_file = os.path.join(base_dir, input_file)
+
+        # Output File Paths
+        mp4_file = os.path.join(base_dir, self.recording_path + ".mp4")
+        temp_file = os.path.join(base_dir, "converted.mp4")
 
         # Flip Video Vertically + Horizontally and Copy Audio
         command = [
@@ -56,7 +59,8 @@ class CameraDisplay(Image):
         ]
 
         try:
-            subprocess.run(command, check = True) # Run Command
+            result = subprocess.run(command, check = True, capture_output = True, text = True) # Run Command
+            print("ffmpeg Output:", result.stdout)
             os.replace(temp_file, mp4_file)  # Replace the Temporary File with the MP4 File
             os.remove(input_file) # Remove the original H264 File
             print(f"Conversion Successful. Video Saved as {mp4_file}")
@@ -83,6 +87,7 @@ class CameraDisplay(Image):
         """Close Camera on Exit."""
         self.stop_recording()
         self.camera.close()
+        Clock.schedule_once(lambda dt: self.convert_video(f"{self.recording_path}.h264"), 0.5) # Convert Video
 
 class TestApp(App):
     def build(self):
