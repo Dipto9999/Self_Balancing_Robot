@@ -98,10 +98,9 @@ class DriverApp(App):
             CREATE_NEW_PROCESS_GROUP = 0x00000200
             subprocess.Popen(
                 command,
-                stdout = subprocess.DEVNULL,
-                stderr = subprocess.DEVNULL,
-                # Use DETACHED_PROCESS and CREATE_NEW_PROCESS_GROUP Flags
-                creationflags = DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                preexec_fn = os.setsid  # Detach from Parent Process
             )
             print("Detached ffmpeg process started.")
         except Exception as e:
