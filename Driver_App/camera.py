@@ -7,6 +7,9 @@ from picamera2 import Picamera2
 from picamera2.encoders import H264Encoder
 from libcamera import Transform
 
+import subprocess
+import os
+
 import datetime as dt
 
 class CameraDisplay(Image):
@@ -28,13 +31,39 @@ class CameraDisplay(Image):
         )
         self.camera.configure(self.config)
         self.camera.start()
-        self.start_recording(f"Logbook/Camera_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}.h264")
+
+        self.recording_path = f"Logbook/Camera_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        self.start_recording(f"{self.recording_path}.h264")
 
     def start_recording(self, filename):
         self.camera.start_recording(H264Encoder(bitrate = 10000000), filename)
 
     def stop_recording(self):
         self.camera.stop_recording()
+        self.convert_video(f"{self.recording_path}.h264")
+
+    def convert_video(self, input_file):
+        mp4_file = self.recording_path + ".mp4"
+        temp_file = "converted.mp4"
+
+        # Flip Video Vertically + Horizontally and Copy Audio
+        command = [
+            "ffmpeg", # Command
+            "-i", input_file, # Input File
+            "-vf", "vflip,hflip", # Vertical and Horizontal Flip
+            "-c:a", "copy", # Copy Audio
+            temp_file
+        ]
+
+        try:
+            subprocess.run(command, check = True) # Run Command
+            os.replace(temp_file, mp4_file)  # Replace the Temporary File with the MP4 File
+            os.remove(input_file) # Remove the original H264 File
+            print(f"Conversion Successful. Video Saved as {mp4_file}")
+        except subprocess.CalledProcessError as e:
+            print("ffmpeg Conversion Failed:", e)
+        except OSError as e:
+            print("File Operation Failed:", e)
 
     def update(self):
         frame = self.camera.capture_array()
