@@ -1,6 +1,9 @@
 import asyncio
 import threading as td
 
+from bleak import BleakScanner, BleakClient
+from bleak.exc import BleakError
+
 from kivy.app import App
 from kivy.core.window import Window
 
@@ -16,9 +19,6 @@ from kivy.uix.widget import Widget
 from kivy.clock import Clock
 
 from arduinoSerial import *
-
-from bleak import BleakScanner, BleakClient
-from bleak.exc import BleakError
 
 # Define UUIDs for  BLE Service and Characteristic
 SERVICE_UUID = "00000000-5EC4-4083-81CD-A10B8D5CF6EC"
@@ -107,7 +107,7 @@ class HomePageLayout(BoxLayout):
 
         # Provide Command Attributes to Buttons
 
-        self.btn_up.command = "^" # 85 RPM = 25%
+        self.btn_up.command = "^" # 122 RPM = 25%
         self.btn_down.command = "v" # 143.5 RPM = 50%
         self.btn_left.command = "<" # 215 RPM = 75%
         self.btn_right.command = ">" # 289 RPM (Max) = 100%
@@ -254,6 +254,7 @@ class TestApp(App):
         # Configure Window
         Window.size = (1000, 800)
         Window.resizable = False
+
         self.title = "Arduino Bluetooth Driver"
         self.home_page = HomePageLayout(app = self)
         return self.home_page
