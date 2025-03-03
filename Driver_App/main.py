@@ -1,5 +1,4 @@
 import asyncio
-import multiprocessing as mp
 import threading as td
 
 import os
@@ -66,7 +65,7 @@ class DriverApp(App):
             self.dashboard_page.strip_chart.save_fig(fig_name)
         self.video_name = self.dashboard_page.cam_feed.stop()
 
-        mp.Process(target = self.convert_video, daemon = False).start()
+        self.convert_video()
 
     def _start_async_loop(self):
         """Start Asyncio Event Loop."""
@@ -95,15 +94,18 @@ class DriverApp(App):
         ]
 
         try:
-            result = subprocess.run(command, check = True, capture_output = True, text = True) # Run Command
-            print("ffmpeg Output:", result.stdout)
-            os.replace(temp_file, mp4_file)  # Replace the Temporary File with the MP4 File
-            # os.remove(input_file) # Remove the original H264 File
-            print(f"Conversion Successful. Video Saved as {mp4_file}")
-        except subprocess.CalledProcessError as e:
-            print("ffmpeg Conversion Failed:", e)
-        except OSError as e:
-            print("File Operation Failed:", e)
+            DETACHED_PROCESS = 0x00000008
+            CREATE_NEW_PROCESS_GROUP = 0x00000200
+            subprocess.Popen(
+                command,
+                stdout = subprocess.DEVNULL,
+                stderr = subprocess.DEVNULL,
+                # Use DETACHED_PROCESS and CREATE_NEW_PROCESS_GROUP Flags
+                creationflags = DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP
+            )
+            print("Detached ffmpeg process started.")
+        except Exception as e:
+            print("Error Starting Detached Conversion:", e)
 
 if __name__ == "__main__":
     app = DriverApp()
