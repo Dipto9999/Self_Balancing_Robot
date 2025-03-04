@@ -189,7 +189,7 @@ class HomePageLayout(BoxLayout):
 
             # Connect to Selected Device
             self.selected_device = selected[0] # Get Selected Device
-            self.client = BleakClient(address_or_ble_device = self.selected_device.address)
+            self.client = BleakClient(address_or_ble_device = self.selected_device.address, adapter = "hci0")
             try:
                 await self.client.connect()
                 if self.client.is_connected: # Connection Successful
