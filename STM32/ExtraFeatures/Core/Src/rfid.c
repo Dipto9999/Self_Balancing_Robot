@@ -68,7 +68,7 @@ void RFID_SoftReset(rfid* sensor) {
     RFID_WriteRegister(sensor, CommandReg, SoftReset);
     HAL_Delay(50);
 }
-/*
+
 uint8_t RFID_Request(rfid* sensor, uint8_t reqMode, uint8_t* tagType) {
     uint8_t status;
     uint8_t backData[2];
@@ -141,4 +141,4 @@ uint8_t RFID_Communicate(rfid* sensor, uint8_t command, uint8_t* sendData, uint8
     }
     return status;
 }
-*/
+

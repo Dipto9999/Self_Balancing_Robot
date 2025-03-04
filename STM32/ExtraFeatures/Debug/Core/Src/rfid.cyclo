@@ -1,5 +1,0 @@
-../Core/Src/rfid.c:3:6:RFID_Init	1
-../Core/Src/rfid.c:25:6:RFID_WriteRegister	1
-../Core/Src/rfid.c:31:6:RFID_ReadRegister	4
-../Core/Src/rfid.c:51:6:RFID_AntennaOn	2
-../Core/Src/rfid.c:67:6:RFID_SoftReset	1
