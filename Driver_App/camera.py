@@ -4,13 +4,19 @@ from kivy.clock import Clock
 from kivy.graphics.texture import Texture
 
 from picamera2 import Picamera2
+from picamera2.encoders import H264Encoder
 from libcamera import Transform
+
+import os
+
+import datetime as dt
 
 class CameraDisplay(Image):
     SAMPLE_RATE = 1.0 / 25.0 # 25 FPS. Increase for Higher Update Rate (CPU permitting)
     def __init__(self, **kwargs):
         super().__init__(size_hint = (1, 1), allow_stretch = True, **kwargs)
 
+        self.filename = ""
         self.camera = Picamera2()
 
         # Force RGB888 Output
@@ -25,6 +31,19 @@ class CameraDisplay(Image):
         )
         self.camera.configure(self.config)
         self.camera.start()
+        self.start_recording()
+
+    def start_recording(self):
+        self.filename = f"Recording_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
+
+        video_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Videos")
+        input_file = os.path.join(video_dir, f"{self.filename}.h264")
+
+        self.camera.start_recording(H264Encoder(bitrate = 10000000), input_file)
+
+    def stop_recording(self):
+        if self.filename != "":
+            self.camera.stop_recording()
 
     def update(self):
         frame = self.camera.capture_array()
@@ -42,7 +61,10 @@ class CameraDisplay(Image):
 
     def stop(self):
         """Close Camera on Exit."""
+        self.stop_recording()
         self.camera.close()
+
+        return self.filename
 
 class TestApp(App):
     def build(self):
