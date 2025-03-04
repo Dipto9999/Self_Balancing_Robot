@@ -77,21 +77,19 @@ class DriverApp(App):
         if self.video_name == "":
             return
 
-        input_file = f"{self.video_name}.h264"
         video_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Videos")
-        input_file = os.path.join(video_dir, input_file)
 
-        # Output File Paths
+        input_file = os.path.join(video_dir, f"{self.video_name}.h264")
         temp_file = os.path.join(video_dir, "temp.h264")
+        mp4_file = os.path.join(video_dir, f"{self.video_name}.mp4")
+
         shutil.copy2(input_file, temp_file)
         os.remove(input_file)
-
-        mp4_file = os.path.join(video_dir, f"{self.video_name}.mp4")
 
         # Flip Video Vertically + Horizontally and Copy Audio
         command = [
             "ffmpeg", # Command
-            "-i", input_file, # Input File
+            "-i", temp_file, # Input File
             "-vf", "vflip,hflip", # Vertical and Horizontal Flip
             "-c:a", "copy", # Copy Audio
             mp4_file
@@ -102,10 +100,9 @@ class DriverApp(App):
                 command,
                 stdout = subprocess.DEVNULL,
                 stderr = subprocess.DEVNULL,
-                preexec_fn = os.setsid  # Detach from Parent Process
+                start_new_session = True
             )
             print("Detached ffmpeg process started.")
-            time.sleep(5)
         except Exception as e:
             print("Error Starting Detached Conversion:", e)
 
