@@ -105,6 +105,7 @@ class DriverApp(App):
                 preexec_fn = os.setsid  # Detach from Parent Process
             )
             print("Detached ffmpeg process started.")
+            time.sleep(5)
         except Exception as e:
             print("Error Starting Detached Conversion:", e)
 
