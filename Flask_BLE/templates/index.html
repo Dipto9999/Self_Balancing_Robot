@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Driver App</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <h1>Driver App</h1>
+
+  <!-- Device Section: Scan, Device Dropdown, Connect, Disconnect, Status Label -->
+  <div class="device-section">
+    <button id="scanButton">Scan</button>
+    <select id="deviceSelect" disabled>
+      <option value="">Select Device</option>
+    </select>
+    <button id="connectButton" disabled>Connect</button>
+    <button id="disconnectButton" disabled>Disconnect</button>
+    <span id="statusLabel">No BLE Devices Found</span>
+  </div>
+
+  <!-- Grid Container for Arrow Buttons -->
+  <div class="grid-container">
+    <div></div>
+    <div><button class="arrow" id="btnUp" disabled>↑</button></div>
+    <div></div>
+    <div><button class="arrow" id="btnLeft" disabled>←</button></div>
+    <div></div>
+    <div><button class="arrow" id="btnRight" disabled>→</button></div>
+    <div></div>
+    <div><button class="arrow" id="btnDown" disabled>↓</button></div>
+    <div></div>
+  </div>
+
+  <!-- JavaScript to handle all user interactions -->
+  <script>
+    const scanButton = document.getElementById('scanButton');
+    const deviceSelect = document.getElementById('deviceSelect');
+    const connectButton = document.getElementById('connectButton');
+    const disconnectButton = document.getElementById('disconnectButton');
+    const statusLabel = document.getElementById('statusLabel');
+
+    const btnUp = document.getElementById('btnUp');
+    const btnDown = document.getElementById('btnDown');
+    const btnLeft = document.getElementById('btnLeft');
+    const btnRight = document.getElementById('btnRight');
+
+    // 1) SCAN
+    scanButton.addEventListener('click', () => {
+      statusLabel.textContent = "Scanning...";
+      fetch('/scan')
+        .then(res => res.json())
+        .then(devices => {
+          if (devices.length > 0) {
+            statusLabel.textContent = `Found ${devices.length} Devices.`;
+            deviceSelect.innerHTML = '<option value="">Select Device</option>';
+            devices.forEach(dev => {
+              const option = document.createElement('option');
+              option.value = dev.address;
+              option.textContent = `${dev.name} (${dev.address})`;
+              deviceSelect.appendChild(option);
+            });
+            deviceSelect.disabled = false;
+            connectButton.disabled = false;
+          } else {
+            statusLabel.textContent = "No BLE Devices Found.";
+            deviceSelect.disabled = true;
+            connectButton.disabled = true;
+          }
+        })
+        .catch(err => {
+          console.error('Scan error:', err);
+          statusLabel.textContent = "Scan Error.";
+        });
+    });
+
+    // 2) CONNECT
+    connectButton.addEventListener('click', () => {
+      const address = deviceSelect.value;
+      if (!address) {
+        statusLabel.textContent = "No device selected.";
+        return;
+      }
+      fetch('/connect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'connected') {
+          statusLabel.textContent = "Connected!";
+          connectButton.disabled = true;
+          disconnectButton.disabled = false;
+
+          // Enable arrow buttons
+          btnUp.disabled = false;
+          btnDown.disabled = false;
+          btnLeft.disabled = false;
+          btnRight.disabled = false;
+        } else {
+          statusLabel.textContent = "Connection Failed.";
+        }
+      })
+      .catch(err => {
+        console.error('Connect error:', err);
+        statusLabel.textContent = "Connect Error.";
+      });
+    });
+
+    // 3) DISCONNECT
+    disconnectButton.addEventListener('click', () => {
+      fetch('/disconnect')
+        .then(res => res.json())
+        .then(data => {
+          statusLabel.textContent = data.status;
+          connectButton.disabled = false;
+          disconnectButton.disabled = true;
+
+          // Disable arrow buttons
+          btnUp.disabled = true;
+          btnDown.disabled = true;
+          btnLeft.disabled = true;
+          btnRight.disabled = true;
+        })
+        .catch(err => {
+          console.error('Disconnect error:', err);
+          statusLabel.textContent = "Disconnect Error.";
+        });
+    });
+
+    // 4) SEND MOVEMENT COMMAND
+    function sendCommand(cmd) {
+      fetch('/move', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ command: cmd })
+      })
+      .then(res => res.json())
+      .then(data => {
+        // Show the result in the status label
+        statusLabel.textContent = data.message || data.error;
+      })
+      .catch(err => {
+        console.error('Error sending command:', err);
+        statusLabel.textContent = "Command Error.";
+      });
+    }
+
+    // Bind arrow buttons
+    btnUp.addEventListener('click', () => sendCommand('^'));
+    btnDown.addEventListener('click', () => sendCommand('v'));
+    btnLeft.addEventListener('click', () => sendCommand('<'));
+    btnRight.addEventListener('click', () => sendCommand('>'));
+  </script>
+</body>
+</html>
