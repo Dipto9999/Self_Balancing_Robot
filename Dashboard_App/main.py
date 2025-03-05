@@ -81,7 +81,7 @@ class Dashboard(GridLayout):
     def toggle_record(self, instance):
         if self.cam_feed.filename != "": # Recording
             self.cam_feed.stop_recording()
-            self.cam_feed.convert_video()
+            self.cam_feed.convert_video(detached = False)
             self.record_button.text = "Start Recording"
             self.record_button.background_color = "white"
         else: # Not Recording

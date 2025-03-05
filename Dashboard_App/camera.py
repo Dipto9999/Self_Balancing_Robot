@@ -66,10 +66,15 @@ class CameraDisplay(Image):
         snapshot_path = os.path.join(self.snapshot_dir, snapshot_name)
 
         image = PILImage.fromarray(frame) # Convert to PIL Image
+        image.transpose(
+            PILImage.FLIP_TOP_BOTTOM # Flip Image Vertically
+        ).transpose(
+            PILImage.FLIP_LEFT_RIGHT # Flip Image Horizontally
+        )
         image.save(snapshot_path) # Save Image
         print(f"Snapshot saved to {snapshot_path}")
 
-    def convert_video(self):
+    def convert_video(self, detached = True):
         if self.filename == "":
             return
 
@@ -90,13 +95,16 @@ class CameraDisplay(Image):
         ]
 
         try:
-            subprocess.Popen(
-                command,
-                stdout = subprocess.DEVNULL,
-                stderr = subprocess.DEVNULL,
-                start_new_session = True
-            )
-            print("Detached ffmpeg process started.")
+            if detached:
+                subprocess.Popen(
+                    command,
+                    stdout = subprocess.DEVNULL,
+                    stderr = subprocess.DEVNULL,
+                    start_new_session = True
+                )
+                print("Detached ffmpeg process started.")
+            else:
+                subprocess.run(command, check = True, capture_output = True, text = True)
         except Exception as e:
             print("Error Starting Detached Conversion:", e)
         finally:
@@ -123,4 +131,4 @@ class CameraDisplay(Image):
 
         self.stop_recording()
         self.camera.close()
-        self.convert_video()
+        self.convert_video(detached = True)
