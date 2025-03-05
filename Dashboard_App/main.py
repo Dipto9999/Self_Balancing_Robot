@@ -8,7 +8,7 @@ from kivy.core.window import Window
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 
-from kivy.uix.image import Image
+# from kivy.uix.image import Image
 from kivy.uix.widget import Widget
 from kivy.uix.label import Label
 from kivy.clock import Clock
@@ -16,7 +16,7 @@ from kivy.clock import Clock
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
 from arduinoSerial import *
-# from camera import CameraDisplay
+from camera import CameraDisplay
 from stripchart import StripChart
 
 class AppLayout(BoxLayout):
@@ -29,12 +29,12 @@ class Dashboard(GridLayout):
         super().__init__(rows = 1, size_hint = (1, 1), **kwargs)
         self.app = app
 
-        self.cam_feed = Image(size_hint = (1, 1), allow_stretch = True)
-        # self.cam_feed = CameraDisplay()
+        # self.cam_feed = Image(size_hint = (1, 1), allow_stretch = True)
+        self.cam_feed = CameraDisplay()
         self.strip_chart = StripChart(conn = self.app.conn)
 
         Clock.schedule_interval(self.update_chart, StripChart.SAMPLE_RATE) # Update Plot
-        # Clock.schedule_interval(self.update_camera, CameraDisplay.SAMPLE_RATE) # Update Camera
+        Clock.schedule_interval(self.update_camera, CameraDisplay.SAMPLE_RATE) # Update Camera
 
         self.cam_layout = BoxLayout(orientation = "vertical", spacing = 1, padding = (1, 1))
         self.cam_layout.add_widget(
