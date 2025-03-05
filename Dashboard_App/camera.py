@@ -1,15 +1,12 @@
+import os
+import datetime as dt
+
 from kivy.app import App
 from kivy.uix.image import Image
 from kivy.clock import Clock
 from kivy.graphics.texture import Texture
 
 from PIL import Image as PILImage
-
-import datetime as dt
-
-import os
-import shutil
-import subprocess
 
 from picamera2 import Picamera2
 from picamera2.encoders import H264Encoder
@@ -40,19 +37,21 @@ class CameraDisplay(Image):
             transform = Transform(hflip = True, vflip = True)
         )
         self.camera.configure(self.config)
-        self.camera.start()
         # self.start_recording()
 
     def start_recording(self):
         self.filename = f"Recording_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
         input_file = os.path.join(self.video_dir, f"{self.filename}.h264")
 
+        self.camera.start() # Start Camera
         self.camera.start_recording(H264Encoder(bitrate = 10000000), input_file)
 
     def stop_recording(self):
         self.camera.stop_recording()
 
     def take_snapshot(self):
+        self.camera.start()
+
         # Capture Current Frame
         frame = self.camera.capture_array()
         if frame is None or frame.size == 0:
@@ -66,49 +65,10 @@ class CameraDisplay(Image):
         snapshot_path = os.path.join(self.snapshot_dir, snapshot_name)
 
         image = PILImage.fromarray(frame) # Convert to PIL Image
-        image.transpose(
-            PILImage.FLIP_TOP_BOTTOM # Flip Image Vertically
-        ).transpose(
-            PILImage.FLIP_LEFT_RIGHT # Flip Image Horizontally
-        )
+        image = image.transpose(PILImage.FLIP_TOP_BOTTOM) # Flip Image Vertically
+        image = image.transpose(PILImage.FLIP_LEFT_RIGHT) # Flip Image Horizontally
         image.save(snapshot_path) # Save Image
-        print(f"Snapshot saved to {snapshot_path}")
-
-    def convert_video(self, detached = True):
-        if self.filename == "":
-            return
-
-        input_file = os.path.join(self.video_dir, f"{self.filename}.h264")
-        temp_file = os.path.join(self.video_dir, "to_convert.h264")
-        mp4_file = os.path.join(self.video_dir, f"{self.filename}.mp4")
-
-        shutil.copy2(input_file, temp_file)
-        os.remove(input_file)
-
-        # Flip Video Vertically + Horizontally and Copy Audio
-        command = [
-            "ffmpeg", # Command
-            "-i", temp_file, # Input File
-            "-vf", "vflip,hflip", # Vertical and Horizontal Flip
-            "-c:a", "copy", # Copy Audio
-            mp4_file
-        ]
-
-        try:
-            if detached:
-                subprocess.Popen(
-                    command,
-                    stdout = subprocess.DEVNULL,
-                    stderr = subprocess.DEVNULL,
-                    start_new_session = True
-                )
-                print("Detached ffmpeg process started.")
-            else:
-                subprocess.run(command, check = True, capture_output = True, text = True)
-        except Exception as e:
-            print("Error Starting Detached Conversion:", e)
-        finally:
-            self.filename = "" # Reset Filename
+        print(f"Snapshot Saved to {snapshot_path}")
 
     def update(self):
         frame = self.camera.capture_array()
@@ -131,4 +91,3 @@ class CameraDisplay(Image):
 
         self.stop_recording()
         self.camera.close()
-        self.convert_video(detached = True)

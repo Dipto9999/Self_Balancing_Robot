@@ -1,8 +1,8 @@
-import threading as td
-import queue
-
 import os
 import serial
+
+import threading as td
+import queue
 
 import time
 import pandas as pd
