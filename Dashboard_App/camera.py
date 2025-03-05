@@ -3,8 +3,9 @@ from kivy.uix.image import Image
 from kivy.clock import Clock
 from kivy.graphics.texture import Texture
 
+from PIL import Image as PILImage
+
 import datetime as dt
-import os
 
 import os
 import shutil
@@ -22,6 +23,12 @@ class CameraDisplay(Image):
         self.filename = ""
         self.camera = Picamera2()
 
+        self.snapshot_dir: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Snapshots")
+        self.video_dir: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Videos")
+
+        os.makedirs(self.snapshot_dir, exist_ok = True)
+        os.makedirs(self.video_dir, exist_ok = True)
+
         # Force RGB888 Output
         self.config = self.camera.create_video_configuration(
             main = {
@@ -34,28 +41,41 @@ class CameraDisplay(Image):
         )
         self.camera.configure(self.config)
         self.camera.start()
-        self.start_recording()
+        # self.start_recording()
 
     def start_recording(self):
         self.filename = f"Recording_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
-
-        video_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Videos")
-        input_file = os.path.join(video_dir, f"{self.filename}.h264")
+        input_file = os.path.join(self.video_dir, f"{self.filename}.h264")
 
         self.camera.start_recording(H264Encoder(bitrate = 10000000), input_file)
 
     def stop_recording(self):
         self.camera.stop_recording()
 
+    def take_snapshot(self):
+        # Capture Current Frame
+        frame = self.camera.capture_array()
+        if frame is None or frame.size == 0:
+            print("Failed to Capture Snapshot.")
+            return
+
+        # Swap Color Channels (BGR -> RGB)
+        frame = frame[..., ::-1]
+
+        snapshot_name = f"Snapshot_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg"
+        snapshot_path = os.path.join(self.snapshot_dir, snapshot_name)
+
+        image = PILImage.fromarray(frame) # Convert to PIL Image
+        image.save(snapshot_path) # Save Image
+        print(f"Snapshot saved to {snapshot_path}")
+
     def convert_video(self):
         if self.filename == "":
             return
 
-        video_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Videos")
-
-        input_file = os.path.join(video_dir, f"{self.filename}.h264")
-        temp_file = os.path.join(video_dir, "temp.h264")
-        mp4_file = os.path.join(video_dir, f"{self.filename}.mp4")
+        input_file = os.path.join(self.video_dir, f"{self.filename}.h264")
+        temp_file = os.path.join(self.video_dir, "to_convert.h264")
+        mp4_file = os.path.join(self.video_dir, f"{self.filename}.mp4")
 
         shutil.copy2(input_file, temp_file)
         os.remove(input_file)
@@ -79,6 +99,8 @@ class CameraDisplay(Image):
             print("Detached ffmpeg process started.")
         except Exception as e:
             print("Error Starting Detached Conversion:", e)
+        finally:
+            self.filename = "" # Reset Filename
 
     def update(self):
         frame = self.camera.capture_array()
@@ -102,20 +124,3 @@ class CameraDisplay(Image):
         self.stop_recording()
         self.camera.close()
         self.convert_video()
-
-class TestApp(App):
-    def build(self):
-        self.cam_feed = CameraDisplay()
-
-        Clock.schedule_interval(self.update_camera, CameraDisplay.SAMPLE_RATE)
-        return self.cam_feed
-
-    def update_camera(self, dt):
-        self.cam_feed.update()
-
-    def on_stop(self):
-        self.root.stop()
-        super().on_stop()
-
-if __name__ == "__main__":
-    TestApp().run()

@@ -8,8 +8,8 @@ from kivy.core.window import Window
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 
-# from kivy.uix.image import Image
-from kivy.uix.widget import Widget
+from kivy.uix.image import Image
+from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.clock import Clock
 
@@ -29,12 +29,26 @@ class Dashboard(GridLayout):
         super().__init__(rows = 1, size_hint = (1, 1), **kwargs)
         self.app = app
 
+        self.record_button = Button(
+            text = "Record",
+            size_hint = (0.25, 0.25),
+            pos_hint = {'center_y': 0.1},
+            background_color = "white"
+        )
+        self.snapshot_button = Button(
+            text = "Snapshot",
+            size_hint = (0.25, 0.25),
+            pos_hint = {'center_y': 0.1},
+            background_color = "white"
+        )
+
         # self.cam_feed = Image(size_hint = (1, 1), allow_stretch = True)
         self.cam_feed = CameraDisplay()
         self.strip_chart = StripChart(conn = self.app.conn)
 
-        Clock.schedule_interval(self.update_chart, StripChart.SAMPLE_RATE) # Update Plot
-        Clock.schedule_interval(self.update_camera, CameraDisplay.SAMPLE_RATE) # Update Camera
+        self.button_layout = BoxLayout(orientation = "horizontal", spacing = 1, padding = (1, 1))
+        self.button_layout.add_widget(self.record_button)
+        self.button_layout.add_widget(self.snapshot_button)
 
         self.cam_layout = BoxLayout(orientation = "vertical", spacing = 1, padding = (1, 1))
         self.cam_layout.add_widget(
@@ -43,7 +57,7 @@ class Dashboard(GridLayout):
         self.cam_layout.add_widget(self.cam_feed)
 
         self.top_layout = GridLayout(cols = 2)
-        self.top_layout.add_widget(Widget())
+        self.top_layout.add_widget(self.button_layout)
         self.top_layout.add_widget(self.cam_layout)
 
         self.fig_canvas = FigureCanvasKivyAgg(self.strip_chart.fig, size_hint = (1, 1))
@@ -54,18 +68,37 @@ class Dashboard(GridLayout):
             size_hint = (1, 1)
         )
         self.pg_layout.add_widget(self.top_layout)
-        # self.pg_layout.add_widget(self.cam_layout)
         self.pg_layout.add_widget(self.fig_canvas)
 
         self.add_widget(self.pg_layout)
+
+        self.record_button.bind(on_press = self.toggle_record)
+        self.snapshot_button.bind(on_press = self.take_snapshot)
+
+        Clock.schedule_interval(self.update_camera, CameraDisplay.SAMPLE_RATE) # Update Camera
+        Clock.schedule_interval(self.update_chart, StripChart.SAMPLE_RATE) # Update Plot
+
+    def toggle_record(self, instance):
+        if self.cam_feed.filename != "": # Recording
+            self.cam_feed.stop_recording()
+            self.cam_feed.convert_video()
+            self.record_button.text = "Start Recording"
+            self.record_button.background_color = "white"
+        else: # Not Recording
+            self.cam_feed.start_recording()
+            self.record_button.text = "Stop Recording"
+            self.record_button.background_color = "red"
+
+    def take_snapshot(self, instance):
+        self.cam_feed.take_snapshot()
+
+    def update_camera(self, dt):
+        self.cam_feed.update()
 
     def update_chart(self, dt):
         """Update Strip Chart."""
         self.strip_chart.update() # Update Strip Chart
         self.fig_canvas.draw_idle() # Update Canvas
-
-    def update_camera(self, dt):
-        self.cam_feed.update()
 
 class DashboardApp(App):
     def build(self) -> AppLayout:

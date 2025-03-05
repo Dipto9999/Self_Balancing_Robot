@@ -64,6 +64,12 @@ class StripChart:
         self.data_queue = queue.Queue()
         self.stop_event = td.Event()
 
+        self.figures_dir: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Figures")
+        self.logbook_dir: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Logbook")
+
+        os.makedirs(self.figures_dir, exist_ok = True)
+        os.makedirs(self.logbook_dir, exist_ok = True)
+
         self.thread = td.Thread(target = self.rx_angle, daemon = True)
         self.thread.start()
 
@@ -187,10 +193,7 @@ class StripChart:
 
     def save_fig(self, fig_name) :
         """Save Figure to File."""
-        file_path = os.path.join(
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), "Figures"),
-            f"{fig_name}.jpg"
-        )
+        file_path = os.path.join(self.figures_dir, f"{fig_name}.jpg")
 
         self.fig.savefig(file_path, format = 'jpg', dpi = 800)
         print(f"Figure Saved to {file_path}")
@@ -204,11 +207,7 @@ class StripChart:
             'Complementary Angle (Deg)' : self.complementary_data
         })
 
-        file_path = os.path.join(
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), "Logbook"),
-            f"{file_name}.csv"
-        )
-
+        file_path = os.path.join(self.logbook_dir, f"{file_name}.csv")
         data_df.to_csv(file_path, index = False)
 
         print(f"Data Exported to {file_path}\n\nData Preview:\n")
