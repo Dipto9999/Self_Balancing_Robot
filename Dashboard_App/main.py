@@ -44,8 +44,8 @@ class Dashboard(GridLayout):
             background_color = "white"
         )
 
-        self.cam_feed = Image(size_hint = (1, 1), allow_stretch = True)
-        # self.cam_feed = CameraDisplay()
+        # self.cam_feed = Image(size_hint = (1, 1), allow_stretch = True)
+        self.cam_feed = CameraDisplay()
         self.strip_chart = StripChart(conn = self.app.conn)
 
         self.button_layout = BoxLayout(orientation = "horizontal", spacing = 1, padding = (1, 1))
