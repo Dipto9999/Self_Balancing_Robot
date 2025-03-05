@@ -7,7 +7,7 @@ class VideoConverter:
         self.video_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Videos")
         os.makedirs(self.video_dir, exist_ok = True)
 
-    def convert_video(self):
+    def convert_videos(self):
         temp_file = os.path.join(self.video_dir, "to_convert.h264")
 
         for filename in os.listdir(self.video_dir):

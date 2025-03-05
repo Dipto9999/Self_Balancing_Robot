@@ -19,6 +19,8 @@ from arduinoSerial import *
 from camera import CameraDisplay
 from stripchart import StripChart
 
+from convert_video import VideoConverter
+
 class AppLayout(BoxLayout):
     def __init__(self, app, **kwargs):
         super().__init__(orientation = 'vertical', **kwargs)
@@ -81,7 +83,6 @@ class Dashboard(GridLayout):
     def toggle_record(self, instance):
         if self.cam_feed.filename != "": # Recording
             self.cam_feed.stop_recording()
-            self.cam_feed.convert_video(detached = False)
             self.record_button.text = "Start Recording"
             self.record_button.background_color = "white"
         else: # Not Recording
@@ -140,3 +141,6 @@ class DashboardApp(App):
 if __name__ == "__main__":
     app = DashboardApp()
     app.run()
+
+    video_converter = VideoConverter()
+    video_converter.convert_videos()
