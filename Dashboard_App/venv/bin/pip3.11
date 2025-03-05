@@ -1,4 +1,4 @@
-#!/home/dipto9999/Desktop/Programs/Camera/venv/bin/python3.11
+#!/home/dipto9999/Desktop/Programs/Self_Balancing_Robot/Dashboard_App/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
