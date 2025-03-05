@@ -13,6 +13,7 @@ class VideoConverter:
         for filename in os.listdir(self.video_dir):
             if not filename.endswith(".h264"): continue
             mp4_file = os.path.join(self.video_dir, f"{filename.split('.')[0]}.mp4")
+            print(f"Converting {filename} to {mp4_file}")
 
             shutil.copy2(filename, temp_file) # Copy File to Convert
             os.remove(filename) # Remove Original File
@@ -31,5 +32,3 @@ class VideoConverter:
                 print(f"Video Conversion Successful for {mp4_file}")
             except Exception as e:
                 print("Error Starting Detached Conversion:", e)
-            finally:
-                self.filename = "" # Reset Filename

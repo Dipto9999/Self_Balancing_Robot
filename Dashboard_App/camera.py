@@ -37,23 +37,28 @@ class CameraDisplay(Image):
             transform = Transform(hflip = True, vflip = True)
         )
         self.camera.configure(self.config)
-        self.start_recording()
+        self.camera.start()
 
     def start_recording(self):
         self.filename = f"Recording_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
         input_file = os.path.join(self.video_dir, f"{self.filename}.h264")
 
-        self.camera.start() # Start Camera
+        self.camera.configure(self.config)
+        self.camera.start()
         self.camera.start_recording(H264Encoder(bitrate = 10000000), input_file)
 
     def stop_recording(self):
         if self.filename == "":
             return
+
         self.camera.stop_recording()
+        self.camera.stop()
         self.filename = ""
 
     def take_snapshot(self):
-        self.camera.start()
+        if self.filename == "":
+            self.camera.create_preview_configuration()
+            self.camera.start()
 
         # Capture Current Frame
         frame = self.camera.capture_array()
@@ -74,6 +79,9 @@ class CameraDisplay(Image):
         print(f"Snapshot Saved to {snapshot_path}")
 
     def update(self):
+        if self.filename == "":
+            return
+
         frame = self.camera.capture_array()
         if frame is None or frame.size == 0:
             return
