@@ -1,9 +1,11 @@
 body {
   font-family: Arial, sans-serif;
+  font-size: 28px;
+  color: rgb(85, 142, 181);
   text-align: center;
   margin: 0;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color:rgb(20, 21, 32);
 }
 
 h1 {

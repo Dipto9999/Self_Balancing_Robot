@@ -97,6 +97,8 @@ connectButton.addEventListener('click', () => {
 
 /* Disconnecting from Device */
 disconnectButton.addEventListener('click', () => {
+    statusLabel.textContent = "Disconnecting...";
+
     fetch('/disconnect') // Send Disconnect Request
     .then(res => res.json()) // Parse JSON Response
     .then(data => { // Update Status Label
