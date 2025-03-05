@@ -26,7 +26,7 @@ h1 {
   margin: 5px;
 }
 
-.grid-container {
+.move-container {
   display: grid;
   grid-template-columns: 100px 100px 100px;
   grid-gap: 10px;
@@ -40,7 +40,7 @@ h1 {
   border-radius: 5px;
 }
 
-button.arrow {
+button.moveButton {
   font-size: 24px;
   padding: 20px;
   width: 100%;

@@ -1,169 +1,124 @@
 import asyncio
 import threading
 
-from flask import Flask, request, jsonify, render_template
 from bleak import BleakScanner, BleakClient, BleakError
+from flask import Flask, request, jsonify, render_template
 
-# ---------------------------
-# GLOBAL CONFIGURATION
-# ---------------------------
-# BLE Service & Characteristic from your Arduino code
-SERVICE_UUID = "00000000-5EC4-4083-81CD-A10B8D5CF6EC"
-CHARACTERISTIC_UUID = "00000001-5EC4-4083-81CD-A10B8D5CF6EC"
 
-app = Flask(__name__)
+class BLEManager:
+    # Define UUIDs for  BLE Service and Characteristic
+    SERVICE_UUID = "00000000-5EC4-4083-81CD-A10B8D5CF6EC"
+    CHARACTERISTIC_UUID = "00000001-5EC4-4083-81CD-A10B8D5CF6EC"
 
-# Globals for BLE
-ble_loop = None
-ble_client = None
-is_connected = False
+    def __init__(self):
+        self.devices = []
+        self.client = None
+        self.is_connected = False
 
-# Keep track of discovered devices
-discovered_devices = []
+        self.loop = asyncio.new_event_loop()
+        self.start_loop()
 
-# ---------------------------
-# BACKGROUND EVENT LOOP
-# ---------------------------
-def run_ble_loop():
-    """Run an asyncio event loop for BLE in a background thread."""
-    asyncio.set_event_loop(ble_loop)
-    ble_loop.run_forever()
+    def start_loop(self):
+        threading.Thread(target = self._run_loop, daemon = True).start()
 
-def start_background_loop():
-    """Initialize and start the BLE event loop in a separate thread."""
-    global ble_loop
-    ble_loop = asyncio.new_event_loop()
-    thread = threading.Thread(target=run_ble_loop, daemon=True)
-    thread.start()
+    def _run_loop(self):
+        asyncio.set_event_loop(self.loop)
+        self.loop.run_forever()
 
-def run_async(coro):
-    """Helper to schedule an async function on the BLE loop."""
-    return asyncio.run_coroutine_threadsafe(coro, ble_loop)
+    def run_async(self, coro):
+        return asyncio.run_coroutine_threadsafe(coro, self.loop)
 
-# ---------------------------
-# ASYNC BLE OPERATIONS
-# ---------------------------
-async def scan_for_devices():
-    """
-    Scan for nearby BLE devices.
-    Filter for devices whose name contains 'BLE'.
-    """
-    global discovered_devices
-    discovered_devices = []
+    async def scan_devices(self):
+        self.devices = []
+        scanned = await BleakScanner.discover()
 
-    devices = await BleakScanner.discover()
-    for d in devices:
-        # Only include devices whose name has 'BLE'
-        if d.name and "BLE" in d.name:
-            discovered_devices.append({"name": d.name, "address": d.address})
+        self.devices = [
+            {"name" : device.name, "address" : device.address} for device in scanned if device.name and ("BLE" in device.name)
+        ] # Filter BLE Devices
+        return self.devices
 
-    return discovered_devices
+    async def connect_device(self, address):
+        """Connect to BLE Device."""
+        if self.client and self.client.is_connected:
+            self.is_connected = True
+            return True
 
-async def ble_connect(address):
-    """Connect to the BLE device at the given address."""
-    global ble_client, is_connected
+        self.client = BleakClient(address)
+        try:
+            await self.client.connect()
+            self.is_connected = self.client.is_connected
+            return self.is_connected
+        except BleakError:
+            self.is_connected = False
+            return False
 
-    # If already connected, do nothing
-    if ble_client and ble_client.is_connected:
-        is_connected = True
-        return True
+    async def disconnect_device(self):
+        """Disconnect from BLE Device."""
+        if self.client and self.client.is_connected:
+            await self.client.disconnect()
+        self.is_connected = False
 
-    ble_client = BleakClient(address)
-    try:
-        await ble_client.connect()
-        is_connected = ble_client.is_connected
-        return is_connected
-    except BleakError as e:
-        print(f"[BLE] Connection Error: {e}")
-        is_connected = False
-        return False
+    async def send_cmd(self, cmd):
+        """Schedule Send Command Coroutine Using Button's Custom Command."""
+        if not (self.client and self.client.is_connected):
+            return False, "Not Connected to BLE"
+        try:
+            await self.client.write_gatt_char(BLEManager.CHARACTERISTIC_UUID, cmd.encode("utf-8"))
+            return True, f"Sent Command: {cmd}"
+        except BleakError as e:
+            return False, f"Error Sending Command: {e}"
 
-async def ble_disconnect():
-    """Disconnect from the current BLE device."""
-    global ble_client, is_connected
-    if ble_client and ble_client.is_connected:
-        await ble_client.disconnect()
-    is_connected = False
+class RobotDriverApp:
+    def __init__(self):
+        self.app = Flask("Robot Driver App")
+        self.ble_manager = BLEManager()
+        self._register_routes()
 
-async def ble_send_command(cmd):
-    """Send a command (e.g., '^', 'v', '<', '>') to the connected BLE device."""
-    global ble_client, is_connected
+    def _register_routes(self):
+        @self.app.route("/")
+        def index():
+            return render_template("index.html")
 
-    if not (ble_client and ble_client.is_connected):
-        return False, "Not connected to BLE"
+        @self.app.route("/scan", methods = ["GET"])
+        def scan():
+            future = self.ble_manager.run_async(self.ble_manager.scan_devices())
+            devices = future.result(timeout = 15) # Wait for 15 Seconds
+            return jsonify(devices)
 
-    try:
-        await ble_client.write_gatt_char(CHARACTERISTIC_UUID, cmd.encode("utf-8"))
-        return True, f"Sent command: {cmd}"
-    except BleakError as e:
-        return False, f"Error sending command: {e}"
+        @self.app.route("/connect", methods = ["POST"])
+        def connect():
+            data = request.get_json()
+            if not data or "deviceAddress" not in data:
+                return jsonify({"error": "No Address Provided"}), 400
+            future = self.ble_manager.run_async(self.ble_manager.connect_device(data["deviceAddress"]))
+            success = future.result(timeout = 10) # Wait for 10 Seconds
+            return (jsonify({"status": "Connected"}) if success
+                    else (jsonify({"status": "Failed"}), 400))
 
-# ---------------------------
-# FLASK ROUTES
-# ---------------------------
-@app.route("/")
-def index():
-    """Serve the main HTML page (templates/index.html)."""
-    return render_template("index.html")
+        @self.app.route("/disconnect", methods = ["GET"])
+        def disconnect():
+            future = self.ble_manager.run_async(self.ble_manager.disconnect_device())
+            future.result(timeout = 5) # Wait for 5 Seconds
+            return jsonify({"status": "Disconnected"})
 
-@app.route("/scan", methods=["GET"])
-def scan():
-    """
-    Trigger BLE scanning and return a JSON list of discovered devices.
-    Each device is { "name": "...", "address": "..." }.
-    """
-    future = run_async(scan_for_devices())
-    devices = future.result(timeout=15)  # Wait up to 15s
-    return jsonify(devices)
+        @self.app.route("/move", methods = ["POST"])
+        def move():
+            data = request.get_json()
+            if not data or "command" not in data:
+                return jsonify({"error": "No Command Provided"}), 400 # Bad Request
 
-@app.route("/connect", methods=["POST"])
-def connect():
-    """
-    POST JSON: { "address": "xx:xx:xx:xx:xx:xx" }
-    to connect to the chosen device address.
-    """
-    data = request.get_json()
-    if not data or "address" not in data:
-        return jsonify({"error": "No address provided"}), 400
+            future = self.ble_manager.run_async(
+                self.ble_manager.send_cmd(data["command"])
+            )
+            success, message = future.result(timeout = 5) # Wait for 5 Seconds
 
-    address = data["address"]
-    future = run_async(ble_connect(address))
-    success = future.result(timeout=10)
+            if success:
+                return jsonify({"status": "OK", "msg": message})
+            else:
+                return jsonify({"status": "Error", "msg": message}), 400 # Bad Request
 
-    if success:
-        return jsonify({"status": "connected"})
-    else:
-        return jsonify({"status": "failed"}), 400
+    def run(self):
+        self.app.run(host = "0.0.0.0", port = 5000, debug = True)
 
-@app.route("/disconnect", methods=["GET"])
-def disconnect():
-    """Disconnect from the currently connected BLE device."""
-    future = run_async(ble_disconnect())
-    future.result(timeout=5)
-    return jsonify({"status": "disconnected"})
-
-@app.route("/move", methods=["POST"])
-def move():
-    """
-    POST JSON: { "command": "^" }
-    to send a movement command to the connected BLE device.
-    """
-    data = request.get_json()
-    if not data or "command" not in data:
-        return jsonify({"error": "No 'command' provided"}), 400
-
-    cmd = data["command"]
-    future = run_async(ble_send_command(cmd))
-    success, message = future.result(timeout=5)
-
-    if success:
-        return jsonify({"status": "ok", "message": message})
-    else:
-        return jsonify({"status": "error", "message": message}), 400
-
-# ---------------------------
-# ENTRY POINT
-# ---------------------------
 if __name__ == "__main__":
-    start_background_loop()
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    RobotDriverApp().run()
