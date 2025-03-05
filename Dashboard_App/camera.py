@@ -37,7 +37,7 @@ class CameraDisplay(Image):
             transform = Transform(hflip = True, vflip = True)
         )
         self.camera.configure(self.config)
-        # self.start_recording()
+        self.start_recording()
 
     def start_recording(self):
         self.filename = f"Recording_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
@@ -47,6 +47,8 @@ class CameraDisplay(Image):
         self.camera.start_recording(H264Encoder(bitrate = 10000000), input_file)
 
     def stop_recording(self):
+        if self.filename == "":
+            return
         self.camera.stop_recording()
 
     def take_snapshot(self):
@@ -86,8 +88,5 @@ class CameraDisplay(Image):
 
     def stop(self):
         """Close Camera on Exit."""
-        if self.filename == "":
-            return
-
         self.stop_recording()
         self.camera.close()

@@ -44,8 +44,8 @@ class Dashboard(GridLayout):
             background_color = "white"
         )
 
-        # self.cam_feed = Image(size_hint = (1, 1), allow_stretch = True)
-        self.cam_feed = CameraDisplay()
+        self.cam_feed = Image(size_hint = (1, 1), allow_stretch = True)
+        # self.cam_feed = CameraDisplay()
         self.strip_chart = StripChart(conn = self.app.conn)
 
         self.button_layout = BoxLayout(orientation = "horizontal", spacing = 1, padding = (1, 1))
@@ -81,6 +81,8 @@ class Dashboard(GridLayout):
         Clock.schedule_interval(self.update_chart, StripChart.SAMPLE_RATE) # Update Plot
 
     def toggle_record(self, instance):
+        # pass
+
         if self.cam_feed.filename != "": # Recording
             self.cam_feed.stop_recording()
             self.record_button.text = "Start Recording"
@@ -91,6 +93,7 @@ class Dashboard(GridLayout):
             self.record_button.background_color = "red"
 
     def take_snapshot(self, instance):
+        # pass
         self.cam_feed.take_snapshot()
 
     def update_camera(self, dt):
@@ -120,7 +123,6 @@ class DashboardApp(App):
         self.title = "Robot Dashboard"
         self.dashboard = Dashboard(app = self)
 
-
         return AppLayout(app = self)
 
     def on_stop(self):
@@ -131,7 +133,7 @@ class DashboardApp(App):
             fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
             self.dashboard.strip_chart.save_logs(fig_name)
             self.dashboard.strip_chart.save_fig(fig_name)
-        self.dashboard.cam_feed.stop()
+        # self.dashboard.cam_feed.stop()
 
     def _start_async_loop(self):
         """Start Asyncio Event Loop."""
