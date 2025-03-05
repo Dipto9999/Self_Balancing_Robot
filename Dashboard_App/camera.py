@@ -50,6 +50,7 @@ class CameraDisplay(Image):
         if self.filename == "":
             return
         self.camera.stop_recording()
+        self.filename = ""
 
     def take_snapshot(self):
         self.camera.start()
