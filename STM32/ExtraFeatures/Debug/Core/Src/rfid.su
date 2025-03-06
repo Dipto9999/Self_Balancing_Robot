@@ -1,0 +1,3 @@
+../Core/Src/rfid.c:15:6:RFID_Init	16	static
+../Core/Src/rfid.c:23:18:RFID_ValidateCard	32	static
+../Core/Src/rfid.c:61:6:RFID_SecurityLogic	32	static

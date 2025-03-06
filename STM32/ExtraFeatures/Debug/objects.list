@@ -1,7 +1,7 @@
 "./Core/Src/colorsensor.o"
 "./Core/Src/distancesensor.o"
-"./Core/Src/lcd.o"
 "./Core/Src/main.o"
+"./Core/Src/rc522.o"
 "./Core/Src/rfid.o"
 "./Core/Src/speaker.o"
 "./Core/Src/stm32l0xx_hal_msp.o"

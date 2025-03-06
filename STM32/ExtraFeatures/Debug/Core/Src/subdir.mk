@@ -7,8 +7,8 @@
 C_SRCS += \
 ../Core/Src/colorsensor.c \
 ../Core/Src/distancesensor.c \
-../Core/Src/lcd.c \
 ../Core/Src/main.c \
+../Core/Src/rc522.c \
 ../Core/Src/rfid.c \
 ../Core/Src/speaker.c \
 ../Core/Src/stm32l0xx_hal_msp.c \
@@ -20,8 +20,8 @@ C_SRCS += \
 OBJS += \
 ./Core/Src/colorsensor.o \
 ./Core/Src/distancesensor.o \
-./Core/Src/lcd.o \
 ./Core/Src/main.o \
+./Core/Src/rc522.o \
 ./Core/Src/rfid.o \
 ./Core/Src/speaker.o \
 ./Core/Src/stm32l0xx_hal_msp.o \
@@ -33,8 +33,8 @@ OBJS += \
 C_DEPS += \
 ./Core/Src/colorsensor.d \
 ./Core/Src/distancesensor.d \
-./Core/Src/lcd.d \
 ./Core/Src/main.d \
+./Core/Src/rc522.d \
 ./Core/Src/rfid.d \
 ./Core/Src/speaker.d \
 ./Core/Src/stm32l0xx_hal_msp.d \
@@ -51,7 +51,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/colorsensor.cyclo ./Core/Src/colorsensor.d ./Core/Src/colorsensor.o ./Core/Src/colorsensor.su ./Core/Src/distancesensor.cyclo ./Core/Src/distancesensor.d ./Core/Src/distancesensor.o ./Core/Src/distancesensor.su ./Core/Src/lcd.cyclo ./Core/Src/lcd.d ./Core/Src/lcd.o ./Core/Src/lcd.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/rfid.cyclo ./Core/Src/rfid.d ./Core/Src/rfid.o ./Core/Src/rfid.su ./Core/Src/speaker.cyclo ./Core/Src/speaker.d ./Core/Src/speaker.o ./Core/Src/speaker.su ./Core/Src/stm32l0xx_hal_msp.cyclo ./Core/Src/stm32l0xx_hal_msp.d ./Core/Src/stm32l0xx_hal_msp.o ./Core/Src/stm32l0xx_hal_msp.su ./Core/Src/stm32l0xx_it.cyclo ./Core/Src/stm32l0xx_it.d ./Core/Src/stm32l0xx_it.o ./Core/Src/stm32l0xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32l0xx.cyclo ./Core/Src/system_stm32l0xx.d ./Core/Src/system_stm32l0xx.o ./Core/Src/system_stm32l0xx.su
+	-$(RM) ./Core/Src/colorsensor.cyclo ./Core/Src/colorsensor.d ./Core/Src/colorsensor.o ./Core/Src/colorsensor.su ./Core/Src/distancesensor.cyclo ./Core/Src/distancesensor.d ./Core/Src/distancesensor.o ./Core/Src/distancesensor.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/rc522.cyclo ./Core/Src/rc522.d ./Core/Src/rc522.o ./Core/Src/rc522.su ./Core/Src/rfid.cyclo ./Core/Src/rfid.d ./Core/Src/rfid.o ./Core/Src/rfid.su ./Core/Src/speaker.cyclo ./Core/Src/speaker.d ./Core/Src/speaker.o ./Core/Src/speaker.su ./Core/Src/stm32l0xx_hal_msp.cyclo ./Core/Src/stm32l0xx_hal_msp.d ./Core/Src/stm32l0xx_hal_msp.o ./Core/Src/stm32l0xx_hal_msp.su ./Core/Src/stm32l0xx_it.cyclo ./Core/Src/stm32l0xx_it.d ./Core/Src/stm32l0xx_it.o ./Core/Src/stm32l0xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32l0xx.cyclo ./Core/Src/system_stm32l0xx.d ./Core/Src/system_stm32l0xx.o ./Core/Src/system_stm32l0xx.su
 
 .PHONY: clean-Core-2f-Src
 

@@ -27,6 +27,7 @@
 #include "distancesensor.h"
 #include "speaker.h"
 #include "colorsensor.h"
+#include "rfid.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,6 +49,8 @@
 I2C_HandleTypeDef hi2c1;
 DMA_HandleTypeDef hdma_i2c1_rx;
 
+SPI_HandleTypeDef hspi2;
+
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim17;
@@ -59,6 +62,7 @@ distancesensor Front;
 distancesensor Back;
 speaker Speaker;
 colorsensor ColorSensor;
+rfid RFIDModule;
 char Data[64];
 /* USER CODE END PV */
 
@@ -71,6 +75,7 @@ static void MX_USART2_UART_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM17_Init(void);
 static void MX_I2C1_Init(void);
+static void MX_SPI2_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -143,11 +148,14 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM17_Init();
   MX_I2C1_Init();
+  MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
-  Speaker_Init(&Speaker, &htim17);
-  DistanceSensor_Init(&Front, &htim3, DISTANCE_SENSOR_FRONT_ID, DISTANCE_SENSOR_FRONT_INPUT_CAPTURE_GPIO_Port, DISTANCE_SENSOR_FRONT_INPUT_CAPTURE_Pin, DISTANCE_SENSOR_FRONT_STATUS_GPIO_Port, DISTANCE_SENSOR_FRONT_STATUS_Pin);
-  DistanceSensor_Init(&Back, &htim2, DISTANCE_SENSOR_BACK_ID, DISTANCE_SENSOR_BACK_INPUT_CAPTURE_GPIO_Port, DISTANCE_SENSOR_BACK_INPUT_CAPTURE_Pin, DISTANCE_SENSOR_BACK_STATUS_GPIO_Port, DISTANCE_SENSOR_BACK_STATUS_Pin);
-  ColorSensor_Init(&ColorSensor, &hi2c1, 0x10);
+  //Speaker_Init(&Speaker, &htim17);
+  //DistanceSensor_Init(&Front, &htim3, DISTANCE_SENSOR_FRONT_ID, DISTANCE_SENSOR_FRONT_INPUT_CAPTURE_GPIO_Port, DISTANCE_SENSOR_FRONT_INPUT_CAPTURE_Pin, DISTANCE_SENSOR_FRONT_STATUS_GPIO_Port, DISTANCE_SENSOR_FRONT_STATUS_Pin);
+  //DistanceSensor_Init(&Back, &htim2, DISTANCE_SENSOR_BACK_ID, DISTANCE_SENSOR_BACK_INPUT_CAPTURE_GPIO_Port, DISTANCE_SENSOR_BACK_INPUT_CAPTURE_Pin, DISTANCE_SENSOR_BACK_STATUS_GPIO_Port, DISTANCE_SENSOR_BACK_STATUS_Pin);
+  //ColorSensor_Init(&ColorSensor, &hi2c1, 0x10);
+  RFID_Init(&RFIDModule, &hspi2);
+  HAL_Delay(100);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -155,14 +163,22 @@ int main(void)
   //DistanceSensor_Start(&FrontDistanceSensor);
   //__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 1000);
   //DistanceSensor_Start(&Front);
-  DistanceSensor_Start(&Front);
-  DistanceSensor_Start(&Back);
+  //DistanceSensor_Start(&Front);
+  //DistanceSensor_Start(&Back);
+  uint8_t value;
   while (1)
   {
+	  /*
 	  sprintf(Data, "%f %f\r\n", DistanceSensor_GetDistance(&Front), DistanceSensor_GetDistance(&Back));
 	  HAL_UART_Transmit(&huart2, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
 	  HAL_Delay(100);
 
+	*/
+
+	  //RFID_ReadRegister(&RFIDModule, TPrescalerReg, 1, &value, 0);
+	  sprintf(Data, "%02X\r\n", value);
+	  HAL_UART_Transmit(&huart2, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
+	  HAL_Delay(250);
 
 
 
@@ -267,6 +283,46 @@ static void MX_I2C1_Init(void)
   /* USER CODE BEGIN I2C1_Init 2 */
 
   /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief SPI2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_SPI2_Init(void)
+{
+
+  /* USER CODE BEGIN SPI2_Init 0 */
+
+  /* USER CODE END SPI2_Init 0 */
+
+  /* USER CODE BEGIN SPI2_Init 1 */
+
+  /* USER CODE END SPI2_Init 1 */
+  /* SPI2 parameter configuration*/
+  hspi2.Instance = SPI2;
+  hspi2.Init.Mode = SPI_MODE_MASTER;
+  hspi2.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi2.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi2.Init.NSS = SPI_NSS_HARD_OUTPUT;
+  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_128;
+  hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi2.Init.CRCPolynomial = 7;
+  hspi2.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+  hspi2.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
+  if (HAL_SPI_Init(&hspi2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN SPI2_Init 2 */
+
+  /* USER CODE END SPI2_Init 2 */
 
 }
 
@@ -543,6 +599,7 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */

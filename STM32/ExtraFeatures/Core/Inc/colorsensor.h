@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include "main.h"
+#include "speaker.h"
 
 typedef enum
 {

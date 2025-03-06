@@ -21,9 +21,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "lcd.h"
 #include "distancesensor.h"
 #include "colorsensor.h"
+#include "speaker.h"
+#include "rfid.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -53,16 +54,19 @@ SPI_HandleTypeDef hspi1;
 DMA_HandleTypeDef hdma_spi1_rx;
 
 TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim21;
+TIM_HandleTypeDef htim22;
 
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-lcd LCD;
-distancesensor FrontDistanceSensor;
-distancesensor BackDistanceSensor;
-colorsensor ColorSensor;
+rfid RFIDModule;
+distancesensor Front;
+distancesensor Back;
+speaker Speaker;
 
 char Data[64];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -73,31 +77,48 @@ static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_TIM2_Init(void);
+static void MX_TIM22_Init(void);
+static void MX_TIM21_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) {
-    if (htim->Instance == TIM2)
-    {
-    	DistanceSensor_InputCaptureInterrupt(&FrontDistanceSensor);
-    	DistanceSensor_InputCaptureInterrupt(&BackDistanceSensor);
-    }
+    if (htim->Instance == TIM21) {
+		DistanceSensor_InputCaptureInterrupt(&Front);
+	}
+	else if (htim->Instance == TIM22) {
+		DistanceSensor_InputCaptureInterrupt(&Back);
+	}
+
 }
+/*
 
 void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c) {
     if (hi2c->Instance == I2C1) {
     	ColorSensor_ReceiveInterrupt(&ColorSensor);
     }
 }
-/*
+*/
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	__NOP();
+	if (htim->Instance == TIM2)
+	{
+		if (Speaker.timerCounter == Speaker.beepLength)
+		{
+			if (!Speaker.isActive)
+			{
+				HAL_TIM_PWM_Stop(Speaker.timer, TIM_CHANNEL_1);
+			}
+			HAL_TIM_Base_Stop_IT(Speaker.timer);
+		}
+		Speaker.timerCounter++;
+	}
 }
-*/
+
 /* USER CODE END 0 */
 
 /**
@@ -133,18 +154,67 @@ int main(void)
   MX_SPI1_Init();
   MX_USART1_UART_Init();
   MX_TIM2_Init();
+  MX_TIM22_Init();
+  MX_TIM21_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  //HAL_TIM_Base_Start_IT(&htim2);
+
+  //DistanceSensor_Start(&Front);
+  //DistanceSensor_Start(&Back);
+
   while (1)
   {
-	  //sprintf(Data, "%u\r\n", 51);
+	  ;
+
+	  sprintf(Data, "%u\r\n", (uint8_t) RFID_ValidateCard(&RFIDModule));
+	  HAL_UART_Transmit(&huart1, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
+	  HAL_Delay(50);
+	  //sprintf(Data, "%s\r\n", str);
 	  //HAL_UART_Transmit(&huart1, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
-	  HAL_Delay(500);
+	  //HAL_Delay(100);
+
+	  /*
+	  sprintf(Data, "%f %f\r\n", DistanceSensor_GetDistance(&Front), DistanceSensor_GetDistance(&Back));
+	  HAL_UART_Transmit(&huart1, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
+	  HAL_Delay(100);
+	  */
+	  //__NOP();
+	  //RFID_WriteRegister(&RFIDModule, CommandReg, 0x00); // Sets TX communication to the tag at 106kB/s
+	  //RFID_ReadRegister(&RFIDModule, CommandReg, 1, &value, 0);
+	  /*
+	    RFID_WriteRegister(&RFIDModule, RxModeReg, 0x00); // Sets RX communication to the tag at 106kB/s
+	    	// Reset ModWidthReg
+	    RFID_WriteRegister(&RFIDModule, ModWidthReg, 0x26); // Controls the setting of modulation width.
+
+	    	// When communicating with a PICC we need a timeout if something goes wrong.
+	    	// f_timer = 13.56 MHz / (2*TPreScaler+1) where TPreScaler = [TPrescaler_Hi:TPrescaler_Lo].
+	    	// TPrescaler_Hi are the four low bits in TModeReg. TPrescaler_Lo is TPrescalerReg.
+
+	    RFID_WriteRegister(&RFIDModule, TModeReg, 0x80);			// TAuto=1; timer starts automatically at the end of the transmission in all communication modes at all speeds
+	    	RFID_WriteRegister(&RFIDModule, TPrescalerReg, 0xA9);		// TPreScaler = TModeReg[3..0]:TPrescalerReg, ie 0x0A9 = 169 => f_timer=40kHz, ie a timer period of 25μs
+	    	RFID_WriteRegister(&RFIDModule, TReloadRegH, 0x03);		// Reload timer with 0x3E8 = 1000, ie 25ms before timeout.
+	    	RFID_WriteRegister(&RFIDModule, TReloadRegL, 0xE8);
+
+	    	RFID_WriteRegister(&RFIDModule, TxASKReg, 0x40);		// Default 0x00. Force a 100 % ASK modulation independent of the ModGsPReg register setting
+	    	RFID_WriteRegister(&RFIDModule, ModeReg, 0x3D);
+
+	  RFID_ReadRegister(&RFIDModule, RxModeReg, 1, &value[1]);
+	  RFID_ReadRegister(&RFIDModule, ModWidthReg, 1, &value[2]);
+	  RFID_ReadRegister(&RFIDModule, TModeReg, 1, &value[3]);
+	  RFID_ReadRegister(&RFIDModule, TPrescalerReg, 1, &value[4]);
+	  RFID_ReadRegister(&RFIDModule, TReloadRegH, 1, &value[5]);
+	  RFID_ReadRegister(&RFIDModule, TReloadRegL, 1, &value[6]);
+	  RFID_ReadRegister(&RFIDModule, TxASKReg, 1, &value[7]);
+	  RFID_ReadRegister(&RFIDModule, ModeReg, 1, &value[8]);
+	*/
+	  //sprintf(Data, "%02X\r\n", value);
+	  //sprintf(Data, "%02X %02X %02X %02X %02X %02X %02X %02X %02X\r\n", value[0], value[1], value[2], value[3], value[4], value[5], value[6], value[7], value[8]);
+	  //HAL_UART_Transmit(&huart1, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
+	  //HAL_Delay(250);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -172,7 +242,10 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLLMUL_4;
+  RCC_OscInitStruct.PLL.PLLDIV = RCC_PLLDIV_2;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -182,12 +255,12 @@ void SystemClock_Config(void)
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -198,6 +271,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+  HAL_RCC_MCOConfig(RCC_MCO1, RCC_MCO1SOURCE_SYSCLK, RCC_MCODIV_1);
 }
 
 /**
@@ -216,7 +290,7 @@ static void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.Timing = 0x0010061A;
+  hi2c1.Init.Timing = 0x00300F38;
   hi2c1.Init.OwnAddress1 = 32;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
@@ -270,8 +344,8 @@ static void MX_SPI1_Init(void)
   hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi1.Init.NSS = SPI_NSS_HARD_OUTPUT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
+  hspi1.Init.NSS = SPI_NSS_SOFT;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -300,7 +374,6 @@ static void MX_TIM2_Init(void)
 
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
-  TIM_IC_InitTypeDef sConfigIC = {0};
   TIM_OC_InitTypeDef sConfigOC = {0};
 
   /* USER CODE BEGIN TIM2_Init 1 */
@@ -309,19 +382,15 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 32-1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 65535;
+  htim2.Init.Period = 2273;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
   {
     Error_Handler();
   }
   sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
   if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_TIM_IC_Init(&htim2) != HAL_OK)
   {
     Error_Handler();
   }
@@ -339,27 +408,11 @@ static void MX_TIM2_Init(void)
   {
     Error_Handler();
   }
-  sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_BOTHEDGE;
-  sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
-  sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
-  sConfigIC.ICFilter = 0;
-  if (HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_1) != HAL_OK)
-  {
-    Error_Handler();
-  }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 0;
+  sConfigOC.Pulse = 1136;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_3) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
+  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -367,6 +420,150 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 2 */
   HAL_TIM_MspPostInit(&htim2);
+
+}
+
+/**
+  * @brief TIM21 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM21_Init(void)
+{
+
+  /* USER CODE BEGIN TIM21_Init 0 */
+
+  /* USER CODE END TIM21_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_IC_InitTypeDef sConfigIC = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM21_Init 1 */
+
+  /* USER CODE END TIM21_Init 1 */
+  htim21.Instance = TIM21;
+  htim21.Init.Prescaler = 32-1;
+  htim21.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim21.Init.Period = 65535;
+  htim21.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim21.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+  if (HAL_TIM_Base_Init(&htim21) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim21, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_IC_Init(&htim21) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim21) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim21, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_BOTHEDGE;
+  sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
+  sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
+  sConfigIC.ICFilter = 0;
+  if (HAL_TIM_IC_ConfigChannel(&htim21, &sConfigIC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 10;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim21, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM21_Init 2 */
+
+  /* USER CODE END TIM21_Init 2 */
+  HAL_TIM_MspPostInit(&htim21);
+
+}
+
+/**
+  * @brief TIM22 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM22_Init(void)
+{
+
+  /* USER CODE BEGIN TIM22_Init 0 */
+
+  /* USER CODE END TIM22_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_IC_InitTypeDef sConfigIC = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM22_Init 1 */
+
+  /* USER CODE END TIM22_Init 1 */
+  htim22.Instance = TIM22;
+  htim22.Init.Prescaler = 32-1;
+  htim22.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim22.Init.Period = 65535;
+  htim22.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim22.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+  if (HAL_TIM_Base_Init(&htim22) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim22, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_IC_Init(&htim22) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim22) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim22, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_BOTHEDGE;
+  sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
+  sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
+  sConfigIC.ICFilter = 0;
+  if (HAL_TIM_IC_ConfigChannel(&htim22, &sConfigIC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 10;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim22, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM22_Init 2 */
+
+  /* USER CODE END TIM22_Init 2 */
+  HAL_TIM_MspPostInit(&htim22);
 
 }
 
@@ -437,24 +634,31 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, LCD_RS_Pin|LCD_D7_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, SPI1_CS_Pin|DISTANCE_SENSOR_FRONT_STATUS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, LCD_EN_Pin|LCD_D4_Pin|LCD_D5_Pin|LCD_D6_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, SPI1_RST_Pin|DISTANCE_SENSOR_BACK_STATUS_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : LCD_RS_Pin LCD_D7_Pin */
-  GPIO_InitStruct.Pin = LCD_RS_Pin|LCD_D7_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : LCD_EN_Pin LCD_D4_Pin LCD_D5_Pin LCD_D6_Pin */
-  GPIO_InitStruct.Pin = LCD_EN_Pin|LCD_D4_Pin|LCD_D5_Pin|LCD_D6_Pin;
+  /*Configure GPIO pins : SPI1_CS_Pin DISTANCE_SENSOR_FRONT_STATUS_Pin */
+  GPIO_InitStruct.Pin = SPI1_CS_Pin|DISTANCE_SENSOR_FRONT_STATUS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : SPI1_RST_Pin */
+  GPIO_InitStruct.Pin = SPI1_RST_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(SPI1_RST_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : DISTANCE_SENSOR_BACK_STATUS_Pin */
+  GPIO_InitStruct.Pin = DISTANCE_SENSOR_BACK_STATUS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(DISTANCE_SENSOR_BACK_STATUS_GPIO_Port, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

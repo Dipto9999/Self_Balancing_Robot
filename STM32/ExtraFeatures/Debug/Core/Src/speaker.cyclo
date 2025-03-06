@@ -1,4 +1,5 @@
-../Core/Src/speaker.c:3:6:Speaker_Init	1
-../Core/Src/speaker.c:9:6:Speaker_Start	1
-../Core/Src/speaker.c:15:6:Speaker_Stop	1
-../Core/Src/speaker.c:20:6:Speaker_SetAutoReload	1
+../Core/Src/speaker.c:3:6:Speaker_Init	2
+../Core/Src/speaker.c:18:6:Speaker_Start	5
+../Core/Src/speaker.c:29:6:Speaker_Stop	5
+../Core/Src/speaker.c:41:6:Speaker_Beep	1
+../Core/Src/speaker.c:58:6:Speaker_SetAutoReload	1
