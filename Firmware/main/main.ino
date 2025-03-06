@@ -24,7 +24,7 @@ void loop() {
 
   // Wait for BLE Connection to Override Motors
   if (rxBLE()) changeDirection(buffBLE);
-  balanceRobot(currDirection);
+  balanceRobot(bleDirection);
 
   // Send Data
   serialMsg = String(Angles.Accelerometer, 2) + " " +

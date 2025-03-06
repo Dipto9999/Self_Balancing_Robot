@@ -18,20 +18,42 @@ XIN MotorB = {
     new mbed::PwmOut(digitalPinToPinName(5))  // PinBIN2
 };
 
-/* PID Controller Variables */
-float Kp; // Proportional Gain
-float Kd; // Derivative Gain
+const int VCC = 10.8; // 10.8V
 
+/* PID Controller Variables */
 float setpointAngle; // Reference Value, r_t (Angle = 180°)
 float measuredAngle; // Output Value, y_t (Angle)
 
 float errorAngle; // Error Value, e_t = r_t - y_t
 float prevErrorAngle; // Previous Error Value, e_(t-1)
 
+float Kp; // Proportional Gain
+float Ki; // Integral Gain
+float Kd; // Derivative Gain
+
+float errorAccumulation; // Accumulated Error Value, ∑e_t
+float errorDifference; // Derivative Error Value, e_t - e_(t-1) / dt
 float u_t; // Control Signal
 
 float currDutyCycle; // Current PWM Duty Cycle
-int currDirection; // Current Direction
+int bleDirection; // Current Direction
+
+void setupController() {
+    Kp = 0.6; // Proportional Gain
+    // Ki = 62.14; // Integral Gain
+    Kd = 0; // Derivative Gain
+
+    setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
+    errorAngle = 0.0; // Error Value, e_t = r_t - y_t
+    prevErrorAngle = 0.0; // Previous Error Value, e_(t-1)
+
+    u_t = 0.0; // Control Signal
+    errorAccumulation = 0.0; // Accumulated Error Value, ∑e_t
+    errorDifference = 0.0; // Derivative Error Value, e_t - e_(t-1) / dt
+
+    bleDirection = FORWARD; // Set Default Direction
+    currDutyCycle = ConfigMotor.RPM_50; // Set Default PWM Value
+}
 
 void setupMotors() {
     setupPWM(); // Initialize PWM Pins
@@ -39,52 +61,66 @@ void setupMotors() {
     Serial.println("Motors Initialized!");
 }
 
-void setupController() {
-    Kp = 0.5; // Proportional Gain
-    Kd = 0.5; // Derivative Gain
-
-    setpointAngle = 180.0; // Reference Value, r_t (Angle = 180°)
-    errorAngle = 0.0; // Error Value, e_t = r_t - y_t
-    prevErrorAngle = 0.0; // Previous Error Value, e_(t-1)
-
-    currDutyCycle = ConfigMotor.RPM_50; // Set Default PWM Value
-}
-
-void balanceRobot(int direction) {
+void balanceRobot(int bleDirection) {
     float dutyCycle;
 
     getAngles(Angles); // Get Initial Angle Values
 
     measuredAngle = Angles.Complementary; // Get Measured Angle
+
+    if (abs(measuredAngle) < 1.5) return; // Ignore Small Angle Values
+
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
 
-    // Calculate Control Signal
-    u_t = (Kp * errorAngle) + (Kd * (errorAngle - prevErrorAngle) / dt);
+    errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
+
+    // Include Integral Error Accumulation
+    // errorAccumulation += (errorAngle * dt); // ∑e_t
+    // u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
+
+    // Calculate Control Signal : u_t = Kp * e_t + Ki * ∑e_t + Kd * (e_t - e_(t-1) / dt)
+    u_t = (Kp * errorAngle) + (Kd * errorDifference);
+
+    // TODO: Convert Control Signal to Power (i.e. PWM Duty Cycle)
+    dutyCycle = abs(u_t) / VCC; // Convert Control Signal to Duty Cycle
+    dutyCycle = (dutyCycle > 1) ? 1 : dutyCycle; // Limit Duty Cycle to 100%
 
     // Print Control Values
-    // Serial.print("Measured Angle: ");
-    // Serial.println(measuredAngle);
+    Serial.print("Measured Angle: ");
+    Serial.println(measuredAngle);
 
     // Serial.print("Error Angle: ");
     // Serial.println(errorAngle);
     // Serial.print("Prev Error Angle: ");
     // Serial.println(prevErrorAngle);
-    // Serial.print("Time Step: ");
-    // Serial.println(dt);
+    // Serial.print("Accumulated Error: ");
+    // Serial.println(errorAccumulation);
 
-    // Serial.print("Kp Component: ");
-    // Serial.println(Kp * errorAngle);
+    Serial.print("Control Frequency (Hz): ");
+    Serial.println(1.0 / dt);
 
-    // Serial.print("Kd Component: ");
-    // Serial.println(Kd * (errorAngle - prevErrorAngle) / dt);
-    // Serial.print("Control Signal: ");
-    // Serial.println(u_t);
+    Serial.print("Kp Component: ");
+    Serial.println(Kp * errorAngle);
+    // Serial.print("Ki Component: ");
+    // Serial.println(Ki * errorAccumulation);
+    Serial.print("Kd Component: ");
+    Serial.println(Kd * errorDifference);
 
-    // TODO: Convert Control Signal to Power (i.e. PWM Duty Cycle)
-    // dutyCycle = constrain(u_t, -1.0, 1.0); // Constrain Control Signal
-    dutyCycle = 0.5;
+    Serial.print("Control Signal: ");
+    Serial.println(u_t);
+
+    Serial.print("Duty Cycle: ");
+    Serial.println(dutyCycle);
 
     // TODO: DEPRECATED: Use PID Controller to Balance Robot
+    if (u_t > 0) { // FORWARD
+        moveFastDecay(MotorA, CW, dutyCycle);
+        moveFastDecay(MotorB, CW, dutyCycle);
+    } else { // REVERSE
+        moveFastDecay(MotorA, CCW, dutyCycle);
+        moveFastDecay(MotorB, CCW, dutyCycle);
+    }
+
     // if (angle >= 215) { // Hard Right (angle ≥ 195)
     //     moveFastDecay(MotorA, CW, ConfigMotor.RPM_100);
     //     moveFastDecay(MotorB, CW, ConfigMotor.RPM_100);
@@ -103,7 +139,7 @@ void balanceRobot(int direction) {
     // }
 
     // TODO: Implement Movement Based on Control Signal (i.e. PWM Duty Cycle) and Direction
-    // if (direction == REVERSE) { // REVERSE
+    // if (bleDirection == REVERSE) { // REVERSE
         // if (dutyCycle > 0) { // FORWARD
         //     moveFastDecay(MotorA, CW, dutyCycle);
         //     moveFastDecay(MotorB, CW, dutyCycle);
@@ -111,7 +147,7 @@ void balanceRobot(int direction) {
         //     moveFastDecay(MotorA, CCW, -dutyCycle);
         //     moveFastDecay(MotorB, CCW, -dutyCycle);
         // }
-    // } else if (direction == FORWARD) { // FORWARD
+    // } else if (bleDirection == FORWARD) { // FORWARD
         // if (dutyCycle > 0) { // FORWARD
         //     moveFastDecay(MotorA, CW, dutyCycle);
         //     moveFastDecay(MotorB, CW, dutyCycle);
@@ -127,27 +163,27 @@ void balanceRobot(int direction) {
 }
 
 void changeDirection(const char* bleBuff) {
-    // if (!strcmp(bleBuff, "^")) currDirection = FORWARD; // Drive
-    // else if (!strcmp(bleBuff, "v")) currDirection = REVERSE; // Reverse
-    // else if (!strcmp(bleBuff, "<")) currDirection = LEFT; // Turn Left
-    // else if (!strcmp(bleBuff, ">")) currDirection = RIGHT; // Turn Right
-    // else if (!strcmp(bleBuff, "X")) currDirection = PARK; // Park
+    if (!strcmp(bleBuff, "^")) bleDirection = FORWARD; // Drive
+    else if (!strcmp(bleBuff, "v")) bleDirection = REVERSE; // Reverse
+    else if (!strcmp(bleBuff, "<")) bleDirection = LEFT; // Turn Left
+    else if (!strcmp(bleBuff, ">")) bleDirection = RIGHT; // Turn Right
+    else if (!strcmp(bleBuff, "X")) bleDirection = PARK; // Park
 
     // TODO: DEPRECATED: Use BLE to Change Direction
-    if (!strcmp(bleBuff, "^")) {
-        moveFastDecay(MotorA, CW, ConfigMotor.RPM_100);
-        moveFastDecay(MotorB, CCW, ConfigMotor.RPM_100);
-    }
-    else if (!strcmp(bleBuff, "v")) {
-        moveFastDecay(MotorA, CW, ConfigMotor.RPM_75);
-        moveFastDecay(MotorB, CCW, ConfigMotor.RPM_75);
-    }
-    else if (!strcmp(bleBuff, "<")) {
-        moveFastDecay(MotorA, CCW, ConfigMotor.RPM_50);
-        moveFastDecay(MotorB, CW, ConfigMotor.RPM_50);
-    }
-    else if (!strcmp(bleBuff, ">")) {
-        moveFastDecay(MotorA, CCW, ConfigMotor.RPM_25);
-        moveFastDecay(MotorB, CW, ConfigMotor.RPM_25);
-    }
+    // if (!strcmp(bleBuff, "^")) {
+    //     moveFastDecay(MotorA, CW, ConfigMotor.RPM_100);
+    //     moveFastDecay(MotorB, CW, ConfigMotor.RPM_100);
+    // }
+    // else if (!strcmp(bleBuff, "v")) {
+    //     moveFastDecay(MotorA, CCW, ConfigMotor.RPM_75);
+    //     moveFastDecay(MotorB, CCW, ConfigMotor.RPM_75);
+    // }
+    // else if (!strcmp(bleBuff, "<")) {
+    //     moveFastDecay(MotorA, CW, ConfigMotor.RPM_50);
+    //     moveFastDecay(MotorB, CW, ConfigMotor.RPM_50);
+    // }
+    // else if (!strcmp(bleBuff, ">")) {
+    //     moveFastDecay(MotorA, CCW, ConfigMotor.RPM_25);
+    //     moveFastDecay(MotorB, CCW, ConfigMotor.RPM_25);
+    // }
 }
