@@ -11,7 +11,7 @@ class VideoConverter:
         temp_file = os.path.join(self.video_dir, "to_convert.h264")
 
         for filename in os.listdir(self.video_dir):
-            if not filename.endswith(".h264"): continue
+            if not (filename.endswith(".h264")) or (filename.find("to_convert") != -1): continue
             mp4_file = filename.split('.')[0] + ".mp4"
 
             h264_file = os.path.join(self.video_dir, filename)
