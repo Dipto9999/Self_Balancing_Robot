@@ -1,5 +1,3 @@
-import logging
-
 import asyncio
 import threading as td
 
@@ -107,11 +105,6 @@ class Dashboard(GridLayout):
 
 class DashboardApp(App):
     def build(self) -> AppLayout:
-        logging.getLogger("kivy").setLevel(logging.WARNING)
-        logging.getLogger("matplotlib").setLevel(logging.WARNING)
-        logging.getLogger("picamera2").setLevel(logging.WARNING)
-        logging.getLogger("libcamera").setLevel(logging.WARNING)
-
         self.async_loop = asyncio.new_event_loop() # Create Asyncio Event Loop
         td.Thread(target = self._start_async_loop, daemon = True).start() # Start Event Loop in Separate Thread
 
