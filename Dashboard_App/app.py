@@ -106,7 +106,8 @@ class Dashboard(GridLayout):
 class DashboardApp(App):
     def build(self) -> AppLayout:
         self.async_loop = asyncio.new_event_loop() # Create Asyncio Event Loop
-        td.Thread(target = self._start_async_loop, daemon = True).start() # Start Event Loop in Separate Thread
+        self.async_thread = td.Thread(target = self._start_async_loop, daemon = True)
+        self.async_thread.start() # Start Event Loop in Separate Thread
 
         # Serial Connection
         try:
@@ -132,7 +133,10 @@ class DashboardApp(App):
             fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
             self.dashboard.strip_chart.save_logs(fig_name)
             self.dashboard.strip_chart.save_fig(fig_name)
-        # self.dashboard.cam_feed.stop()
+
+        if self.async_loop.is_running():
+            self.async_loop.call_soon_threadsafe(self.async_loop.stop)
+            self.async_thread.join()
 
     def _start_async_loop(self):
         """Start Asyncio Event Loop."""
