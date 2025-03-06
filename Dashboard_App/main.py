@@ -21,8 +21,6 @@ from arduinoSerial import *
 from camera import CameraDisplay
 from stripchart import StripChart
 
-from convert_video import VideoConverter
-
 class AppLayout(BoxLayout):
     def __init__(self, app, **kwargs):
         super().__init__(orientation = 'vertical', **kwargs)
@@ -147,6 +145,3 @@ class DashboardApp(App):
 if __name__ == "__main__":
     app = DashboardApp()
     app.run()
-
-    video_converter = VideoConverter()
-    video_converter.convert_videos()
