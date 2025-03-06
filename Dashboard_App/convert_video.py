@@ -32,3 +32,7 @@ class VideoConverter:
                 print(f"Video Conversion Successful for {mp4_file}")
             except Exception as e:
                 print("Error Starting Detached Conversion:", e)
+
+if __name__ == "__main__":
+    video_converter = VideoConverter()
+    video_converter.convert_videos()
