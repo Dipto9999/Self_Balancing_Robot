@@ -1,10 +1,11 @@
+import logging
+
 import asyncio
 import threading as td
 
 import datetime as dt
 
 from kivy.app import App
-from kivy.config import Config
 from kivy.core.window import Window
 
 from kivy.uix.gridlayout import GridLayout
@@ -106,8 +107,10 @@ class Dashboard(GridLayout):
 
 class DashboardApp(App):
     def build(self) -> AppLayout:
-        Config.set('kivy', 'log_level', 'warning') # Set Kivy Log Level
-        Config.write() # Save Configuration
+        logging.getLogger("kivy").setLevel(logging.WARNING)
+        logging.getLogger("matplotlib").setLevel(logging.WARNING)
+        logging.getLogger("picamera2").setLevel(logging.WARNING)
+        logging.getLogger("libcamera").setLevel(logging.WARNING)
 
         self.async_loop = asyncio.new_event_loop() # Create Asyncio Event Loop
         td.Thread(target = self._start_async_loop, daemon = True).start() # Start Event Loop in Separate Thread
