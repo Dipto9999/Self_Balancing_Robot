@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  padding: 0;
+
+  min-height: 100vh; /* Use Full Viewport Height */
+  display: flex;
+  flex-direction: column; /* Stack Header and Main Content Vertically */
+  align-items: center; /* Center Content Horizontally */
+
+  background-color: rgb(20, 21, 32);
+  color: rgb(85, 142, 181);
+
+  font-family: Arial, sans-serif;
+  font-size: 25px;
+  text-align: center;
+}
+
+
+h1 {
+  margin: 20px 0 10px 0; /* Give Space Above and Below */
+  font-size: 55px;
+  color: rgb(145, 145, 145);
+}
+
+.main-content {
+  flex: 1; /* Fill Remaining Vertical Space */
+  display: flex;
+  flex-direction: column; /* Stack Elements Vertically */
+
+  /* Center Elements Vertically and Horizontally */
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.device-section {
+  margin-bottom: 20px;
+
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+  }
+
+  select {
+    font-size: 16px;
+    padding: 6px;
+    margin: 5px;
+  }
+}
+
+.move-container {
+  display: grid; /* 3 X 3 Grid */
+  justify-content: center;
+
+  grid-template-columns: 100px 100px 100px;
+  grid-gap: 10px;
+
+  margin-top: 20px;
+}
+
+button.moveButton {
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+
+  font-size: 24px;
+}
+
+#statusLabel {
+  display: block;
+  margin-top: 10px;
+}

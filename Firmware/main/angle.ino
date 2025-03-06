@@ -11,7 +11,7 @@ float ax, ay, az = 0;
 
 /* Time Variables */
 unsigned long t_n, t_n1 = 0; // Current and Previous Time
-float dt; // Time Difference
+float dt = 0; // Time Difference
 
 float editAngleBounds(float angle) {
   if (angle > 360) angle -= 360;
@@ -62,7 +62,9 @@ void getAngles(ANGLES &Angles) {
   else if (gx < 0) gx *= 1.12;
 
   // currGyro = prev_currAccel + gx * 1 / IMU.gyroscopeSampleRate();
-  currGyro = prevGyro + gx * 1 / IMU.gyroscopeSampleRate();
+  if (dt == 0) currGyro = prevGyro + gx * 1 / IMU.gyroscopeSampleRate();
+  else currGyro = prevGyro + gx * dt;
+
   currGyro = editAngleBounds(currGyro);
 
   currComplementary = k * (prevComplementary + gx * 1 / IMU.gyroscopeSampleRate()) + (1 - k) * currAccel;
