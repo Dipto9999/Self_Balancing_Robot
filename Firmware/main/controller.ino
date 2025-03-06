@@ -39,9 +39,9 @@ float currDutyCycle; // Current PWM Duty Cycle
 int bleDirection; // Current Direction
 
 void setupController() {
-    Kp = 0.6; // Proportional Gain
+    Kp = 0.4; // Proportional Gain
     // Ki = 62.14; // Integral Gain
-    Kd = 0; // Derivative Gain
+    Kd = 0.005; // Derivative Gain
 
     setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
     errorAngle = 0.0; // Error Value, e_t = r_t - y_t
@@ -68,7 +68,10 @@ void balanceRobot(int bleDirection) {
 
     measuredAngle = Angles.Complementary; // Get Measured Angle
 
-    if (abs(measuredAngle) < 1.5) return; // Ignore Small Angle Values
+    // Ignore Small Angle Values
+    if (abs(measuredAngle) < 1.5) {
+        return; // Implement BLE Control
+    }
 
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
 
