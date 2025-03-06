@@ -26,7 +26,7 @@ class VideoConverter:
             command = [
                 "ffmpeg", # Command
                 "-i", temp_file, # Input File
-                "-vf", "vflip,hflip", # Vertical and Horizontal Flip
+                "-vf", "vflip", # Vertical Flip
                 "-c:a", "copy", # Copy Audio
                 mp4_file
             ]
