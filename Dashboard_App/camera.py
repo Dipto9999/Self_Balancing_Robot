@@ -40,11 +40,14 @@ class CameraDisplay(Image):
         # self.camera.start()
 
     def start_recording(self):
+        if self.filename != "":
+            self.camera.stop()
+        self.camera.configure(self.config)
+        self.camera.start()
+
         self.filename = f"Recording_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
         input_file = os.path.join(self.video_dir, f"{self.filename}.h264")
 
-        self.camera.configure(self.config)
-        self.camera.start()
         self.camera.start_recording(H264Encoder(bitrate = 10000000), input_file)
 
     def stop_recording(self):
@@ -59,6 +62,7 @@ class CameraDisplay(Image):
         if self.filename == "":
             self.camera.create_preview_configuration()
             self.camera.start()
+            self.camera.start_preview()
 
         # Capture Current Frame
         frame = self.camera.capture_array()
