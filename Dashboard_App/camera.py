@@ -56,7 +56,7 @@ class CameraDisplay(Image):
 
     def take_snapshot(self):
         if self.filename == "":
-            self.camera.create_preview_configuration()
+            self.camera.configure(self.camera.create_preview_configuration())
         self.camera.start()
 
         # Capture Current Frame
