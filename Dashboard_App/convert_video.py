@@ -3,20 +3,21 @@ import shutil
 import subprocess
 
 class VideoConverter:
+    TEMP_FILE = "to_convert.h264"
     def __init__(self):
         self.video_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Videos")
         os.makedirs(self.video_dir, exist_ok = True)
 
     def convert_videos(self):
-        temp_file = os.path.join(self.video_dir, "to_convert.h264")
+        temp_file = os.path.join(self.video_dir, VideoConverter.TEMP_FILE)
 
         for filename in os.listdir(self.video_dir):
-            if not (filename.endswith(".h264")) or (filename.find("to_convert") != -1): continue
+            if not (filename.endswith(".h264")) or (filename.find(VideoConverter.TEMP_FILE) != -1): continue
             mp4_file = filename.split('.')[0] + ".mp4"
+            print(f"Converting {filename} to {mp4_file}")
 
             h264_file = os.path.join(self.video_dir, filename)
             mp4_file = os.path.join(self.video_dir, mp4_file)
-            print(f"Converting {filename} to {mp4_file}")
 
             shutil.copy2(h264_file, temp_file) # Copy File to Convert
             os.remove(h264_file) # Remove Original File
@@ -35,6 +36,7 @@ class VideoConverter:
                 print(f"Video Conversion Successful for {mp4_file}")
             except Exception as e:
                 print("Error Starting Detached Conversion:", e)
+        os.remove(temp_file) # Remove Temporary File
 
 if __name__ == "__main__":
     video_converter = VideoConverter()
