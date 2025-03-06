@@ -19,7 +19,7 @@ class VideoConverter:
             print(f"Converting {filename} to {mp4_file}")
 
             shutil.copy2(h264_file, temp_file) # Copy File to Convert
-            os.remove(filename) # Remove Original File
+            os.remove(h264_file) # Remove Original File
 
             # Flip Video Vertically + Horizontally and Copy Audio
             command = [
