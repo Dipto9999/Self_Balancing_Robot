@@ -5,6 +5,8 @@ import datetime as dt
 
 from kivy.app import App
 from kivy.core.window import Window
+from kivy.logger import Logger
+
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 
@@ -106,6 +108,8 @@ class Dashboard(GridLayout):
 
 class DashboardApp(App):
     def build(self) -> AppLayout:
+        Logger.setLevel("WARNING")
+
         self.async_loop = asyncio.new_event_loop() # Create Asyncio Event Loop
         td.Thread(target = self._start_async_loop, daemon = True).start() # Start Event Loop in Separate Thread
 

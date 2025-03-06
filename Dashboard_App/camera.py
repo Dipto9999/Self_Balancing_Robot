@@ -36,12 +36,8 @@ class CameraDisplay(Image):
             },
             transform = Transform(hflip = True, vflip = True)
         )
-        # self.camera.configure(self.config)
-        # self.camera.start()
 
     def start_recording(self):
-        if self.filename != "":
-            self.camera.stop()
         self.camera.configure(self.config)
         self.camera.start()
 
@@ -61,8 +57,7 @@ class CameraDisplay(Image):
     def take_snapshot(self):
         if self.filename == "":
             self.camera.create_preview_configuration()
-            self.camera.start()
-            self.camera.start_preview()
+        self.camera.start()
 
         # Capture Current Frame
         frame = self.camera.capture_array()
@@ -81,6 +76,9 @@ class CameraDisplay(Image):
         image = image.transpose(PILImage.FLIP_LEFT_RIGHT) # Flip Image Horizontally
         image.save(snapshot_path) # Save Image
         print(f"Snapshot Saved to {snapshot_path}")
+
+        if self.filename == "":
+            self.camera.stop()
 
     def update(self):
         if self.filename == "":
