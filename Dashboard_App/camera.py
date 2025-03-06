@@ -34,7 +34,7 @@ class CameraDisplay(Image):
                 # "size": (1920, 1080), # Full HD
                 "format": "RGB888"
             },
-            transform = Transform(hflip = True, vflip = True)
+            transform = Transform(hflip = True, vflip = True) # For Kivy Display
         )
 
     def start_recording(self):
