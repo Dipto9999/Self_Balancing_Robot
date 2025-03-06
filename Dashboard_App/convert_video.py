@@ -12,10 +12,13 @@ class VideoConverter:
 
         for filename in os.listdir(self.video_dir):
             if not filename.endswith(".h264"): continue
-            mp4_file = os.path.join(self.video_dir, f"{filename.split('.')[0]}.mp4")
+            mp4_file = filename.split('.')[0] + ".mp4"
+
+            h264_file = os.path.join(self.video_dir, filename)
+            mp4_file = os.path.join(self.video_dir, mp4_file)
             print(f"Converting {filename} to {mp4_file}")
 
-            shutil.copy2(filename, temp_file) # Copy File to Convert
+            shutil.copy2(h264_file, temp_file) # Copy File to Convert
             os.remove(filename) # Remove Original File
 
             # Flip Video Vertically + Horizontally and Copy Audio
