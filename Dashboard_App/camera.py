@@ -36,8 +36,8 @@ class CameraDisplay(Image):
             },
             transform = Transform(hflip = True, vflip = True)
         )
-        self.camera.configure(self.config)
-        self.camera.start()
+        # self.camera.configure(self.config)
+        # self.camera.start()
 
     def start_recording(self):
         self.filename = f"Recording_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
