@@ -117,11 +117,11 @@ void balanceRobot(int bleDirection) {
 
     // TODO: DEPRECATED: Use PID Controller to Balance Robot
     if (u_t > 0) { // FORWARD
-        moveFastDecay(MotorA, CW, dutyCycle);
-        moveFastDecay(MotorB, CW, dutyCycle);
+        moveSlowDecay(MotorA, CW, dutyCycle);
+        moveSlowDecay(MotorB, CW, dutyCycle);
     } else { // REVERSE
-        moveFastDecay(MotorA, CCW, dutyCycle);
-        moveFastDecay(MotorB, CCW, dutyCycle);
+        moveSlowDecay(MotorA, CCW, dutyCycle);
+        moveSlowDecay(MotorB, CCW, dutyCycle);
     }
 
     // if (angle >= 215) { // Hard Right (angle ≥ 195)
