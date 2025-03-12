@@ -8,17 +8,10 @@ ConfigPWM ConfigMotor = {
     1.0 // 289 RPM (Max) = 100%
 };
 
-XIN MotorA = {
-    new mbed::PwmOut(digitalPinToPinName(6)), // PinAIN1
-    new mbed::PwmOut(digitalPinToPinName(9))  // PinAIN2
-};
-
-XIN MotorB = {
-    new mbed::PwmOut(digitalPinToPinName(3)), // PinBIN1
-    new mbed::PwmOut(digitalPinToPinName(5))  // PinBIN2
-};
+mbed::Ticker balanceTicker;
 
 const int VCC = 10.8; // 10.8V
+const int CONTROL_FREQ = 10; // 10Hz
 
 /* PID Controller Variables */
 float setpointAngle; // Reference Value, r_t (Angle = 180°)
@@ -38,6 +31,12 @@ float u_t; // Control Signal
 float currDutyCycle; // Current PWM Duty Cycle
 int bleDirection; // Current Direction
 
+void balanceRobotISR() {
+    // balanceRobot(bleDirection);
+    // digitalWrite(PIN_FORWARD_ALERT, !digitalRead(PIN_FORWARD_ALERT)); // Toggle LED
+    int test = 0;
+}
+
 void setupController() {
     Kp = 0.4; // Proportional Gain
     // Ki = 62.14; // Integral Gain
@@ -53,6 +52,9 @@ void setupController() {
 
     bleDirection = FORWARD; // Set Default Direction
     currDutyCycle = ConfigMotor.RPM_50; // Set Default PWM Value
+
+    // Attach ISR to Balance Robot at 10Hz
+    // balanceTicker.attach(&balanceRobotISR, 1 / CONTROL_FREQ);
 }
 
 void setupMotors() {
@@ -74,7 +76,6 @@ void balanceRobot(int bleDirection) {
     }
 
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
-
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
 
     // Include Integral Error Accumulation
@@ -89,8 +90,8 @@ void balanceRobot(int bleDirection) {
     dutyCycle = (dutyCycle > 1) ? 1 : dutyCycle; // Limit Duty Cycle to 100%
 
     // Print Control Values
-    Serial.print("Measured Angle: ");
-    Serial.println(measuredAngle);
+    // Serial.print("Measured Angle: ");
+    // Serial.println(measuredAngle);
 
     // Serial.print("Error Angle: ");
     // Serial.println(errorAngle);
@@ -99,21 +100,21 @@ void balanceRobot(int bleDirection) {
     // Serial.print("Accumulated Error: ");
     // Serial.println(errorAccumulation);
 
-    Serial.print("Control Frequency (Hz): ");
-    Serial.println(1.0 / dt);
+    // Serial.print("Control Frequency (Hz): ");
+    // Serial.println(1.0 / dt);
 
-    Serial.print("Kp Component: ");
-    Serial.println(Kp * errorAngle);
+    // Serial.print("Kp Component: ");
+    // Serial.println(Kp * errorAngle);
     // Serial.print("Ki Component: ");
     // Serial.println(Ki * errorAccumulation);
-    Serial.print("Kd Component: ");
-    Serial.println(Kd * errorDifference);
+    // Serial.print("Kd Component: ");
+    // Serial.println(Kd * errorDifference);
 
-    Serial.print("Control Signal: ");
-    Serial.println(u_t);
+    // Serial.print("Control Signal: ");
+    // Serial.println(u_t);
 
-    Serial.print("Duty Cycle: ");
-    Serial.println(dutyCycle);
+    // Serial.print("Duty Cycle: ");
+    // Serial.println(dutyCycle);
 
     // TODO: DEPRECATED: Use PID Controller to Balance Robot
 
@@ -179,7 +180,7 @@ void changeDirection(const char* bleBuff) {
     else if (!strcmp(bleBuff, "v") && !reverseAlert) bleDirection = REVERSE; // Reverse
     else if (!strcmp(bleBuff, "<")) bleDirection = LEFT; // Turn Left
     else if (!strcmp(bleBuff, ">")) bleDirection = RIGHT; // Turn Right
-    else if (!strcmp(bleBuff, "X")) bleDirection = PARK; // Park
+    else bleDirection = PARK; // Park
 
     // TODO: DEPRECATED: Use BLE to Change Direction
     // if (!strcmp(bleBuff, "^")) {

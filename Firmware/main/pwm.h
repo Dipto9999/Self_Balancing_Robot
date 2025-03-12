@@ -12,6 +12,9 @@ struct XIN {
     mbed::PwmOut* Pin2;
 };
 
+extern XIN MotorA;
+extern XIN MotorB;
+
 extern const int PWM_PeriodUs;
 
 /* Function Prototypes */

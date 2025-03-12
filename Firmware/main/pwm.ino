@@ -2,6 +2,16 @@
 
 const int PWM_PeriodUs = 20; // 20µs Period (50kHz)
 
+XIN MotorA = {
+    new mbed::PwmOut(digitalPinToPinName(6)), // PinAIN1
+    new mbed::PwmOut(digitalPinToPinName(9))  // PinAIN2
+};
+
+XIN MotorB = {
+    new mbed::PwmOut(digitalPinToPinName(3)), // PinBIN1
+    new mbed::PwmOut(digitalPinToPinName(5))  // PinBIN2
+};
+
 void setupPWM() {
     MotorA.Pin1->period_us(PWM_PeriodUs);
     MotorA.Pin2->period_us(PWM_PeriodUs);

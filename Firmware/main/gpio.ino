@@ -5,8 +5,11 @@ bool forwardAlert = false;
 bool reverseAlert = false;
 
 void setupGPIO() {
-    pinMode(PIN_FORWARD_ALERT, INPUT_PULLUP);
-    pinMode(PIN_REVERSE_ALERT, INPUT_PULLUP);
+    pinMode(PIN_FORWARD_ALERT, OUTPUT);
+    pinMode(PIN_REVERSE_ALERT, OUTPUT);
+
+    digitalWrite(PIN_FORWARD_ALERT, HIGH);
+    digitalWrite(PIN_REVERSE_ALERT, HIGH);
 }
 
 void checkForwardAlert() {
@@ -16,5 +19,5 @@ void checkForwardAlert() {
 
 void checkReverseAlert() {
     if (digitalRead(PIN_REVERSE_ALERT) == LOW) reverseAlert = true;
-    reverseAlert = false;
+    else reverseAlert = false;
 }
