@@ -13,12 +13,6 @@ float ax, ay, az = 0;
 unsigned long t_n, t_n1 = 0; // Current and Previous Time
 float dt = 0; // Time Difference
 
-float editAngleBounds(float angle) {
-  if (angle > 360) angle -= 360;
-  else if (angle < 0) angle += 360;
-  return angle;
-}
-
 void setupIMU() {
   if (!IMU.begin()) {
     // Serial.println("Failed to Initialize IMU!");
@@ -33,8 +27,7 @@ void setupIMU() {
     if (IMU.accelerationAvailable()) {
       IMU.readAcceleration(ax, ay, az);
       prevGyro = atan2(az, ay) * (180 / PI);
-      prevGyro += 90;
-      prevGyro = editAngleBounds(prevGyro);
+      prevGyro -= 90;
 
       prevComplementary = prevGyro;
     }
@@ -51,8 +44,7 @@ void getAngles(ANGLES &Angles) {
   IMU.readAcceleration(ax, ay, az);
 
   currAccel = atan2(az, ay) * (180 / PI);
-  currAccel += 90;
-  currAccel = editAngleBounds(currAccel);
+  currAccel -= 90;
 
   // Offset at Low Angles
   if (gx > 0 && gx < 2) gx = 0;
@@ -61,14 +53,10 @@ void getAngles(ANGLES &Angles) {
   // Account for Negative Angular Velocity Error
   else if (gx < 0) gx *= 1.12;
 
-  // currGyro = prev_currAccel + gx * 1 / IMU.gyroscopeSampleRate();
   if (dt == 0) currGyro = prevGyro + gx * 1 / IMU.gyroscopeSampleRate();
   else currGyro = prevGyro + gx * dt;
 
-  currGyro = editAngleBounds(currGyro);
-
   currComplementary = k * (prevComplementary + gx * 1 / IMU.gyroscopeSampleRate()) + (1 - k) * currAccel;
-  currComplementary = editAngleBounds(currComplementary);
 
   /* Update Time Variables */
   t_n = millis(); // Current Time in Milliseconds
@@ -79,6 +67,13 @@ void getAngles(ANGLES &Angles) {
   Angles.Accelerometer = currAccel;
   Angles.Gyroscope = currGyro;
   Angles.Complementary = currComplementary;
+
+  // Serial.print("Accelerometer: ");
+  // Serial.print(Angles.Accelerometer);
+  // Serial.print(" | Gyroscope: ");
+  // Serial.print(Angles.Gyroscope);
+  // Serial.print(" | Complementary: ");
+  // Serial.println(Angles.Complementary);
 
   /* Assign Previous Angles */
   prevGyro = currGyro;

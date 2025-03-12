@@ -24,7 +24,6 @@ extern float dt; // Time Difference
 /* Function Prototypes */
 void setupIMU();
 
-float editAngleBounds(float angle);
 void getAngles(ANGLES &Angles);
 
 #endif

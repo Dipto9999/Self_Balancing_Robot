@@ -30,9 +30,9 @@ void moveFastDecay(XIN &motor, DirPWM dir, float dutyCycle) {
 void moveSlowDecay(XIN &motor, DirPWM dir, float dutyCycle) {
     if (dir == CW) {
         motor.Pin1->write(1);
-        motor.Pin2->write(dutyCycle);
+        motor.Pin2->write(1-dutyCycle);
     } else if (dir == CCW) {
-        motor.Pin1->write(dutyCycle);
+        motor.Pin1->write(1-dutyCycle);
         motor.Pin2->write(1);
     }
 }
