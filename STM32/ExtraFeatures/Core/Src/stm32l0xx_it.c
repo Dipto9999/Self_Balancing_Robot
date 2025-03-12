@@ -57,7 +57,6 @@
 /* External variables --------------------------------------------------------*/
 extern DMA_HandleTypeDef hdma_i2c1_rx;
 extern I2C_HandleTypeDef hi2c1;
-extern DMA_HandleTypeDef hdma_spi1_rx;
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim21;
 extern TIM_HandleTypeDef htim22;
@@ -153,7 +152,6 @@ void DMA1_Channel2_3_IRQHandler(void)
   /* USER CODE BEGIN DMA1_Channel2_3_IRQn 0 */
 
   /* USER CODE END DMA1_Channel2_3_IRQn 0 */
-  HAL_DMA_IRQHandler(&hdma_spi1_rx);
   HAL_DMA_IRQHandler(&hdma_i2c1_rx);
   /* USER CODE BEGIN DMA1_Channel2_3_IRQn 1 */
 

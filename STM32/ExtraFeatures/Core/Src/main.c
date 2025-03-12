@@ -51,7 +51,6 @@ I2C_HandleTypeDef hi2c1;
 DMA_HandleTypeDef hdma_i2c1_rx;
 
 SPI_HandleTypeDef hspi1;
-DMA_HandleTypeDef hdma_spi1_rx;
 
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim21;
@@ -60,7 +59,7 @@ TIM_HandleTypeDef htim22;
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-rfid RFIDModule;
+rfid RFID_Module;
 distancesensor Front;
 distancesensor Back;
 speaker Speaker;
@@ -103,20 +102,15 @@ void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c) {
     }
 }
 */
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	if (htim->Instance == TIM2)
+
+	if (htim->Instance == TIM2 && Speaker.beepLengthOn != 0)
 	{
-		if (Speaker.timerCounter == Speaker.beepLength)
-		{
-			if (!Speaker.isActive)
-			{
-				HAL_TIM_PWM_Stop(Speaker.timer, TIM_CHANNEL_1);
-			}
-			HAL_TIM_Base_Stop_IT(Speaker.timer);
-		}
-		Speaker.timerCounter++;
+		Speaker_BeepInterrupt(&Speaker);
 	}
+
 }
 
 /* USER CODE END 0 */
@@ -157,22 +151,32 @@ int main(void)
   MX_TIM22_Init();
   MX_TIM21_Init();
   /* USER CODE BEGIN 2 */
-
+  Speaker_Init(&Speaker, &htim2);
+  //DistanceSensor_Init(&Front, &htim21, DISTANCE_SENSOR_FRONT_ID, DISTANCE_SENSOR_FRONT_INPUT_CAPTURE_GPIO_Port, DISTANCE_SENSOR_FRONT_INPUT_CAPTURE_Pin, DISTANCE_SENSOR_FRONT_STATUS_GPIO_Port, DISTANCE_SENSOR_FRONT_STATUS_Pin);
+  RFID_Init(&RFID_Module);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-
   //DistanceSensor_Start(&Front);
-  //DistanceSensor_Start(&Back);
+  //DistanceSensor_Start(&Front);
+  //DistanceSensor_Start(&Back);W
 
+  uint8_t serialNum[5];
   while (1)
   {
-	  ;
+	  RFID_SecurityLogic(&RFID_Module);
 
-	  sprintf(Data, "%u\r\n", (uint8_t) RFID_ValidateCard(&RFIDModule));
+	  /*
+	  	MFRC522_Request(PICC_REQIDL, serialNum);
+	  	MFRC522_Anticoll(serialNum);
+
+	  	sprintf(Data, "%u %u %u %u %u\r\n", serialNum[0], serialNum[1], serialNum[2], serialNum[3], serialNum[4]);
+
+	  //sprintf(Data, "%u\r\n", (uint8_t) RFID_ValidateCard(&RFIDModule));
 	  HAL_UART_Transmit(&huart1, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
 	  HAL_Delay(50);
+	  */
 	  //sprintf(Data, "%s\r\n", str);
 	  //HAL_UART_Transmit(&huart1, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
 	  //HAL_Delay(100);
@@ -382,7 +386,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 32-1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 2273;
+  htim2.Init.Period = 488;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -398,10 +402,6 @@ static void MX_TIM2_Init(void)
   {
     Error_Handler();
   }
-  if (HAL_TIM_OnePulse_Init(&htim2, TIM_OPMODE_SINGLE) != HAL_OK)
-  {
-    Error_Handler();
-  }
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
   if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
@@ -409,7 +409,7 @@ static void MX_TIM2_Init(void)
     Error_Handler();
   }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 1136;
+  sConfigOC.Pulse = 244;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)

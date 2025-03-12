@@ -1,3 +1,3 @@
 ../Core/Src/rfid.c:15:6:RFID_Init	1
-../Core/Src/rfid.c:23:18:RFID_ValidateCard	14
-../Core/Src/rfid.c:61:6:RFID_SecurityLogic	6
+../Core/Src/rfid.c:25:18:RFID_ValidateCard	16
+../Core/Src/rfid.c:63:6:RFID_SecurityLogic	8

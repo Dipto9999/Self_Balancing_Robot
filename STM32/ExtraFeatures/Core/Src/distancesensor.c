@@ -76,7 +76,7 @@ void DistanceSensor_Handle(distancesensor* sensor)
 	{
 		HAL_GPIO_WritePin(sensor->statusGPIOPort, sensor->statusGPIOPin, GPIO_PIN_SET);
 
-		if (!Speaker.isActive) Speaker_Start(&Speaker, sensor->ID);
+		if (!Speaker.hasFault) Speaker_Start(&Speaker, sensor->ID);
 	}
 	else if (distance < MIN_DISTANCE)
 	{
@@ -87,7 +87,7 @@ void DistanceSensor_Handle(distancesensor* sensor)
 		sensor->countAtMaxDistance = 0;
 		HAL_GPIO_WritePin(sensor->statusGPIOPort, sensor->statusGPIOPin, GPIO_PIN_RESET);
 
-		if (Speaker.isActive) Speaker_Stop(&Speaker, sensor->ID);
+		if (Speaker.hasFault) Speaker_Stop(&Speaker, sensor->ID);
 
 	}
 }

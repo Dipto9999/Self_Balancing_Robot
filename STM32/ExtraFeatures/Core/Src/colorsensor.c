@@ -55,7 +55,7 @@ color ColorSensor_CalculateColor(colorsensor* sensor)
 void ColorSensor_Handle(colorsensor* sensor)
 {
 	color detected_color = ColorSensor_CalculateColor(sensor);
-	if (detected_color == RED && !Speaker.isActive)
+	if (detected_color == RED && !Speaker.hasFault)
 	{
 		Speaker_Start(&Speaker, COLOR_SENSOR_ID);
 	}

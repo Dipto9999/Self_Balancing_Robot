@@ -17,7 +17,9 @@ void RFID_Init(rfid* sensor) {
     memset(sensor->prevSerialNum, 0, 5);
     sensor->status = CARD_IDLE;
 
+    sensor->botEnabled = false;
     sensor->initialSuccessfulCardTap = true;
+    sensor->initialFailedCardTap = true;
 }
 
 rfid_card_status RFID_ValidateCard(rfid* sensor)
@@ -34,7 +36,7 @@ rfid_card_status RFID_ValidateCard(rfid* sensor)
 		sensor->status = CARD_SUCCESS;
 
 	}
-	else if (!(serialNum[0] | serialNum[1] | serialNum[2] | serialNum[3] | serialNum[4]))
+	else if (!(serialNum[0] | (!(serialNum[1] == 32 || serialNum[1] == 0)) | serialNum[2] | serialNum[3] | serialNum[4]))
 	{
 		if (!(sensor->prevSerialNum[0] | sensor->prevSerialNum[1] | sensor->prevSerialNum[2] | sensor->prevSerialNum[3] | sensor->prevSerialNum[4]))
 			sensor->status = CARD_IDLE;
@@ -67,16 +69,32 @@ void RFID_SecurityLogic(rfid* sensor)
 	    	if (sensor->initialSuccessfulCardTap)
 	    	{
 
+	    		Speaker_SetAutoReload(&Speaker, 488);
+	    		Speaker_Beep(&Speaker, 150, 0, 1);
 	    		sensor->initialSuccessfulCardTap = false;
+	    		sensor->initialFailedCardTap = true;
+	    		sensor->botEnabled = !sensor->botEnabled;
 	    	}
 	        break;
 
 	    case CARD_FAIL:
-	        sensor->initialSuccessfulCardTap = true;
+	    	if (sensor->initialFailedCardTap)
+	    	{
+	    		HAL_Delay(200);
+				if (RFID_ValidateCard(sensor) != CARD_FAIL)
+					break;
+				Speaker_SetAutoReload(&Speaker, 488 * 4);
+				Speaker_Beep(&Speaker, 150, 50, 4);
+				sensor->initialSuccessfulCardTap = true;
+				sensor->initialFailedCardTap = false;
+	    	}
+	    	//HAL_Delay(HAL_MAX_DELAY);
+
 	        break;
 
 	    case CARD_IDLE:
 	    	sensor->initialSuccessfulCardTap = true;
+	    	sensor->initialFailedCardTap = true;
 	        break;
 
 	    // Optional: Default case if no case matches
