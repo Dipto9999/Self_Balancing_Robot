@@ -166,8 +166,8 @@ void balanceRobot(int bleDirection) {
 }
 
 void changeDirection(const char* bleBuff) {
-    if (!strcmp(bleBuff, "^")) bleDirection = FORWARD; // Drive
-    else if (!strcmp(bleBuff, "v")) bleDirection = REVERSE; // Reverse
+    if (!strcmp(bleBuff, "^") && !forwardAlert) bleDirection = FORWARD; // Drive
+    else if (!strcmp(bleBuff, "v") && !reverseAlert) bleDirection = REVERSE; // Reverse
     else if (!strcmp(bleBuff, "<")) bleDirection = LEFT; // Turn Left
     else if (!strcmp(bleBuff, ">")) bleDirection = RIGHT; // Turn Right
     else if (!strcmp(bleBuff, "X")) bleDirection = PARK; // Park
@@ -189,4 +189,14 @@ void changeDirection(const char* bleBuff) {
     //     moveFastDecay(MotorA, CCW, ConfigMotor.RPM_25);
     //     moveFastDecay(MotorB, CCW, ConfigMotor.RPM_25);
     // }
+}
+
+void turnLeft() {
+    moveFastDecay(MotorA, CCW, ConfigMotor.RPM_50);
+    moveFastDecay(MotorB, CW, ConfigMotor.RPM_50);
+}
+
+void turnRight() {
+    moveFastDecay(MotorA, CW, ConfigMotor.RPM_50);
+    moveFastDecay(MotorB, CCW, ConfigMotor.RPM_50);
 }

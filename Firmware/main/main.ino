@@ -2,7 +2,7 @@
 #include "controller.h"
 #include "ble.h"
 #include "serial.h"
-// #include "buttons.h"
+#include "gpio.h"
 
 void setup() {
     setupSerial();
@@ -10,17 +10,15 @@ void setup() {
     setupMotors();
     setupBLE();
 
-    // Test With Buttons
-    // setupButtons();
+    setupGPIO();
 }
 
 ANGLES Angles = {0, 0, 0}; // Accelerometer, Gyroscope, Complementary
 
 void loop() {
-  // Test With Buttons
-  // if (handleButtons()) {
-    // currDutyCycle = ...
-  // }
+  // Respond to STM32 GPIO Inputs
+  checkForwardAlert();
+  checkReverseAlert();
 
   // Wait for BLE Connection to Override Motors
   if (rxBLE()) changeDirection(buffBLE);

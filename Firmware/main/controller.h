@@ -3,6 +3,7 @@
 
 #include "pwm.h"
 #include "angle.h"
+#include "gpio.h"
 
 enum DirRobot {REVERSE, FORWARD, LEFT, RIGHT, PARK};
 
@@ -44,5 +45,8 @@ void setupController();
 
 void changeDirection(const char* bleBuff);
 void balanceRobot(int direction);
+
+void turnLeft();
+void turnRight();
 
 #endif
