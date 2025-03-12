@@ -41,7 +41,7 @@ int bleDirection; // Current Direction
 void setupController() {
     Kp = 0.4; // Proportional Gain
     // Ki = 62.14; // Integral Gain
-    Kd = 0.005; // Derivative Gain
+    Kd = 0; // Derivative Gain
 
     setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
     errorAngle = 0.0; // Error Value, e_t = r_t - y_t
@@ -116,6 +116,15 @@ void balanceRobot(int bleDirection) {
     Serial.println(dutyCycle);
 
     // TODO: DEPRECATED: Use PID Controller to Balance Robot
+
+    // if (u_t > 0) { // FORWARD
+    //     moveSlowDecay(MotorA, CW, dutyCycle);
+    //     moveSlowDecay(MotorB, CW, dutyCycle);
+    // } else { // REVERSE
+    //     moveSlowDecay(MotorA, CCW, dutyCycle);
+    //     moveSlowDecay(MotorB, CCW, dutyCycle);
+    // }
+
     if (u_t > 0) { // FORWARD
         moveSlowDecay(MotorA, CW, dutyCycle);
         moveSlowDecay(MotorB, CW, dutyCycle);
