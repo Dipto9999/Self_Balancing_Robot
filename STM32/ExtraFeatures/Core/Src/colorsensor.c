@@ -1,5 +1,7 @@
 #include "colorsensor.h"
 
+extern speaker Speaker;
+
 void ColorSensor_Init(colorsensor* sensor, I2C_HandleTypeDef* i2c_handle, uint8_t slave_addr) {
     sensor->i2c = i2c_handle;
     sensor->slave_address = slave_addr;
@@ -53,5 +55,14 @@ color ColorSensor_CalculateColor(colorsensor* sensor)
 void ColorSensor_Handle(colorsensor* sensor)
 {
 	color detected_color = ColorSensor_CalculateColor(sensor);
+	if (detected_color == RED && !Speaker.hasFault)
+	{
+		Speaker_Start(&Speaker, COLOR_SENSOR_ID);
+	}
+	else
+	{
+		Speaker_Stop(&Speaker, COLOR_SENSOR_ID);
+	}
+
 }
 

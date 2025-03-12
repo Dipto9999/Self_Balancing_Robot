@@ -1,0 +1,4 @@
+../Core/Src/speaker.c:3:6:Speaker_Init	24	static
+../Core/Src/speaker.c:16:6:Speaker_Start	16	static
+../Core/Src/speaker.c:27:6:Speaker_Stop	16	static
+../Core/Src/speaker.c:37:6:Speaker_SetAutoReload	16	static

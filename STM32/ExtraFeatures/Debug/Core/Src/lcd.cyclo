@@ -1,9 +1,0 @@
-../Core/Src/lcd.c:4:6:LCD_Init	1
-../Core/Src/lcd.c:29:6:LCD_StartTimer	1
-../Core/Src/lcd.c:36:6:LCD_SendByte	3
-../Core/Src/lcd.c:61:6:LCD_WriteData	1
-../Core/Src/lcd.c:68:6:LCD_WriteCommand	1
-../Core/Src/lcd.c:74:6:LCD_ClearDisplay	1
-../Core/Src/lcd.c:81:6:LCD_SetCursor	2
-../Core/Src/lcd.c:89:6:LCD_DisplayChar	1
-../Core/Src/lcd.c:95:6:LCD_DisplayString	2

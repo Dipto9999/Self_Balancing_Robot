@@ -1,3 +1,6 @@
-../Core/Src/speaker.c:3:6:Speaker_Start	16	static
-../Core/Src/speaker.c:8:6:Speaker_Stop	16	static
-../Core/Src/speaker.c:13:6:Speaker_SetAutoReload	16	static
+../Core/Src/speaker.c:6:6:Speaker_Init	24	static
+../Core/Src/speaker.c:24:6:Speaker_Start	16	static
+../Core/Src/speaker.c:37:6:Speaker_Stop	16	static
+../Core/Src/speaker.c:49:6:Speaker_Beep	32	static
+../Core/Src/speaker.c:78:6:Speaker_BeepInterrupt	16	static
+../Core/Src/speaker.c:111:6:Speaker_SetAutoReload	16	static
