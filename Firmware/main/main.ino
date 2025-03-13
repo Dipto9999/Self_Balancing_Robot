@@ -33,4 +33,6 @@ void loop() {
     String(Angles.Gyroscope, 2) + " " +
     String(Angles.Complementary, 2);
   handleData('A', serialMsg);
+
+  Serial.println("Testing...");
 }
