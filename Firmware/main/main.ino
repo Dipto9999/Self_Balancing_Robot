@@ -28,7 +28,7 @@ void setup() {
   Serial.println("Setup Complete!");
 }
 
-// ANGLES Angles = {0, 0, 0}; // Accelerometer, Gyroscope, Complementary
+ANGLES Angles = {0, 0, 0}; // Accelerometer, Gyroscope, Complementary
 
 void loop() {
   // Respond to STM32 GPIO Inputs
@@ -39,14 +39,16 @@ void loop() {
   // if (rxBLE()) changeDirection(buffBLE);
   // balanceRobot(bleDirection);
 
-  if (rxBLE()) serialMsg = "BLE RX";
-  else serialMsg = "Testing...";
-  Serial.println(serialMsg);
+  getAngles(Angles);
 
   // Send Data
-  // serialMsg = String(Angles.Accelerometer, 2) + " " +
-  //   String(Angles.Gyroscope, 2) + " " +
-  //   String(Angles.Complementary, 2);
+  serialMsg = String(Angles.Accelerometer, 2) + " " +
+    String(Angles.Gyroscope, 2) + " " +
+    String(Angles.Complementary, 2);
+
+  if (rxBLE()) serialMsg = "BLE RX";
+  Serial.println(serialMsg);
+
   // handleData('A', serialMsg);
 
   delay(200);
