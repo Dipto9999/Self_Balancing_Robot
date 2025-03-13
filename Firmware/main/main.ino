@@ -4,7 +4,7 @@
 // #include "angle.h"
 // #include "controller.h"
 // #include "pwm.h"
-// #include "ble.h"
+#include "ble.h"
 #include "serial.h"
 #include "gpio.h"
 
@@ -23,7 +23,7 @@ void setup() {
   // setupIMU();
   // setupMotors();
   // setupPWM();
-  // setupBLE();
+  setupBLE();
 
   Serial.println("Setup Complete!");
 }
@@ -39,12 +39,16 @@ void loop() {
   // if (rxBLE()) changeDirection(buffBLE);
   // balanceRobot(bleDirection);
 
+  if (rxBLE()) serialMsg = "BLE RX";
+  else serialMsg = "BLE Rdy";
+  Serial.println(serialMsg);
+
   // Send Data
   // serialMsg = String(Angles.Accelerometer, 2) + " " +
   //   String(Angles.Gyroscope, 2) + " " +
   //   String(Angles.Complementary, 2);
   // handleData('A', serialMsg);
 
-  Serial.println("Testing...");
-  delay(2000);
+  // Serial.println("Testing...");
+  delay(200);
 }
