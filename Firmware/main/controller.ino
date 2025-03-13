@@ -32,9 +32,8 @@ float currDutyCycle; // Current PWM Duty Cycle
 int bleDirection; // Current Direction
 
 void balanceRobotISR() {
-    // balanceRobot(bleDirection);
-    // digitalWrite(PIN_FORWARD_ALERT, !digitalRead(PIN_FORWARD_ALERT)); // Toggle LED
-    int test = 0;
+    balanceRobot(bleDirection);
+    digitalWrite(PIN_FORWARD_ALERT, !digitalRead(PIN_FORWARD_ALERT)); // Toggle LED
 }
 
 void setupController() {
@@ -54,7 +53,7 @@ void setupController() {
     currDutyCycle = ConfigMotor.RPM_50; // Set Default PWM Value
 
     // Attach ISR to Balance Robot at 10Hz
-    // balanceTicker.attach(&balanceRobotISR, 1 / CONTROL_FREQ);
+    balanceTicker.attach(&balanceRobotISR, 1 / CONTROL_FREQ);
 }
 
 void setupMotors() {

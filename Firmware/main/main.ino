@@ -20,15 +20,13 @@ ANGLES Angles = {0, 0, 0}; // Accelerometer, Gyroscope, Complementary
 void loop() {
   // Respond to STM32 GPIO Inputs
   // checkForwardAlert();
-  // checkReverseAlert();
+  checkReverseAlert();
 
   digitalWrite(PIN_FORWARD_ALERT, !digitalRead(PIN_FORWARD_ALERT)); // Toggle LED
-  // Serial.println("Hello World!");
 
   // Wait for BLE Connection to Override Motors
   if (rxBLE()) changeDirection(buffBLE);
-  // if (rxBLE()) Serial.println(buffBLE);
-  balanceRobot(bleDirection);
+  // balanceRobot(bleDirection);
 
   // Send Data
   serialMsg = String(Angles.Accelerometer, 2) + " " +
