@@ -2,7 +2,7 @@
 #include <mbed.h>
 
 #include "angle.h"
-// #include "controller.h"
+#include "controller.h"
 #include "pwm.h"
 #include "ble.h"
 #include "serial.h"
@@ -21,7 +21,7 @@ void setup() {
   TimerTicker.attach(&timerISR, 0.1f);
 
   setupIMU();
-  // setupMotors();
+  setupMotors();
   setupPWM();
   setupBLE();
 

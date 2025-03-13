@@ -55,7 +55,7 @@ void setupMotors() {
 void balanceRobot(int bleDirection) {
     float dutyCycle;
 
-    getAngles(Angles); // Get Initial Angle Values
+    // getAngles(Angles); // Get Initial Angle Values
 
     measuredAngle = Angles.Complementary; // Get Measured Angle
 
