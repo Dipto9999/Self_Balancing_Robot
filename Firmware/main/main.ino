@@ -22,7 +22,7 @@ void loop() {
   // checkForwardAlert();
   checkReverseAlert();
 
-  digitalWrite(PIN_FORWARD_ALERT, !digitalRead(PIN_FORWARD_ALERT)); // Toggle LED
+  // digitalWrite(PIN_FORWARD_ALERT, !digitalRead(PIN_FORWARD_ALERT)); // Toggle LED
 
   // Wait for BLE Connection to Override Motors
   if (rxBLE()) changeDirection(buffBLE);
@@ -33,6 +33,4 @@ void loop() {
     String(Angles.Gyroscope, 2) + " " +
     String(Angles.Complementary, 2);
   handleData('A', serialMsg);
-
-  delay(100);
 }

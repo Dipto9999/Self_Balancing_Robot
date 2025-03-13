@@ -32,7 +32,7 @@ float currDutyCycle; // Current PWM Duty Cycle
 int bleDirection; // Current Direction
 
 void balanceRobotISR() {
-    balanceRobot(bleDirection);
+    // balanceRobot(bleDirection);
     digitalWrite(PIN_FORWARD_ALERT, !digitalRead(PIN_FORWARD_ALERT)); // Toggle LED
 }
 
