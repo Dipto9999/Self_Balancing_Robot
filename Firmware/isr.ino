@@ -2,7 +2,7 @@
 #include <mbed.h>
 
 // Create a Ticker object
-mbed::Ticker myTicker;
+mbed::Ticker TimerTicker;
 #define LED_BUILTIN A0
 
 // This is our ISR which toggles the built-in LED.
@@ -19,7 +19,7 @@ void setup() {
   digitalWrite(LED_BUILTIN, LOW);
 
   // Attach the ticker to call timerISR every 1.0 second (i.e. 1 Hz).
-  myTicker.attach(&timerISR, 0.1f);
+  TimerTicker.attach(&timerISR, 0.1f);
 
   Serial.println("Ticker ISR started: LED toggles every 1 second.");
 }
