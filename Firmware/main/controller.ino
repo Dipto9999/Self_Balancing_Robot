@@ -8,8 +8,6 @@ ConfigPWM ConfigMotor = {
     1.0 // 289 RPM (Max) = 100%
 };
 
-mbed::Ticker balanceTicker;
-
 const int VCC = 10.8; // 10.8V
 const int CONTROL_FREQ = 10; // 10Hz
 
@@ -31,11 +29,6 @@ float u_t; // Control Signal
 float currDutyCycle; // Current PWM Duty Cycle
 int bleDirection; // Current Direction
 
-void balanceRobotISR() {
-    // balanceRobot(bleDirection);
-    digitalWrite(PIN_FORWARD_ALERT, !digitalRead(PIN_FORWARD_ALERT)); // Toggle LED
-}
-
 void setupController() {
     Kp = 0.4; // Proportional Gain
     // Ki = 62.14; // Integral Gain
@@ -51,9 +44,6 @@ void setupController() {
 
     bleDirection = FORWARD; // Set Default Direction
     currDutyCycle = ConfigMotor.RPM_50; // Set Default PWM Value
-
-    // Attach ISR to Balance Robot at 10Hz
-    balanceTicker.attach(&balanceRobotISR, 1.0f / CONTROL_FREQ);
 }
 
 void setupMotors() {

@@ -1,3 +1,6 @@
+#include <Arduino.h>
+#include <mbed.h>
+
 #include "angle.h"
 #include "controller.h"
 #include "pwm.h"
@@ -5,14 +8,26 @@
 #include "serial.h"
 #include "gpio.h"
 
-void setup() {
-    setupSerial();
-    setupIMU();
-    setupMotors();
-    setupPWM();
-    setupBLE();
+mbed::Ticker myTicker;
+#define LED_BUILTIN A0
 
-    setupGPIO();
+// This is our ISR which toggles the built-in LED.
+void timerISR() {
+  digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+}
+
+void setup() {
+  setupGPIO();
+  setupSerial();
+
+  myTicker.attach(&timerISR, 0.1f);
+
+  setupIMU();
+  setupMotors();
+  setupPWM();
+  setupBLE();
+
+  Serial.println("Setup Complete!");
 }
 
 ANGLES Angles = {0, 0, 0}; // Accelerometer, Gyroscope, Complementary
@@ -21,8 +36,6 @@ void loop() {
   // Respond to STM32 GPIO Inputs
   // checkForwardAlert();
   checkReverseAlert();
-
-  // digitalWrite(PIN_FORWARD_ALERT, !digitalRead(PIN_FORWARD_ALERT)); // Toggle LED
 
   // Wait for BLE Connection to Override Motors
   if (rxBLE()) changeDirection(buffBLE);

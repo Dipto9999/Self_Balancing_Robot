@@ -1,13 +1,9 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include <mbed.h>
-
 #include "pwm.h"
 #include "angle.h"
 #include "gpio.h"
-
-extern mbed::Ticker balanceTicker;
 
 enum DirRobot {REVERSE, FORWARD, LEFT, RIGHT, PARK};
 
@@ -41,8 +37,6 @@ extern float currDutyCycle;
 extern int bleDirection;
 
 /* Function Prototypes */
-void balanceRobotISR();
-
 void setupMotors();
 void setupController();
 
