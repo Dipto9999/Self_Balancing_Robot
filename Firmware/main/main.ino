@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <mbed.h>
 
-// #include "angle.h"
+#include "angle.h"
 // #include "controller.h"
 #include "pwm.h"
 #include "ble.h"
@@ -20,7 +20,7 @@ void setup() {
 
   TimerTicker.attach(&timerISR, 0.1f);
 
-  // setupIMU();
+  setupIMU();
   // setupMotors();
   setupPWM();
   setupBLE();
