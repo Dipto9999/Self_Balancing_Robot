@@ -75,8 +75,10 @@ void balanceRobot(int bleDirection) {
     u_t = (Kp * errorAngle) + (Kd * errorDifference);
 
     // TODO: Convert Control Signal to Power (i.e. PWM Duty Cycle)
-    dutyCycle = abs(u_t) / VCC; // Convert Control Signal to Duty Cycle
-    dutyCycle = (dutyCycle > 1) ? 1 : dutyCycle; // Limit Duty Cycle to 100%
+    // dutyCycle = abs(u_t) / VCC; // Convert Control Signal to Duty Cycle
+    // dutyCycle = (dutyCycle > 1) ? 1 : dutyCycle; // Limit Duty Cycle to 100%
+
+    dutyCycle = 0.5; // Set Default Duty Cycle
 
     // Print Control Values
     // Serial.print("Measured Angle: ");

@@ -3,7 +3,6 @@
 
 #include "angle.h"
 #include "controller.h"
-#include "pwm.h"
 #include "ble.h"
 #include "serial.h"
 #include "gpio.h"
@@ -12,6 +11,7 @@ mbed::Ticker TimerTicker;
 
 void timerISR() {
   digitalWrite(PIN_FORWARD_ALERT, !digitalRead(PIN_FORWARD_ALERT));
+  balanceRobot(bleDirection);
 }
 
 void setup() {
@@ -22,7 +22,6 @@ void setup() {
 
   setupIMU();
   setupMotors();
-  setupPWM();
   setupBLE();
 
   Serial.println("Setup Complete!");
@@ -36,8 +35,7 @@ void loop() {
   checkReverseAlert();
 
   // Wait for BLE Connection to Override Motors
-  // if (rxBLE()) changeDirection(buffBLE);
-  // balanceRobot(bleDirection);
+  if (rxBLE()) changeDirection(buffBLE);
 
   getAngles(Angles);
 
@@ -50,6 +48,4 @@ void loop() {
   Serial.println(serialMsg);
 
   // handleData('A', serialMsg);
-
-  delay(200);
 }
