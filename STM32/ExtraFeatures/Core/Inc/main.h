@@ -59,6 +59,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define RFID_STATUS_Pin GPIO_PIN_14
+#define RFID_STATUS_GPIO_Port GPIOC
 #define SPEAKER_Pin GPIO_PIN_0
 #define SPEAKER_GPIO_Port GPIOA
 #define DISTANCE_SENSOR_FRONT_INPUT_CAPTURE_Pin GPIO_PIN_2
@@ -84,7 +86,6 @@ typedef enum
 	DISTANCE_SENSOR_FRONT_ID,
 	DISTANCE_SENSOR_BACK_ID,
 	COLOR_SENSOR_ID,
-	RFID_ID
 
 } feature_id;
 /* USER CODE END Private defines */

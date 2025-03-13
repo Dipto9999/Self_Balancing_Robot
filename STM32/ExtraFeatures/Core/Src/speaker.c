@@ -1,11 +1,14 @@
 #include "speaker.h"
 
+
 #define CLK_SPEED 32000000
 #define DEFAULT_AUTORELOAD 488
 
-void Speaker_Init(speaker* speaker, TIM_HandleTypeDef* timer)
+void Speaker_Init(speaker* speaker, rfid* rfid_struct, TIM_HandleTypeDef* timer)
 {
+	speaker->rfid_sensor = rfid_struct;
 	speaker->timer = timer;
+
 	speaker->hasFault = false;
 	speaker->beepLengthOn = 0;
 	speaker->beepLengthPeriod = 0;
@@ -25,7 +28,7 @@ void Speaker_Start(speaker* speaker, uint8_t ID)
 {
 
 	speaker->featureFault[ID] = true;
-	if (speaker->featureFault[0] || speaker->featureFault[1] || speaker->featureFault[2] || speaker->featureFault[3])
+	if ((speaker->featureFault[0] || speaker->featureFault[1] || speaker->featureFault[2]) && speaker->rfid_sensor->botEnabled)
 	{
 		speaker->hasFault = true;
 		Speaker_SetAutoReload(speaker, DEFAULT_AUTORELOAD);
@@ -37,7 +40,7 @@ void Speaker_Start(speaker* speaker, uint8_t ID)
 void Speaker_Stop(speaker* speaker, uint8_t ID)
 {
 	speaker->featureFault[ID] = false;
-	if (!(speaker->featureFault[0] || speaker->featureFault[1] || speaker->featureFault[2] || speaker->featureFault[3]))
+	if (!(speaker->featureFault[0] || speaker->featureFault[1] || speaker->featureFault[2]))
 	{
 		speaker->hasFault = false;
 		HAL_TIM_PWM_Stop(speaker->timer, TIM_CHANNEL_1);

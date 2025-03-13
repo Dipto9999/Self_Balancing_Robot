@@ -151,18 +151,19 @@ int main(void)
   MX_TIM22_Init();
   MX_TIM21_Init();
   /* USER CODE BEGIN 2 */
-  Speaker_Init(&Speaker, &htim2);
-  //DistanceSensor_Init(&Front, &htim21, DISTANCE_SENSOR_FRONT_ID, DISTANCE_SENSOR_FRONT_INPUT_CAPTURE_GPIO_Port, DISTANCE_SENSOR_FRONT_INPUT_CAPTURE_Pin, DISTANCE_SENSOR_FRONT_STATUS_GPIO_Port, DISTANCE_SENSOR_FRONT_STATUS_Pin);
+
+  DistanceSensor_Init(&Front, &htim21, DISTANCE_SENSOR_FRONT_ID, DISTANCE_SENSOR_FRONT_INPUT_CAPTURE_GPIO_Port, DISTANCE_SENSOR_FRONT_INPUT_CAPTURE_Pin, DISTANCE_SENSOR_FRONT_STATUS_GPIO_Port, DISTANCE_SENSOR_FRONT_STATUS_Pin);
+  DistanceSensor_Init(&Back, &htim22, DISTANCE_SENSOR_BACK_ID, DISTANCE_SENSOR_BACK_INPUT_CAPTURE_GPIO_Port, DISTANCE_SENSOR_BACK_INPUT_CAPTURE_Pin, DISTANCE_SENSOR_BACK_STATUS_GPIO_Port, DISTANCE_SENSOR_BACK_STATUS_Pin);
   RFID_Init(&RFID_Module);
+  Speaker_Init(&Speaker, &RFID_Module, &htim2);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   //DistanceSensor_Start(&Front);
-  //DistanceSensor_Start(&Front);
-  //DistanceSensor_Start(&Back);W
+  DistanceSensor_Start(&Front);
+  DistanceSensor_Start(&Back);
 
-  uint8_t serialNum[5];
   while (1)
   {
 	  RFID_SecurityLogic(&RFID_Module);
@@ -630,14 +631,25 @@ static void MX_GPIO_Init(void)
 /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(RFID_STATUS_GPIO_Port, RFID_STATUS_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, SPI1_CS_Pin|DISTANCE_SENSOR_FRONT_STATUS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, SPI1_RST_Pin|DISTANCE_SENSOR_BACK_STATUS_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : RFID_STATUS_Pin */
+  GPIO_InitStruct.Pin = RFID_STATUS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(RFID_STATUS_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : SPI1_CS_Pin DISTANCE_SENSOR_FRONT_STATUS_Pin */
   GPIO_InitStruct.Pin = SPI1_CS_Pin|DISTANCE_SENSOR_FRONT_STATUS_Pin;
@@ -646,19 +658,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : SPI1_RST_Pin */
-  GPIO_InitStruct.Pin = SPI1_RST_Pin;
+  /*Configure GPIO pins : SPI1_RST_Pin DISTANCE_SENSOR_BACK_STATUS_Pin */
+  GPIO_InitStruct.Pin = SPI1_RST_Pin|DISTANCE_SENSOR_BACK_STATUS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(SPI1_RST_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : DISTANCE_SENSOR_BACK_STATUS_Pin */
-  GPIO_InitStruct.Pin = DISTANCE_SENSOR_BACK_STATUS_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(DISTANCE_SENSOR_BACK_STATUS_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

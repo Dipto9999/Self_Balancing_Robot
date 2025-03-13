@@ -21,6 +21,8 @@ void DistanceSensor_Init(distancesensor* sensor, TIM_HandleTypeDef* timer, featu
 	sensor->statusGPIOPort = statusGPIOPort;
 	sensor->statusGPIOPin = statusGPIOPin;
 
+	HAL_GPIO_WritePin(sensor->statusGPIOPort, sensor->statusGPIOPin, GPIO_PIN_SET);
+
 
 }
 
@@ -74,7 +76,7 @@ void DistanceSensor_Handle(distancesensor* sensor)
 	float distance = DistanceSensor_GetDistance(sensor);
 	if (sensor->countAtMaxDistance > 5)
 	{
-		HAL_GPIO_WritePin(sensor->statusGPIOPort, sensor->statusGPIOPin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(sensor->statusGPIOPort, sensor->statusGPIOPin, GPIO_PIN_RESET);
 
 		if (!Speaker.hasFault) Speaker_Start(&Speaker, sensor->ID);
 	}
@@ -85,7 +87,7 @@ void DistanceSensor_Handle(distancesensor* sensor)
 	else
 	{
 		sensor->countAtMaxDistance = 0;
-		HAL_GPIO_WritePin(sensor->statusGPIOPort, sensor->statusGPIOPin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(sensor->statusGPIOPort, sensor->statusGPIOPin, GPIO_PIN_SET);
 
 		if (Speaker.hasFault) Speaker_Stop(&Speaker, sensor->ID);
 

@@ -1,11 +1,16 @@
 #ifndef INC_SPEAKER_H_
 #define INC_SPEAKER_H_
 
+#include "rfid.h"
 #include "main.h"
+
+
 #include <stdbool.h>
+
 
 typedef struct
 {
+	rfid* rfid_sensor;
 	TIM_HandleTypeDef* timer;
 
 	volatile uint16_t beepLengthOn;
@@ -20,7 +25,7 @@ typedef struct
 
 } speaker;
 
-void Speaker_Init(speaker* speaker, TIM_HandleTypeDef* timer);
+void Speaker_Init(speaker* speaker, rfid* rfid_struct, TIM_HandleTypeDef* timer);
 void Speaker_Start(speaker* speaker, uint8_t ID);
 void Speaker_Stop(speaker* speaker, uint8_t ID);
 bool Speaker_Beep(speaker* speaker, uint16_t length_on_ms, uint16_t length_off_ms, uint8_t numBeeps);

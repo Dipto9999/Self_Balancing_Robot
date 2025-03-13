@@ -2,12 +2,12 @@
 #define INC_RFID_H_
 
 #include "main.h"
-
 #include "rc522.h"
-#include "speaker.h"
+
 
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 typedef enum
 {
