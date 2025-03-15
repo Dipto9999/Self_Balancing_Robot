@@ -74,6 +74,8 @@ void RFID_SecurityLogic(rfid* sensor)
 	    		sensor->initialSuccessfulCardTap = false;
 	    		sensor->initialFailedCardTap = true;
 	    		sensor->botEnabled = !sensor->botEnabled;
+
+	    		HAL_GPIO_WritePin(RFID_STATUS_GPIO_Port, RFID_STATUS_Pin, (GPIO_PinState) !sensor->botEnabled);
 	    	}
 	        break;
 
@@ -87,6 +89,8 @@ void RFID_SecurityLogic(rfid* sensor)
 				Speaker_Beep(&Speaker, 150, 50, 4);
 				sensor->initialSuccessfulCardTap = true;
 				sensor->initialFailedCardTap = false;
+
+
 	    	}
 	    	//HAL_Delay(HAL_MAX_DELAY);
 

@@ -10,4 +10,4 @@
 ../Core/Src/main.c:575:13:MX_USART1_UART_Init	2
 ../Core/Src/main.c:608:13:MX_DMA_Init	1
 ../Core/Src/main.c:626:13:MX_GPIO_Init	1
-../Core/Src/main.c:675:6:Error_Handler	1
+../Core/Src/main.c:678:6:Error_Handler	1
