@@ -3,7 +3,7 @@
 String serialMsg = "";
 
 void setupSerial() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 }
 
 void handleData(char expectedByte, String txData) {
