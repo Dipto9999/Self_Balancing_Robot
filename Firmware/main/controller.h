@@ -37,12 +37,14 @@ extern float currDutyCycle;
 extern int bleDirection;
 
 /* Function Prototypes */
-void setupMotors();
 void setupController();
+void setupMotors();
 
 void changeDirection(const char* bleBuff);
-void balanceRobot(int direction);
+void balanceRobot(int bleDirection);
 
+void moveForward();
+void moveReverse();
 void turnLeft();
 void turnRight();
 
