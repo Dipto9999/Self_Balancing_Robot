@@ -13,6 +13,7 @@ const int CONTROL_PERIOD = 0.02f; // 50Hz
 
 void timerISR() {
   balanceRobot(bleDirection);
+  digitalWrite(PIN_RFID_DISABLED, !digitalRead(PIN_RFID_DISABLED));
 }
 
 void setup() {
