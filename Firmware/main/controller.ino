@@ -9,7 +9,6 @@ ConfigPWM ConfigMotor = {
 };
 
 const int VCC = 10.8; // 10.8V
-const int CONTROL_FREQ = 10; // 10Hz
 
 /* PID Controller Variables */
 float setpointAngle; // Reference Value, r_t (Angle = 180°)
@@ -30,9 +29,9 @@ float currDutyCycle; // Current PWM Duty Cycle
 int bleDirection; // Current Direction
 
 void setupController() {
-    Kp = 0.4; // Proportional Gain
+    Kp = 0.8; // Proportional Gain
     // Ki = 62.14; // Integral Gain
-    Kd = 0; // Derivative Gain
+    Kd = 0.0511; // Derivative Gain
 
     setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
     errorAngle = 0.0; // Error Value, e_t = r_t - y_t
@@ -61,9 +60,9 @@ void balanceRobot(int bleDirection) {
     measuredAngle = Angles.Complementary; // Get Measured Angle
 
     // TODO: Ignore Small Angle Values
-    if (abs(measuredAngle) < 1) {
-        return; // Implement BLE Control
-    }
+    // if (abs(measuredAngle) < 1) {
+    //     return; // Implement BLE Control
+    // }
 
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt

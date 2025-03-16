@@ -1,7 +1,7 @@
 #include "angle.h"
 
 /* Constants and Variables */
-float k = 0.6;
+float k = 0.9;
 
 float prevGyro;
 float prevComplementary;
