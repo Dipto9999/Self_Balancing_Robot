@@ -61,9 +61,9 @@ void balanceRobot(int bleDirection) {
     measuredAngle = Angles.Complementary; // Get Measured Angle
 
     // TODO: Ignore Small Angle Values
-    // if (abs(measuredAngle) < 1.5) {
-    //     return; // Implement BLE Control
-    // }
+    if (abs(measuredAngle) < 1) {
+        return; // Implement BLE Control
+    }
 
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
@@ -76,12 +76,16 @@ void balanceRobot(int bleDirection) {
     u_t = (Kp * errorAngle) + (Kd * errorDifference);
 
     // TODO: Convert Control Signal to Power (i.e. PWM Duty Cycle)
-    // dutyCycle = abs(u_t) / VCC; // Convert Control Signal to Duty Cycle
-    // dutyCycle = (dutyCycle > 1) ? 1 : dutyCycle; // Limit Duty Cycle to 100%
+    dutyCycle = abs(u_t) / VCC; // Convert Control Signal to Duty Cycle
+    dutyCycle = (dutyCycle > 1) ? 1 : dutyCycle; // Limit Duty Cycle to 100%
 
-    dutyCycle = 0.5; // Set Default Duty Cycle
-    moveSlowDecay(MotorA, CW, dutyCycle);
-    moveSlowDecay(MotorB, CW, dutyCycle);
+    if (u_t > 0) { // FORWARD
+        moveSlowDecay(MotorA, CW, dutyCycle);
+        moveSlowDecay(MotorB, CW, dutyCycle);
+    } else { // REVERSE
+        moveSlowDecay(MotorA, CCW, dutyCycle);
+        moveSlowDecay(MotorB, CCW, dutyCycle);
+    }
 
     // TODO: DEPRECATED: Use PID Controller to Balance Robot
     // if (angle >= 215) { // Hard Right (angle ≥ 195)
