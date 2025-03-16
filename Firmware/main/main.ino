@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <mbed.h>
 
 #include "angle.h"
 #include "controller.h"
@@ -7,20 +6,11 @@
 #include "serial.h"
 #include "gpio.h"
 
-mbed::Ticker TimerTicker;
-
-const int CONTROL_PERIOD = 0.02f; // 50Hz
-
-void timerISR() {
-  balanceRobot(bleDirection);
-  digitalWrite(PIN_RFID_DISABLED, !digitalRead(PIN_RFID_DISABLED));
-}
-
 void setup() {
   setupSerial();
   setupGPIO();
 
-  TimerTicker.attach(&timerISR, 0.1f);
+  setupISR();
 
   setupIMU();
   setupMotors();
