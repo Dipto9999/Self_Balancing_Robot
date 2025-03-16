@@ -8,7 +8,7 @@ using namespace std::chrono_literals;
 
 static mbed::Ticker timerTicker;
 
-static constexpr auto CONTROL_PERIOD = 50ms;
+static constexpr auto CONTROL_PERIOD = 20ms;
 
 void setupISR() {
   timerTicker.attach(&timerISR, CONTROL_PERIOD);
