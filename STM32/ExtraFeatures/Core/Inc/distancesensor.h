@@ -18,10 +18,10 @@ typedef struct
 	feature_id ID;
 
 	GPIO_TypeDef* icGPIOPort;
-	uint8_t icGPIOPin;
+	uint16_t icGPIOPin;
 
 	GPIO_TypeDef* statusGPIOPort;
-	uint8_t statusGPIOPin;
+	uint16_t statusGPIOPin;
 } distancesensor;
 
 
