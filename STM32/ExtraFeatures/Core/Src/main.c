@@ -162,11 +162,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   //DistanceSensor_Start(&Front);
   DistanceSensor_Start(&Front);
-  DistanceSensor_Start(&Back);
-
+  //DistanceSensor_Start(&Back);
+  RFID_Module.botEnabled = true;
   while (1)
   {
-	  RFID_SecurityLogic(&RFID_Module);
+	  //RFID_SecurityLogic(&RFID_Module);
 
 	  /*
 	  	MFRC522_Request(PICC_REQIDL, serialNum);
@@ -181,45 +181,13 @@ int main(void)
 	  //sprintf(Data, "%s\r\n", str);
 	  //HAL_UART_Transmit(&huart1, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
 	  //HAL_Delay(100);
+	  float frontd = DistanceSensor_GetDistance(&Front);
+	  float backd = DistanceSensor_GetDistance(&Back);
 
-	  /*
-	  sprintf(Data, "%f %f\r\n", DistanceSensor_GetDistance(&Front), DistanceSensor_GetDistance(&Back));
+	  sprintf(Data, "%f %f %u %u %u\r\n", frontd, backd, Speaker.featureFault[0], Speaker.featureFault[1], Speaker.featureFault[2]);
 	  HAL_UART_Transmit(&huart1, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
 	  HAL_Delay(100);
-	  */
-	  //__NOP();
-	  //RFID_WriteRegister(&RFIDModule, CommandReg, 0x00); // Sets TX communication to the tag at 106kB/s
-	  //RFID_ReadRegister(&RFIDModule, CommandReg, 1, &value, 0);
-	  /*
-	    RFID_WriteRegister(&RFIDModule, RxModeReg, 0x00); // Sets RX communication to the tag at 106kB/s
-	    	// Reset ModWidthReg
-	    RFID_WriteRegister(&RFIDModule, ModWidthReg, 0x26); // Controls the setting of modulation width.
 
-	    	// When communicating with a PICC we need a timeout if something goes wrong.
-	    	// f_timer = 13.56 MHz / (2*TPreScaler+1) where TPreScaler = [TPrescaler_Hi:TPrescaler_Lo].
-	    	// TPrescaler_Hi are the four low bits in TModeReg. TPrescaler_Lo is TPrescalerReg.
-
-	    RFID_WriteRegister(&RFIDModule, TModeReg, 0x80);			// TAuto=1; timer starts automatically at the end of the transmission in all communication modes at all speeds
-	    	RFID_WriteRegister(&RFIDModule, TPrescalerReg, 0xA9);		// TPreScaler = TModeReg[3..0]:TPrescalerReg, ie 0x0A9 = 169 => f_timer=40kHz, ie a timer period of 25μs
-	    	RFID_WriteRegister(&RFIDModule, TReloadRegH, 0x03);		// Reload timer with 0x3E8 = 1000, ie 25ms before timeout.
-	    	RFID_WriteRegister(&RFIDModule, TReloadRegL, 0xE8);
-
-	    	RFID_WriteRegister(&RFIDModule, TxASKReg, 0x40);		// Default 0x00. Force a 100 % ASK modulation independent of the ModGsPReg register setting
-	    	RFID_WriteRegister(&RFIDModule, ModeReg, 0x3D);
-
-	  RFID_ReadRegister(&RFIDModule, RxModeReg, 1, &value[1]);
-	  RFID_ReadRegister(&RFIDModule, ModWidthReg, 1, &value[2]);
-	  RFID_ReadRegister(&RFIDModule, TModeReg, 1, &value[3]);
-	  RFID_ReadRegister(&RFIDModule, TPrescalerReg, 1, &value[4]);
-	  RFID_ReadRegister(&RFIDModule, TReloadRegH, 1, &value[5]);
-	  RFID_ReadRegister(&RFIDModule, TReloadRegL, 1, &value[6]);
-	  RFID_ReadRegister(&RFIDModule, TxASKReg, 1, &value[7]);
-	  RFID_ReadRegister(&RFIDModule, ModeReg, 1, &value[8]);
-	*/
-	  //sprintf(Data, "%02X\r\n", value);
-	  //sprintf(Data, "%02X %02X %02X %02X %02X %02X %02X %02X %02X\r\n", value[0], value[1], value[2], value[3], value[4], value[5], value[6], value[7], value[8]);
-	  //HAL_UART_Transmit(&huart1, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
-	  //HAL_Delay(250);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
