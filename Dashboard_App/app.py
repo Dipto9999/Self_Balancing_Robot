@@ -128,7 +128,7 @@ class DashboardApp(App):
     def on_stop(self):
         """Close Serial Connection on Application Exit."""
         if self.conn is not None and self.conn.isOpen():
-            self.conn.close() # Close Serial Connection When Plot Closedconn.close() # Close Serial Connection When Plot Closed
+            self.conn.close() # Close Serial Connection When Plot Closed
 
             fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
             self.dashboard.strip_chart.save_logs(fig_name)

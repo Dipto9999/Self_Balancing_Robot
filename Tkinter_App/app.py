@@ -38,7 +38,7 @@ class Dashboard(Frame):
         self.snapshot_button = Button(
             self.button_frame,
             text = "Snapshot", width = 15,
-            command = self.cam_feed.take_snapshot
+            command = lambda: self.cam_feed.take_snapshot()
         )
         self.snapshot_button.pack(side = tk.LEFT, padx = 5, pady = 5)
 
