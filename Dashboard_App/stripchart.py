@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from IPython.display import display
 
 class StripChart:
-    SAMPLE_RATE = 0.1 # 100ms
+    SAMPLE_RATE = 0.1  # 100ms
     def __init__(self, conn, data_size = 50, ylim = 360):
         self.conn = conn
         self.fig, self.ax = plt.subplots(figsize = (900 / 100, 755 / 100))

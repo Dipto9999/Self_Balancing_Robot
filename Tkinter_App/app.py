@@ -66,11 +66,11 @@ class Dashboard(Frame):
         self.strip_chart.update()
         self.fig_canvas.draw_idle() # Redraw Canvas
         # Schedule the next update
-        self.after(int(StripChart.SAMPLE_RATE), self.update_chart)
+        self.after(StripChart.SAMPLE_RATE * 10E3, self.update_chart)
 
     def update_feed(self):
         self.cam_feed.update()
-        self.after(int(CameraDisplay.SAMPLE_RATE), self.update_feed)
+        self.after(CameraDisplay.SAMPLE_RATE * 10E3, self.update_feed)
 
     def cleanup(self):
         if self.conn and self.conn.isOpen():
