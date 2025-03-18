@@ -92,20 +92,23 @@ class CameraDisplay(tk.Frame):
     def stop(self):
         self.camera.close()
 
+class TestApp(tk.Tk):
+   def __init__(self):
+        super().__init__()
+        self.title("PiCamera Live Stream")
+
+        self.camera_frame = CameraDisplay(self)
+        self.camera_frame.pack()
+        self.update()
+        self.protocol("WM_DELETE_WINDOW", self.close)
+
+    def update(self):
+        self.camera_frame.update()
+        self.after(int(CameraDisplay.SAMPLE_RATE), self.update)
+
+    def close(self):
+        self.camera_frame.stop()
+        self.destroy()
+
 if __name__ == "__main__":
-    root = tk.Tk()
-    root.title("PiCamera Live Stream")
-
-    camera_frame = CameraDisplay(root)
-    camera_frame.pack()
-
-    def update():
-        camera_frame.update()
-        root.after(int(CameraDisplay.SAMPLE_RATE), update)
-
-    def close():
-        camera_frame.stop()
-        root.destroy()
-
-    root.protocol("WM_DELETE_WINDOW", close)
-    root.mainloop()
+    TestApp().mainloop()
