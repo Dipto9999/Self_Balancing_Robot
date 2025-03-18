@@ -99,9 +99,13 @@ if __name__ == "__main__":
     camera_frame = CameraDisplay(root)
     camera_frame.pack()
 
-    def on_closing():
+    def update():
+        camera_frame.update()
+        root.after(int(CameraDisplay.SAMPLE_RATE), update)
+
+    def close():
         camera_frame.stop()
         root.destroy()
 
-    root.protocol("WM_DELETE_WINDOW", on_closing)
+    root.protocol("WM_DELETE_WINDOW", close)
     root.mainloop()
