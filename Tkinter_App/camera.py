@@ -36,7 +36,7 @@ class CameraDisplay(tk.Frame):
         self.image_label = tk.Label(self)
         self.image_label.pack()
 
-    def start_recording(self)
+    def start_recording(self):
         self.camera.configure(self.config)
         self.camera.start()
 
@@ -71,7 +71,7 @@ class CameraDisplay(tk.Frame):
         snapshot_path = os.path.join(self.snapshot_dir, snapshot_name)
 
         # Convert to PIL Image and Flip Vertically
-        image = PILImage.fromarray(frame).transpose(PILImage.FLIP_TOP_BOTTOM) 
+        image = PILImage.fromarray(frame).transpose(PILImage.FLIP_TOP_BOTTOM)
         image.save(snapshot_path) # Save Image
         print(f"Snapshot Saved to {snapshot_path}")
 
