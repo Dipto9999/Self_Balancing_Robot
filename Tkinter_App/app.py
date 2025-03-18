@@ -14,11 +14,11 @@ class Dashboard(Frame):
         super().__init__(parent)
 
         # Serial Connection
-        try:
-            self.conn = ArduinoSerial(port = 'COM3', baudrate = 9600)
-        except serial.SerialException as serial_error:
-            print("Serial Connection Error:", str(serial_error))
-            self.conn = None
+        # try:
+        #     self.conn = ArduinoSerial(port = 'COM3', baudrate = 9600)
+        # except serial.SerialException as serial_error:
+        #     print("Serial Connection Error:", str(serial_error))
+        #     self.conn = None
 
         # Camera
         self.cam_feed = CameraDisplay(self)
@@ -43,7 +43,7 @@ class Dashboard(Frame):
         self.snapshot_button.pack(side = tk.LEFT, padx = 5, pady = 5)
 
         # Strip Chart
-        self.strip_chart = StripChart(conn = self.conn)
+        # self.strip_chart = StripChart(conn = self.conn)
         self.fig_canvas = FigureCanvasTkAgg(self.strip_chart.fig, master = self)
         self.fig_canvas.get_tk_widget().pack(
             side = tk.RIGHT,
@@ -51,8 +51,9 @@ class Dashboard(Frame):
             fill = tk.BOTH, expand = True
         )
 
-        self.after(500, self.update_chart)
+        # self.after(500, self.update_chart)
         self.after(500, self.update_feed)
+        self.protocol("WM_DELETE_WINDOW", self.cleanup) # Cleanup
 
     def toggle_record(self):
         if self.cam_feed.filename: # Currently Recording
@@ -62,11 +63,11 @@ class Dashboard(Frame):
             self.cam_feed.start_recording()
             self.record_button.config(text = "Stop", bg = "red")
 
-    def update_chart(self):
-        self.strip_chart.update()
-        self.fig_canvas.draw_idle() # Redraw Canvas
-        # Schedule the next update
-        self.after(int(StripChart.SAMPLE_RATE * 10E3), self.update_chart)
+    # def update_chart(self):
+    #     self.strip_chart.update()
+    #     self.fig_canvas.draw_idle() # Redraw Canvas
+    #     # Schedule the next update
+    #     self.after(int(StripChart.SAMPLE_RATE * 10E3), self.update_chart)
 
     def update_feed(self):
         self.cam_feed.update()
