@@ -31,7 +31,7 @@ class CameraDisplay(tk.Frame):
                 # "size": (1920, 1080), # Full HD
                 "format": "RGB888"
             },
-            transform = Transform(hflip = True, vflip = True) # For Tkinter Display
+            transform = Transform(hflip = False, vflip = False) # For Tkinter Display
         )
         self.image_label = tk.Label(self)
         self.image_label.pack()
