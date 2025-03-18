@@ -105,7 +105,7 @@ class TestApp(tk.Tk):
 
     def update(self):
         self.camera_frame.update()
-        self.after(CameraDisplay.SAMPLE_RATE * 10E3, self.update)
+        self.after(int(CameraDisplay.SAMPLE_RATE * 10E3), self.update)
 
     def close(self):
         self.camera_frame.stop()
