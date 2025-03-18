@@ -51,8 +51,8 @@ class Dashboard(Frame):
             fill = tk.BOTH, expand = True
         )
 
-        self.update_chart()
-        self.update_feed()
+        self.after(500, self.update_chart)
+        self.after(500, self.update_feed)
 
     def toggle_record(self):
         if self.cam_feed.filename: # Currently Recording
