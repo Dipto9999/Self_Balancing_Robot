@@ -99,6 +99,7 @@ class TestApp(tk.Tk):
 
         self.camera_frame = CameraDisplay(self)
         self.camera_frame.pack()
+        self.camera_frame.start_recording()
         self.update()
         self.protocol("WM_DELETE_WINDOW", self.close)
 
