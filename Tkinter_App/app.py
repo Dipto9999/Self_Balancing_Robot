@@ -139,7 +139,7 @@ class Dashboard:
 
     def cleanup(self):
         if self.conn and self.conn.isOpen():
-            self.conn.close() # Close Serial Connection When Plot Closed
+            self.stripchart.stop() # Stop StripChart
 
             fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
             self.stripchart.save_logs(fig_name)
