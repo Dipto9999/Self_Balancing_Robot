@@ -122,13 +122,13 @@ class TestApp(tk.Tk):
 
         self.camera_frame.pack(side = tk.TOP, fill = tk.X)
 
-        self.cam_feed.start_recording()
+        # self.cam_feed.start_recording()
         self.update()
         self.protocol("WM_DELETE_WINDOW", self.close)
 
     def toggle_record(self):
         # pass
-        if self.cam_feed.filename: # Currently Recording
+        if self.cam_feed.filename != "": # Recording
             self.cam_feed.stop_recording()
             self.record_button.config(text = "Start", bg = "green")
         else: # Not Recording

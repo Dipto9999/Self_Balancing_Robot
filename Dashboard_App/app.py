@@ -29,7 +29,8 @@ class Dashboard:
 
         self.record_button = tk.Button(
             self.button_frame,
-            text = "Start Recording", width = 15,
+            text = "Start", bg = "green",
+            width = 15,
             command = self.toggle_record
         )
         self.snapshot_button = tk.Button(
@@ -114,7 +115,7 @@ class Dashboard:
 
     def toggle_record(self):
         # pass
-        if self.cam_feed.filename: # Currently Recording
+        if self.cam_feed.filename != "": # Recording
             self.cam_feed.stop_recording()
             self.record_button.config(text = "Start", bg = "green")
         else: # Not Recording
