@@ -70,8 +70,8 @@ class CameraDisplay(tk.Frame):
         snapshot_name = f"Snapshot_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg"
         snapshot_path = os.path.join(self.snapshot_dir, snapshot_name)
 
-        # Convert to PIL Image and Flip Vertically
-        image = PILImage.fromarray(frame).transpose(PILImage.FLIP_TOP_BOTTOM)
+        # Convert to PIL Image
+        image = PILImage.fromarray(frame)
         image.save(snapshot_path) # Save Image
         print(f"Snapshot Saved to {snapshot_path}")
 
