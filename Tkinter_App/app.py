@@ -121,9 +121,9 @@ class Dashboard:
             self.record_button.config(text = "Stop", bg = "red")
 
     def update_feed(self):
-        print("Hello")
-        self.cam_feed.update()
+        # print("Hello")
         # self.master.after(50, self.update_feed)
+        self.cam_feed.update()
         self.master.after(CameraDisplay.SAMPLE_RATE, self.update_feed)
 
     def open_serial(self):
