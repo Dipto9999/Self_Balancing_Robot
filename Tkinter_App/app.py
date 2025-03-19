@@ -105,7 +105,7 @@ class Dashboard:
 
         self.dashboard_frame.pack(fill = tk.BOTH, expand = True)
 
-        self.after(500, self.update_feed)
+        self.master.after(500, self.update_feed)
 
     def toggle_record(self):
         if self.cam_feed.filename: # Currently Recording
