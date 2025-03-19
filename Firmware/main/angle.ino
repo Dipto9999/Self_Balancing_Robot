@@ -1,9 +1,12 @@
 #include "angle.h"
 
 /* Constants and Variables */
-float k;
+float k = 0.9; // Complementary Filter Constant
 
-const float ACCEL_OFFSET = 1.55;
+// const float ACCELEROMETER_OFFSET = 1.55;
+const float ACCELEROMETER_OFFSET = 0;
+const float STD_ACCELERATION = 1.02;
+
 float prevGyro;
 float prevComplementary;
 
@@ -26,7 +29,6 @@ void setupIMU() {
   // Serial.println("Reading Raw Data from Gyroscope and Accelerometer...");
   // Serial.println("Gyroscope (rad/s) | Accelerometer (g)");
 
-  k = 0.9;
   while (az == 0) {
     if (IMU.accelerationAvailable()) {
       IMU.readAcceleration(ax, ay, az);
@@ -42,7 +44,7 @@ void setupIMU() {
 
 void getAngles(ANGLES &Angles) {
   float currAccel, currGyro, currComplementary;
-  float sampleTime;
+  float sampleTime, accelCondition;
 
   if (!IMU.gyroscopeAvailable()) return;
   IMU.readGyroscope(gx, gy, gz);
@@ -51,7 +53,7 @@ void getAngles(ANGLES &Angles) {
   IMU.readAcceleration(ax, ay, az);
 
   currAccel = atan2(az, ay) * (180 / PI);
-  currAccel = (currAccel - 90) + ACCEL_OFFSET;
+  currAccel = (currAccel - 90) + ACCELEROMETER_OFFSET;
 
   // Offset at Low Angles
   if (gx > 0 && gx < 2) gx = 0;
@@ -66,9 +68,16 @@ void getAngles(ANGLES &Angles) {
 
   currGyro = prevGyro + gx * sampleTime;
 
-  // Case that Robot is Accelerating Forwards
-  if ((ax*ax + ay*ay + az*az - 1.0) > 0.04) k = 1;
+  // Prevent Robot from Unpredictable Acceleration
+  accelCondition = abs(ax*ax + ay*ay + az*az - STD_ACCELERATION);
+  if (accelCondition > 0.05) k = 1;
   else k = 0.9;
+
+  // Serial.print("Acceleration Condn: ");
+  // Serial.println(abs(ax*ax + ay*ay + az*az - 1.02));
+
+  // Serial.print("K: ");
+  // Serial.println(k);
 
   currComplementary = k * (prevComplementary + gx * sampleTime) + (1 - k) * currAccel;
 
