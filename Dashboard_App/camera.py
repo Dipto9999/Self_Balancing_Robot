@@ -50,7 +50,7 @@ class CameraDisplay(tk.Frame):
             return
 
         self.camera.stop_recording()
-        self.camera.stop()
+        # self.camera.stop()
         self.filename = ""
 
     def take_snapshot(self):
@@ -139,7 +139,7 @@ class CameraApp(tk.Tk):
         self.snapshot_button.config(bg = "green")
         self.cam_feed.take_snapshot()
 
-        self.after(500, lambda: self.snapshot_button.config(bg = "white"))
+        self.after(2000, lambda: self.snapshot_button.config(bg = "white"))
 
     def update(self):
         self.cam_feed.update()
