@@ -108,8 +108,8 @@ class CameraApp(tk.Tk):
         )
         self.snapshot_button = tk.Button(
             self.button_frame,
-            text = "Snapshot", width = 15,
-            command = lambda: self.cam_feed.take_snapshot()
+            text = "Snapshot", bg = "grey", width = 15,
+            command = lambda: self.take_snapshot()
         )
 
         self.cam_feed = CameraDisplay(self.camera_frame) # Camera Feed
@@ -134,6 +134,11 @@ class CameraApp(tk.Tk):
         else: # Not Recording
             self.cam_feed.start_recording()
             self.record_button.config(text = "Stop", bg = "red")
+
+    def take_snapshot(self):
+        self.snapshot_button.config(bg = "green")
+        self.cam_feed.take_snapshot()
+        self.snapshot_button.config(bg = "grey")
 
     def update(self):
         self.cam_feed.update()
