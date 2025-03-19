@@ -108,7 +108,7 @@ class CameraApp(tk.Tk):
         )
         self.snapshot_button = tk.Button(
             self.button_frame,
-            text = "Snapshot", bg = "grey", width = 15,
+            text = "Snapshot", bg = "white", width = 15,
             command = lambda: self.take_snapshot()
         )
 
@@ -138,7 +138,7 @@ class CameraApp(tk.Tk):
     def take_snapshot(self):
         self.snapshot_button.config(bg = "green")
         self.cam_feed.take_snapshot()
-        self.snapshot_button.config(bg = "grey")
+        self.snapshot_button.config(bg = "white")
 
     def update(self):
         self.cam_feed.update()
