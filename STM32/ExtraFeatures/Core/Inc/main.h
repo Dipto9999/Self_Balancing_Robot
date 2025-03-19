@@ -59,8 +59,6 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define RFID_STATUS_Pin GPIO_PIN_14
-#define RFID_STATUS_GPIO_Port GPIOC
 #define SPEAKER_Pin GPIO_PIN_0
 #define SPEAKER_GPIO_Port GPIOA
 #define DISTANCE_SENSOR_FRONT_INPUT_CAPTURE_Pin GPIO_PIN_2
@@ -71,6 +69,8 @@ void Error_Handler(void);
 #define SPI1_CS_GPIO_Port GPIOA
 #define SPI1_RST_Pin GPIO_PIN_0
 #define SPI1_RST_GPIO_Port GPIOB
+#define RFID_STATUS_Pin GPIO_PIN_12
+#define RFID_STATUS_GPIO_Port GPIOA
 #define DISTANCE_SENSOR_FRONT_STATUS_Pin GPIO_PIN_15
 #define DISTANCE_SENSOR_FRONT_STATUS_GPIO_Port GPIOA
 #define DISTANCE_SENSOR_BACK_STATUS_Pin GPIO_PIN_3

@@ -38,7 +38,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define COLORSENSOR_SLAVE_ADDRESS 0x10 << 1
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -63,6 +63,7 @@ rfid RFID_Module;
 distancesensor Front;
 distancesensor Back;
 speaker Speaker;
+//colorsensor Color;
 
 char Data[64];
 
@@ -156,38 +157,43 @@ int main(void)
   DistanceSensor_Init(&Back, &htim22, DISTANCE_SENSOR_BACK_ID, DISTANCE_SENSOR_BACK_INPUT_CAPTURE_GPIO_Port, DISTANCE_SENSOR_BACK_INPUT_CAPTURE_Pin, DISTANCE_SENSOR_BACK_STATUS_GPIO_Port, DISTANCE_SENSOR_BACK_STATUS_Pin);
   RFID_Init(&RFID_Module);
   Speaker_Init(&Speaker, &RFID_Module, &htim2);
+  //ColorSensor_Init(&Color, &hi2c1, COLORSENSOR_SLAVE_ADDRESS);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  //DistanceSensor_Start(&Front);
   DistanceSensor_Start(&Front);
-  //DistanceSensor_Start(&Back);
-  RFID_Module.botEnabled = true;
+  DistanceSensor_Start(&Back);
+  //ColorSensor_EnableStatus(&Color, true);
+  //RFID_Module.botEnabled = true;
+  /*
+  uint8_t buffer[12];
+  uint8_t registers[] = {0x00, 0x04, 0x05, 0x06, 0x07, 0x08, 0x0c};
+  uint8_t i = 0;
+	*/
+
+
   while (1)
   {
-	  //RFID_SecurityLogic(&RFID_Module);
-
+	  //buffer[0] = registers[i];
+	  //ColorSensor_ReceiveTransmit(&Color, sendData, receiveData);
+	  RFID_SecurityLogic(&RFID_Module);
 	  /*
-	  	MFRC522_Request(PICC_REQIDL, serialNum);
-	  	MFRC522_Anticoll(serialNum);
+	  if (HAL_I2C_Master_Transmit(&hi2c1, 0x10 << 1, buffer, 1, HAL_MAX_DELAY) != HAL_OK) {
+		  Error_Handler();
+	  }
 
-	  	sprintf(Data, "%u %u %u %u %u\r\n", serialNum[0], serialNum[1], serialNum[2], serialNum[3], serialNum[4]);
+	  if (HAL_I2C_Master_Receive(&hi2c1, 0x10 << 1, buffer, 2, HAL_MAX_DELAY) != HAL_OK) {
+	  		  Error_Handler();
+	  }
 
-	  //sprintf(Data, "%u\r\n", (uint8_t) RFID_ValidateCard(&RFIDModule));
+
+	  sprintf(Data, "%u %u %u\r\n", registers[i], buffer[0], buffer[1]);
 	  HAL_UART_Transmit(&huart1, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
-	  HAL_Delay(50);
-	  */
-	  //sprintf(Data, "%s\r\n", str);
-	  //HAL_UART_Transmit(&huart1, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
-	  //HAL_Delay(100);
-	  float frontd = DistanceSensor_GetDistance(&Front);
-	  float backd = DistanceSensor_GetDistance(&Back);
-
-	  sprintf(Data, "%f %f %u %u %u\r\n", frontd, backd, Speaker.featureFault[0], Speaker.featureFault[1], Speaker.featureFault[2]);
-	  HAL_UART_Transmit(&huart1, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
-	  HAL_Delay(100);
-
+	  HAL_Delay(250);
+	  i++;
+	  i %= 7;
+		*/
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -263,7 +269,7 @@ static void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.Timing = 0x00300F38;
+  hi2c1.Init.Timing = 0x00807CBB;
   hi2c1.Init.OwnAddress1 = 32;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
@@ -599,12 +605,8 @@ static void MX_GPIO_Init(void)
 /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(RFID_STATUS_GPIO_Port, RFID_STATUS_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, SPI1_CS_Pin|DISTANCE_SENSOR_FRONT_STATUS_Pin, GPIO_PIN_RESET);
@@ -612,19 +614,15 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, SPI1_RST_Pin|DISTANCE_SENSOR_BACK_STATUS_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : RFID_STATUS_Pin */
-  GPIO_InitStruct.Pin = RFID_STATUS_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(RFID_STATUS_GPIO_Port, &GPIO_InitStruct);
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(RFID_STATUS_GPIO_Port, RFID_STATUS_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pins : SPI1_CS_Pin DISTANCE_SENSOR_FRONT_STATUS_Pin */
-  GPIO_InitStruct.Pin = SPI1_CS_Pin|DISTANCE_SENSOR_FRONT_STATUS_Pin;
+  /*Configure GPIO pin : SPI1_CS_Pin */
+  GPIO_InitStruct.Pin = SPI1_CS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(SPI1_CS_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : SPI1_RST_Pin DISTANCE_SENSOR_BACK_STATUS_Pin */
   GPIO_InitStruct.Pin = SPI1_RST_Pin|DISTANCE_SENSOR_BACK_STATUS_Pin;
@@ -632,6 +630,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : RFID_STATUS_Pin DISTANCE_SENSOR_FRONT_STATUS_Pin */
+  GPIO_InitStruct.Pin = RFID_STATUS_Pin|DISTANCE_SENSOR_FRONT_STATUS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

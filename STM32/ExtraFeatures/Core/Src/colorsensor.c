@@ -11,6 +11,9 @@ void ColorSensor_Init(colorsensor* sensor, I2C_HandleTypeDef* i2c_handle, uint8_
     sensor->i2c_commands[1] = 0x06;
     sensor->i2c_commands[2] = 0x07;
 
+    for (uint8_t i = 0; i < sizeof(sensor->rgb_data) / sizeof(sensor->rgb_data[0]); i++)
+    	sensor->rgb_data[i] = 0x00;
+
     sensor->current_channel = 0;
     sensor->enabled = false;
 }
@@ -19,12 +22,36 @@ void ColorSensor_EnableStatus(colorsensor* sensor, bool enable)
 {
 	sensor->enabled = enable;
 }
+/*
+void ColorSensor_ReceiveTransmit(colorsensor* sensor, uint8_t* sendData, uint16_t* receiveData)
+{
+    if (HAL_I2C_IsDeviceReady(sensor->i2c, sensor->slave_address, 1, 1) == HAL_OK && sensor->enabled) {
+        // Transmit data
+        if (HAL_I2C_Master_Transmit(sensor->i2c, sensor->slave_address, sendData, 1, HAL_MAX_DELAY) != HAL_OK) {
+        	Error_Handler();
+            return;
+        }
+
+        // Receive data
+        if (HAL_I2C_Master_Receive(sensor->i2c, sensor->slave_address, receiveData, 2, HAL_MAX_DELAY) != HAL_OK) {
+            // Handle error (e.g., log it, retry, or return)
+        	Error_Handler();
+            return;
+        }
+    } else {
+        __NOP();
+    }
+}
+*/
 
 void ColorSensor_RGBStartColorReceive(colorsensor* sensor)
 {
-    if (HAL_I2C_IsDeviceReady(sensor->i2c, sensor->slave_address, 1, 1) == HAL_OK && sensor->enabled) {
+
+
+	if (HAL_I2C_IsDeviceReady(sensor->i2c, sensor->slave_address, 1, 1) == HAL_OK && sensor->enabled) {
         HAL_I2C_Master_Transmit(sensor->i2c, sensor->slave_address, &sensor->i2c_commands[sensor->current_channel], 1, HAL_MAX_DELAY);
-        HAL_I2C_Master_Receive_DMA(sensor->i2c, sensor->slave_address, (uint8_t *)&sensor->rgb_data[sensor->current_channel], 2);
+        //HAL_I2C_Master_Receive_DMA(sensor->i2c, sensor->slave_address, (uint8_t *)&sensor->rgb_data[sensor->current_channel], 2);
+        HAL_I2C_Master_Receive(sensor->i2c, sensor->slave_address, (uint8_t *)&sensor->rgb_data[sensor->current_channel], 2, HAL_MAX_DELAY);
     }
 }
 

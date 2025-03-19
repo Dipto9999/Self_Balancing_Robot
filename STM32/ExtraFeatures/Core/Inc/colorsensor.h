@@ -25,6 +25,7 @@ typedef struct
 
 void ColorSensor_Init(colorsensor* sensor, I2C_HandleTypeDef* i2c_handle, uint8_t slave_addr);
 void ColorSensor_EnableStatus(colorsensor* sensor, bool enable);
+void ColorSensor_ReceiveTransmit(colorsensor* sensor, uint8_t* sendData, uint16_t* receiveData);
 void ColorSensor_RGBStartColorReceive(colorsensor* sensor);
 void ColorSensor_ReceiveInterrupt(colorsensor* sensor);
 color ColorSensor_CalculateColor(colorsensor* sensor);
