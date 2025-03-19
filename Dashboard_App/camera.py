@@ -138,7 +138,8 @@ class CameraApp(tk.Tk):
     def take_snapshot(self):
         self.snapshot_button.config(bg = "green")
         self.cam_feed.take_snapshot()
-        self.snapshot_button.config(bg = "white")
+
+        self.after(500, lambda: self.snapshot_button.config(bg = "white"))
 
     def update(self):
         self.cam_feed.update()
