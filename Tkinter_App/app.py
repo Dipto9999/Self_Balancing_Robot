@@ -1,59 +1,109 @@
+import sys
+import threading as td
+
 import tkinter as tk
-from tkinter import Button, Frame
+from tkinter import ttk
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 import datetime as dt
 import serial
 
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
 from camera import CameraDisplay
-from stripchart import StripChart
-from arduinoSerial import ArduinoSerial
+from stripchart import ArduinoSerial, StripChart
 
-class Dashboard(Frame):
-    def __init__(self, parent):
-        super().__init__(parent)
+class Dashboard(tk.Frame):
+    def __init__(self, master):
+        super().__init__(master, orient = tk.HORIZONTAL)
 
-        # Serial Connection
-        # try:
-        #     self.conn = ArduinoSerial(port = 'COM3', baudrate = 9600)
-        # except serial.SerialException as serial_error:
-        #     print("Serial Connection Error:", str(serial_error))
-        #     self.conn = None
+        self.master = master
 
-        # Camera
-        self.cam_feed = CameraDisplay(self)
-        self.cam_feed.pack(side = tk.LEFT, padx = 10, pady = 10)
+        self.camera_frame = tk.Frame(self, bg = '#141654')
+        self.serial_frame = tk.Frame(self, bg = '#787882')
+        self.stripchart_frame = tk.Frame(self, bg = '#48484d')
 
-        # Button Frame
-        self.button_frame = Frame(self)
-        self.button_frame.pack(side = tk.TOP, fill = tk.X)
+        ############################
+        ### Camera Frame Widgets ###
+        ############################
 
-        self.record_button = Button(
+        self.button_frame = tk.Frame(self.camera_frame, bg = '#787882')
+
+        self.record_button = tk.Button(
             self.button_frame,
             text = "Start Recording", width = 15,
             command = self.toggle_record
         )
-        self.record_button.pack(side = tk.LEFT, padx = 5, pady = 5)
-
-        self.snapshot_button = Button(
+        self.snapshot_button = tk.Button(
             self.button_frame,
             text = "Snapshot", width = 15,
             command = lambda: self.cam_feed.take_snapshot()
         )
-        self.snapshot_button.pack(side = tk.LEFT, padx = 5, pady = 5)
 
-        # Strip Chart
-        # self.strip_chart = StripChart(conn = self.conn)
-        self.fig_canvas = FigureCanvasTkAgg(self.strip_chart.fig, master = self)
-        self.fig_canvas.get_tk_widget().pack(
-            side = tk.RIGHT,
-            padx = 10, pady = 10,
-            fill = tk.BOTH, expand = True
+        self.cam_feed = CameraDisplay(self.camera_frame) # Camera Feed
+
+        self.record_button.pack(side = tk.LEFT, padx = 5, pady = 5)
+        self.snapshot_button.pack(side = tk.RIGHT, padx = 5, pady = 5)
+
+        self.camera_frame.pack(side = tk.TOP, fill = tk.X)
+        self.button_frame.pack(side = tk.BOTTOM, fill = tk.X)
+
+        ############################
+        ### Serial Frame Widgets ###
+        ############################
+
+        self.port_label = tk.Label(self.serial_frame, text = "Serial Line : ", bg = '#787882')
+        self.port_entry = tk.Entry(self.serial_frame, bg = '#6e9eeb')
+
+        self.baudrate_label = tk.Label(self.serial_frame, text = "Speed : ", bg = '#787882')
+        self.baudrate_entry = tk.Entry(self.serial_frame, bg = '#6e9eeb')
+
+        self.open_button = tk.Button(
+            self.serial_frame, text = "Open", command = self.open_serial, bg = '#6e9eeb',
         )
 
-        # self.after(500, self.update_chart)
+        self.port_label.grid(
+            row = 0, column = 0,
+            rowspan = 1, columnspan = 1,
+            padx = 10, pady = 10, sticky = 'w'
+        )
+        self.port_entry.grid(
+            row = 0, column = 1,
+            rowspan = 1, columnspan = 1,
+            padx = 10, pady = 10
+        )
+
+        self.baudrate_label.grid(
+            row = 1, column = 0,
+            rowspan = 1, columnspan = 1,
+            padx = 10, pady = 10, sticky = 'w'
+        )
+        self.baudrate_entry.grid(
+            row = 1, column = 1,
+            rowspan = 1, columnspan = 1,
+            padx = 10, pady = 10
+        )
+
+        self.open_button.grid(
+            row = 2, column = 1,
+            rowspan = 1, columnspan = 1,
+            padx = 10, pady = 10,
+            sticky = 'e'
+        )
+
+        ################################
+        ### StripChart Frame Widgets ###
+        ################################
+
+        self.stripchart = StripChart(self.stripchart_frame)
+
+        self.stripchart.canvas_widget.grid(row = 0, column = 0)
+
+        # Position Widgets
+
+        self.camera_frame.grid(row = 0, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
+        self.serial_frame.grid(row = 1, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
+        self.stripchart_frame.grid(row = 0, column = 1, rowspan = 2, padx = 10, pady = 10, sticky = tk.NSEW)
+
         self.after(500, self.update_feed)
-        self.protocol("WM_DELETE_WINDOW", self.cleanup) # Cleanup
 
     def toggle_record(self):
         if self.cam_feed.filename: # Currently Recording
@@ -63,23 +113,33 @@ class Dashboard(Frame):
             self.cam_feed.start_recording()
             self.record_button.config(text = "Stop", bg = "red")
 
-    # def update_chart(self):
-    #     self.strip_chart.update()
-    #     self.fig_canvas.draw_idle() # Redraw Canvas
-    #     # Schedule the next update
-    #     self.after(int(StripChart.SAMPLE_RATE * 10E3), self.update_chart)
-
     def update_feed(self):
         self.cam_feed.update()
         self.after(int(CameraDisplay.SAMPLE_RATE * 10E3), self.update_feed)
+
+    def open_serial(self):
+        if self.conn is None :  # Check if Serial Connection Already Established
+            port = self.port_entry.get()
+            baudrate = self.baudrate_entry.get()
+
+            try :
+                self.conn = ArduinoSerial(
+                    port = port, baudrate = int(baudrate)
+                )
+
+                self.stripchart.start(self.conn) # Start StripChart
+                self.stripchart.canvas_widget.grid(row = 0, column = 0)
+            except serial.SerialException as serial_error:
+                print("Serial Connection Error:", str(serial_error))
+                self.conn = None
 
     def cleanup(self):
         if self.conn and self.conn.isOpen():
             self.conn.close() # Close Serial Connection When Plot Closed
 
             fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
-            self.strip_chart.save_logs(fig_name)
-            self.strip_chart.save_fig(fig_name)
+            self.stripchart.save_logs(fig_name)
+            self.stripchart.save_fig(fig_name)
 
         self.cam_feed.stop() # Close Camera
 
@@ -98,4 +158,7 @@ class DashboardApp(tk.Tk):
     def on_close(self):
         """Close Serial Connection on Application Exit."""
         self.dashboard.cleanup() # Cleanup
-        self.destroy() # Quit Application
+
+        # Exit Application
+        self.destroy()
+        sys.exit()
