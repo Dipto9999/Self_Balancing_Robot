@@ -11,15 +11,17 @@ import serial
 from camera import CameraDisplay
 from stripchart import ArduinoSerial, StripChart
 
-class Dashboard(tk.Frame):
+class Dashboard:
     def __init__(self, master):
         super().__init__(master)
 
         self.master = master
 
-        self.camera_frame = tk.Frame(self, bg = '#141654')
-        self.serial_frame = tk.Frame(self, bg = '#787882')
-        self.stripchart_frame = tk.Frame(self, bg = '#48484d')
+        self.dashboard_frame = tk.Frame(self.master, bg = '#000000')
+
+        self.camera_frame = tk.Frame(self.dashboard_frame, bg = '#141654')
+        self.serial_frame = tk.Frame(self.dashboard_frame, bg = '#787882')
+        self.stripchart_frame = tk.Frame(self.dashboard_frame, bg = '#48484d')
 
         ############################
         ### Camera Frame Widgets ###
@@ -103,6 +105,8 @@ class Dashboard(tk.Frame):
         self.serial_frame.grid(row = 1, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
         self.stripchart_frame.grid(row = 0, column = 1, rowspan = 2, padx = 10, pady = 10, sticky = tk.NSEW)
 
+        self.dashboard_frame.pack(fill = tk.BOTH, expand = True)
+
         self.after(500, self.update_feed)
 
     def toggle_record(self):
@@ -151,7 +155,6 @@ class DashboardApp(tk.Tk):
         self.resizable(False, False)
 
         self.dashboard = Dashboard(self)
-        self.dashboard.pack(fill = tk.BOTH, expand = True)
 
         self.protocol("WM_DELETE_WINDOW", self.on_close) # Cleanup
 
