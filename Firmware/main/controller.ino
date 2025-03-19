@@ -29,8 +29,9 @@ float currDutyCycle; // Current PWM Duty Cycle
 int bleDirection; // Current Direction
 
 void setupController() {
-    Kp = 0.8; // Proportional Gain
-    // Ki = 62.14; // Integral Gain
+    Kp = 0.6; // Proportional Gain
+    Ki = 0; // Integral Gain
+    // Kd = 0.0511; // Derivative Gain
     Kd = 0.0511; // Derivative Gain
 
     setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
@@ -57,7 +58,14 @@ void balanceRobot(int bleDirection) {
     // TODO: Measure Angles in Main Loop
     // getAngles(Angles); // Get Initial Angle Values
 
-    measuredAngle = Angles.Complementary; // Get Measured Angle
+    // Get Measured Angle
+    /*
+    if (((Angles.Gyroscope - prevGyro) < 5) && ((Angles.Accelerometer - Angles.Gyroscope) > 7)) {
+        measuredAngle = Angles.Gyroscope; 
+    } else {
+        measuredAngle = Angles.Complementary; 
+    }
+    */
 
     // TODO: Ignore Small Angle Values
     // if (abs(measuredAngle) < 1) {
@@ -66,12 +74,10 @@ void balanceRobot(int bleDirection) {
 
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
-
-    // Include Integral Error Accumulation
-    errorAccumulation += (errorAngle * dt); // ∑e_t
-    u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
+    errorAccumulation += (errorAngle * dt); // // Include Integral Error Accumulation ∑e_t
 
     // Calculate Control Signal : u_t = Kp * e_t + Ki * ∑e_t + Kd * (e_t - e_(t-1) / dt)
+    //u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
     u_t = (Kp * errorAngle) + (Kd * errorDifference);
 
     // TODO: Convert Control Signal to Power (i.e. PWM Duty Cycle)

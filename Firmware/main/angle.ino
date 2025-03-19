@@ -1,8 +1,9 @@
 #include "angle.h"
 
 /* Constants and Variables */
-float k = 0.9;
+float k;
 
+const float ACCEL_OFFSET = 2.65;
 float prevGyro;
 float prevComplementary;
 
@@ -30,21 +31,24 @@ void setupIMU() {
       prevGyro -= 90;
 
       prevComplementary = prevGyro;
+
+      k = 0.9;
     }
   }
 }
 
 void getAngles(ANGLES &Angles) {
   float currAccel, currGyro, currComplementary;
+  float sampleTime;
 
-  while (!IMU.gyroscopeAvailable());
+  if (!IMU.gyroscopeAvailable()) return;
   IMU.readGyroscope(gx, gy, gz);
 
-  while (!IMU.accelerationAvailable());
+  if (!IMU.accelerationAvailable()) return;
   IMU.readAcceleration(ax, ay, az);
 
   currAccel = atan2(az, ay) * (180 / PI);
-  currAccel -= 90;
+  currAccel = (currAccel - 90) + ACCEL_OFFSET;
 
   // Offset at Low Angles
   if (gx > 0 && gx < 2) gx = 0;
@@ -53,10 +57,16 @@ void getAngles(ANGLES &Angles) {
   // Account for Negative Angular Velocity Error
   else if (gx < 0) gx *= 1.12;
 
-  if (dt == 0) currGyro = prevGyro + gx * 1 / IMU.gyroscopeSampleRate();
-  else currGyro = prevGyro + gx * dt;
+  if (dt == 0) sampleTime = 1 / IMU.gyroscopeSampleRate();
+  else sampleTime = dt;
 
-  currComplementary = k * (prevComplementary + gx * 1 / IMU.gyroscopeSampleRate()) + (1 - k) * currAccel;
+  currGyro = prevGyro + gx * sampleTime;
+
+  // Case that Robot is Accelerating Forwards
+  if ((ax*ax + ay*ay + az*az - 1.0) > 0.04) k = 1;
+  else k = 0.9;
+
+  currComplementary = k * (prevComplementary + gx * sampleTime) + (1 - k) * currAccel;
 
   /* Update Time Variables */
   t_n = millis(); // Current Time in Milliseconds
