@@ -13,7 +13,7 @@ from stripchart import ArduinoSerial, StripChart
 
 class Dashboard(tk.Frame):
     def __init__(self, master):
-        super().__init__(master, orient = tk.HORIZONTAL)
+        super().__init__(master)
 
         self.master = master
 
