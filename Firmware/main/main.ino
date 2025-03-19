@@ -75,5 +75,5 @@ void loop() {
   handleData('A', serialMsg);
 
   // Print Control Values
-  printControlValues();
+  // printControlValues();
 }

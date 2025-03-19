@@ -1,6 +1,6 @@
 import time
 import serial
- 
+
 import pandas as pd
 import datetime as dt
 import matplotlib.pyplot as plt
@@ -14,7 +14,7 @@ from IPython.display import display
 
 class Serial(serial.Serial) :
     def __init__(self,
-            port = 'COM4',
+            port = 'COM3',
             baudrate = 115200,
         ):
         super().__init__(

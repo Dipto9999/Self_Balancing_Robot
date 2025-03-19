@@ -59,13 +59,7 @@ void balanceRobot(int bleDirection) {
     // getAngles(Angles); // Get Initial Angle Values
 
     // Get Measured Angle
-    /*
-    if (((Angles.Gyroscope - prevGyro) < 5) && ((Angles.Accelerometer - Angles.Gyroscope) > 7)) {
-        measuredAngle = Angles.Gyroscope; 
-    } else {
-        measuredAngle = Angles.Complementary; 
-    }
-    */
+    measuredAngle = Angles.Complementary; // Complementary Filter
 
     // TODO: Ignore Small Angle Values
     // if (abs(measuredAngle) < 1) {
@@ -74,10 +68,10 @@ void balanceRobot(int bleDirection) {
 
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
-    errorAccumulation += (errorAngle * dt); // // Include Integral Error Accumulation ∑e_t
+    errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
 
     // Calculate Control Signal : u_t = Kp * e_t + Ki * ∑e_t + Kd * (e_t - e_(t-1) / dt)
-    //u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
+    // u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
     u_t = (Kp * errorAngle) + (Kd * errorDifference);
 
     // TODO: Convert Control Signal to Power (i.e. PWM Duty Cycle)

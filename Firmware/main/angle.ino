@@ -3,7 +3,7 @@
 /* Constants and Variables */
 float k;
 
-const float ACCEL_OFFSET = 2.65;
+const float ACCEL_OFFSET = 1.55;
 float prevGyro;
 float prevComplementary;
 
@@ -13,6 +13,8 @@ float ax, ay, az = 0;
 /* Time Variables */
 unsigned long t_n, t_n1 = 0; // Current and Previous Time
 float dt = 0; // Time Difference
+
+float initialAngle;
 
 void setupIMU() {
   if (!IMU.begin()) {
@@ -24,15 +26,16 @@ void setupIMU() {
   // Serial.println("Reading Raw Data from Gyroscope and Accelerometer...");
   // Serial.println("Gyroscope (rad/s) | Accelerometer (g)");
 
+  k = 0.9;
   while (az == 0) {
     if (IMU.accelerationAvailable()) {
       IMU.readAcceleration(ax, ay, az);
       prevGyro = atan2(az, ay) * (180 / PI);
       prevGyro -= 90;
 
-      prevComplementary = prevGyro;
+      initialAngle = prevGyro;
 
-      k = 0.9;
+      prevComplementary = prevGyro;
     }
   }
 }
@@ -57,8 +60,9 @@ void getAngles(ANGLES &Angles) {
   // Account for Negative Angular Velocity Error
   else if (gx < 0) gx *= 1.12;
 
-  if (dt == 0) sampleTime = 1 / IMU.gyroscopeSampleRate();
-  else sampleTime = dt;
+  // if (dt == 0) sampleTime = 1.0 / IMU.gyroscopeSampleRate();
+  // else sampleTime = dt;
+  sampleTime = 1.0 / IMU.gyroscopeSampleRate();
 
   currGyro = prevGyro + gx * sampleTime;
 
@@ -84,6 +88,9 @@ void getAngles(ANGLES &Angles) {
   // Serial.print(Angles.Gyroscope);
   // Serial.print(" | Complementary: ");
   // Serial.println(Angles.Complementary);
+
+  // Serial.print("Initial Angle: ");
+  // Serial.println(initialAngle);
 
   /* Assign Previous Angles */
   prevGyro = currGyro;
