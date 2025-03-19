@@ -13,8 +13,6 @@ from stripchart import ArduinoSerial, StripChart
 
 class Dashboard:
     def __init__(self, master):
-        super().__init__(master)
-
         self.master = master
 
         self.dashboard_frame = tk.Frame(self.master, bg = '#000000')
