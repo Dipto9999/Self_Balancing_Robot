@@ -1,19 +1,38 @@
 import os
 import serial
 
-import threading as td
-import queue
-
-import time
 import pandas as pd
 import numpy as np
+
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.animation as animation
 
 from IPython.display import display
+class ArduinoSerial(serial.Serial) :
+    def __init__(self, port = 'COM3', baudrate = 115200):
+        super().__init__(port = port, baudrate = baudrate)
+
+    def open(self) :
+        super().open()
+        if self.isOpen() :
+            print('Serial Port is Open')
+        else:
+            print('Serial Port is Closed')
+
+    def close(self) :
+        super().close()
+        print('Serial Port is Closed')
+
+    def reconnect(self) :
+        self.close()
+        self.open()
+        return self.isOpen()
 
 class StripChart:
-    SAMPLE_RATE = 0.1  # 100ms
-    def __init__(self, conn, data_size = 50, ylim = 360):
+    SAMPLE_RATE = 0.1 # 100ms
+    def __init__(self, master, conn = None, data_size = 50, ylim = 180):
+        self.master = master
         self.conn = conn
         self.fig, self.ax = plt.subplots(figsize = (900 / 100, 755 / 100))
 
@@ -40,8 +59,8 @@ class StripChart:
             )
         )
 
-        self.ax.set_ylim(0, self.ylim) # Angle Expected to be Between 0 Deg and 360 Deg
-        self.ax.set_yticks(range(0, self.ylim + 1, 15)) # Set Y-Ticks to 15 Deg Intervals
+        self.ax.set_ylim(-self.ylim, self.ylim) # Angle Expected to be Between -180 Deg and 180 Deg
+        self.ax.set_yticks(np.arange(-self.ylim, self.ylim + 1, 15))
 
         self.ax.tick_params(axis = 'both', labelsize = 8)
 
@@ -60,9 +79,8 @@ class StripChart:
             fontsize = 10,
         )
 
-        # Create a Thread-Safe Queue for Serial Data
-        self.data_queue = queue.Queue()
-        self.stop_event = td.Event()
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self.master)
+        self.canvas_widget = self.canvas.get_tk_widget()
 
         self.figures_dir: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Figures")
         self.logbook_dir: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Logbook")
@@ -70,57 +88,24 @@ class StripChart:
         os.makedirs(self.figures_dir, exist_ok = True)
         os.makedirs(self.logbook_dir, exist_ok = True)
 
-        self.thread = td.Thread(target = self.rx_angle, daemon = True)
-        self.thread.start()
-
         self.missed = 0 # Track Missed Data
 
+    def start(self, conn):
+        """Start StripChart."""
+        self.conn = conn
+        self.animation = animation.FuncAnimation(
+            fig = self.fig, # Figure
+            func = self.update, # Update Function
+            frames = self.data_size, # Number of Frames
+            blit = False, # Prevent Re-rendering Entire Plot
+            interval = StripChart.SAMPLE_RATE * 1000, # Delay in ms
+        )
+        self.canvas = FigureCanvasTkAgg(self.fig, master = self.master)
+        self.canvas_widget = self.canvas.get_tk_widget()
+
     def update(self):
-        """Update Strip Chart with New Data."""
-        if not self.data_queue.empty(): # Process All Data in Queue
-            try:
-                arduinoStream = self.data_queue.get().split(' ')
-
-                # print(f"Queue Value: {arduinoStream}")
-
-                if len(arduinoStream) != 3:
-                    raise ValueError
-
-                accelerometer_angle: float = float(arduinoStream[0])
-                gyroscope_angle: float = float(arduinoStream[1])
-                complementary_angle = float(arduinoStream[2])
-
-                # print(f"Accelerometer Angle: {accelerometer_angle} Deg")
-                # print(f"Gyroscope Angle: {gyroscope_angle} Deg")
-                # print(f"Complementary Angle: {complementary_angle} Deg")
-
-                # Append Data
-                if len(self.sample_data) > 0:
-                    self.sample_data.append(self.sample_data[-1]+1)
-                else:
-                    self.sample_data.append(0)
-                self.accelerometer_data.append(accelerometer_angle)
-                self.gyroscope_data.append(gyroscope_angle)
-                self.complementary_data.append(complementary_angle)
-            except ValueError:
-                pass
-        else:
-            self.missed += 1
-
-        if self.conn and self.missed > 100: # Stop Updating After 10s of Missed Data
-                self.conn.reconnect() # Reconnect Serial Connection
-                self.stop() # Stop Serial Thread
-                self.stop_event.clear() # Clear Stop Event
-
-                # Restart Serial Thread
-                self.thread = td.Thread(target = self.rx_angle, daemon = True)
-                self.thread.start()
-
-        # Limit Size to Trailing Data
-        self.sample_data = self.sample_data[-self.data_size:]
-        self.accelerometer_data = self.accelerometer_data[-self.data_size:]
-        self.gyroscope_data = self.gyroscope_data[-self.data_size:]
-        self.complementary_data = self.complementary_data[-self.data_size:]
+        """Update StripChart with New Data."""
+        self.rx_angle()
 
         # Update Plot Data
         t_data = [t * 0.1 for t in self.sample_data]
@@ -155,41 +140,65 @@ class StripChart:
             )
 
     def stop(self):
-        """Signal Serial Thread to Stop and Wait for Thread to Finish."""
-        self.stop_event.set()
-        self.thread.join()
-
-        self.missed = 0
+        """Set Connection to None and Stop Updating."""
+        self.missed, self.conn = 0, None
 
     def rx_angle(self):
         """Read Angle Data from Serial Connection."""
         def read_serial() :
             """Read Data from Serial Connection."""
             if (self.conn is not None) :
-                return self.conn.readline().decode('ascii').strip('\r').strip('\n')
+                return str(self.conn.readline().decode('ascii').strip('\r').strip('\n'))
             else :
                 return None
 
-        while not self.stop_event.is_set(): # Loop Until Stop Event is Set
+        # Loop Until Connection is Closed or Stop Event is Set
+        while (self.conn is not None):
             # Request Serial Transmission of Angle
             try:
                 self.conn.write(b'A')
             except serial.SerialException:
-                self.conn.reconnect()
+                if not self.conn.reconnect():
+                    self.stop()
 
             # Read Angle Data
             try:
-                arduinoStream = str(read_serial()).rstrip('\r')
+                arduinoStream: list = str(read_serial()).rstrip('\r').split(' ')
                 # print(f"RX Value: {arduinoStream}")
 
-                # print("Data Queue Size:", self.data_queue.qsize())
-                self.data_queue.put(arduinoStream) # Add New Data
-            except serial.SerialException:
-                self.conn.reconnect()
-            except ValueError:
-                pass
+                if len(arduinoStream) != 3:
+                    raise ValueError
 
-            time.sleep(StripChart.SAMPLE_RATE) # Read Data Every 100ms
+                # print(f"Incoming Value: {arduinoStream}")
+
+                accelerometer_angle: float = float(arduinoStream[0])
+                gyroscope_angle: float = float(arduinoStream[1])
+                complementary_angle = float(arduinoStream[2])
+
+                print(f"Accelerometer Angle: {accelerometer_angle}°")
+                print(f"Gyroscope Angle: {gyroscope_angle}°")
+                print(f"Complementary Angle: {complementary_angle}°")
+
+                # Append Data
+                if len(self.sample_data) > 0:
+                    self.sample_data.append(self.sample_data[-1]+1)
+                else:
+                    self.sample_data.append(0)
+                self.accelerometer_data.append(accelerometer_angle)
+                self.gyroscope_data.append(gyroscope_angle)
+                self.complementary_data.append(complementary_angle)
+            except ValueError:
+                self.missed += 1
+
+        if self.conn and self.missed > 100: # Stop Updating After 10s of Missed Data
+            if not self.conn.reconnect(): # Reconnect Serial Connection
+                self.stop() # Stop Updating
+
+        # Limit Size to Trailing Data
+        self.sample_data = self.sample_data[-self.data_size:]
+        self.accelerometer_data = self.accelerometer_data[-self.data_size:]
+        self.gyroscope_data = self.gyroscope_data[-self.data_size:]
+        self.complementary_data = self.complementary_data[-self.data_size:]
 
     def save_fig(self, fig_name) :
         """Save Figure to File."""
