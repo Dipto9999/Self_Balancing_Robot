@@ -18,8 +18,8 @@ class Dashboard:
         self.dashboard_frame = tk.Frame(self.master, bg = '#000000')
 
         self.camera_frame = tk.Frame(self.dashboard_frame, bg = '#141654')
-        # self.serial_frame = tk.Frame(self.dashboard_frame, bg = '#787882')
-        # self.stripchart_frame = tk.Frame(self.dashboard_frame, bg = '#48484d')
+        self.serial_frame = tk.Frame(self.dashboard_frame, bg = '#787882')
+        self.stripchart_frame = tk.Frame(self.dashboard_frame, bg = '#48484d')
 
         ############################
         ### Camera Frame Widgets ###
@@ -42,70 +42,71 @@ class Dashboard:
         # self.cam_feed = tk.Label(self.camera_frame, bg = '#141654')
 
         self.cam_feed.pack(fill = tk.BOTH, expand = True)
+
         self.record_button.pack(side = tk.LEFT, padx = 5, pady = 5)
         self.snapshot_button.pack(side = tk.RIGHT, padx = 5, pady = 5)
+        self.button_frame.pack(side = tk.BOTTOM, fill = tk.X)
 
-        # self.camera_frame.pack(side = tk.TOP, fill = tk.X)
-        # self.button_frame.pack(side = tk.BOTTOM, fill = tk.X)
+        self.camera_frame.pack(side = tk.TOP, fill = tk.X)
 
         ############################
         ### Serial Frame Widgets ###
         ############################
 
-        # self.port_label = tk.Label(self.serial_frame, text = "Serial Line : ", bg = '#787882')
-        # self.port_entry = tk.Entry(self.serial_frame, bg = '#6e9eeb')
+        self.port_label = tk.Label(self.serial_frame, text = "Serial Line : ", bg = '#787882')
+        self.port_entry = tk.Entry(self.serial_frame, bg = '#6e9eeb')
 
-        # self.baudrate_label = tk.Label(self.serial_frame, text = "Speed : ", bg = '#787882')
-        # self.baudrate_entry = tk.Entry(self.serial_frame, bg = '#6e9eeb')
+        self.baudrate_label = tk.Label(self.serial_frame, text = "Speed : ", bg = '#787882')
+        self.baudrate_entry = tk.Entry(self.serial_frame, bg = '#6e9eeb')
 
-        # self.open_button = tk.Button(
-        #     self.serial_frame, text = "Open", command = self.open_serial, bg = '#6e9eeb',
-        # )
+        self.open_button = tk.Button(
+            self.serial_frame, text = "Open", command = self.open_serial, bg = '#6e9eeb',
+        )
 
-        # self.port_label.grid(
-        #     row = 0, column = 0,
-        #     rowspan = 1, columnspan = 1,
-        #     padx = 10, pady = 10,
-        #     sticky = tk.E
-        # )
-        # self.port_entry.grid(
-        #     row = 0, column = 1,
-        #     rowspan = 1, columnspan = 1,
-        #     padx = 10, pady = 10,
-        #     sticky = tk.W
-        # )
+        self.port_label.grid(
+            row = 0, column = 0,
+            rowspan = 1, columnspan = 1,
+            padx = 10, pady = 10,
+            sticky = tk.E
+        )
+        self.port_entry.grid(
+            row = 0, column = 1,
+            rowspan = 1, columnspan = 1,
+            padx = 10, pady = 10,
+            sticky = tk.W
+        )
 
-        # self.baudrate_label.grid(
-        #     row = 1, column = 0,
-        #     rowspan = 1, columnspan = 1,
-        #     padx = 10, pady = 10,
-        #     sticky = tk.W
-        # )
-        # self.baudrate_entry.grid(
-        #     row = 1, column = 1,
-        #     rowspan = 1, columnspan = 1,
-        #     padx = 10, pady = 10
-        # )
+        self.baudrate_label.grid(
+            row = 1, column = 0,
+            rowspan = 1, columnspan = 1,
+            padx = 10, pady = 10,
+            sticky = tk.W
+        )
+        self.baudrate_entry.grid(
+            row = 1, column = 1,
+            rowspan = 1, columnspan = 1,
+            padx = 10, pady = 10
+        )
 
-        # self.open_button.grid(
-        #     row = 2, column = 1,
-        #     rowspan = 1, columnspan = 1,
-        #     padx = 10, pady = 10,
-        #     sticky = tk.EW
-        # )
+        self.open_button.grid(
+            row = 2, column = 1,
+            rowspan = 1, columnspan = 1,
+            padx = 10, pady = 10,
+            sticky = tk.EW
+        )
 
         ################################
         ### StripChart Frame Widgets ###
         ################################
 
-        # self.stripchart = StripChart(self.stripchart_frame)
-        # self.stripchart.canvas_widget.grid(row = 0, column = 0)
+        self.stripchart = StripChart(self.stripchart_frame)
+        self.stripchart.canvas_widget.grid(row = 0, column = 0)
 
         # Position Widgets
 
         self.camera_frame.grid(row = 0, column = 0, rowspan = 2, padx = 10, pady = 10, sticky = tk.NSEW)
-        # self.serial_frame.grid(row = 2, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
-        # self.stripchart_frame.grid(row = 1, column = 1, rowspan = 2, padx = 10, pady = 10, sticky = tk.NSEW)
+        self.serial_frame.grid(row = 2, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
+        self.stripchart_frame.grid(row = 1, column = 1, rowspan = 2, padx = 10, pady = 10, sticky = tk.NSEW)
 
         self.dashboard_frame.pack(fill = tk.BOTH, expand = True)
 
@@ -127,29 +128,28 @@ class Dashboard:
         self.master.after(CameraDisplay.SAMPLE_RATE, self.update_feed)
 
     def open_serial(self):
-        pass
-        # if self.stripchart.conn is None :  # Check if Serial Connection Already Established
-        #     port = self.port_entry.get()
-        #     baudrate = self.baudrate_entry.get()
+        if self.stripchart.conn is None :  # Check if Serial Connection Already Established
+            port = self.port_entry.get()
+            baudrate = self.baudrate_entry.get()
 
-        #     try :
-        #         self.conn = ArduinoSerial(
-        #             port = port, baudrate = int(baudrate)
-        #         )
+            try :
+                self.conn = ArduinoSerial(
+                    port = port, baudrate = int(baudrate)
+                )
 
-        #         self.stripchart.start(self.conn) # Start StripChart
-        #         self.stripchart.canvas_widget.grid(row = 0, column = 0)
-        #     except serial.SerialException as serial_error:
-        #         print("Serial Connection Error:", str(serial_error))
-        #         self.conn = None
+                self.stripchart.start(self.conn) # Start StripChart
+                self.stripchart.canvas_widget.grid(row = 0, column = 0)
+            except serial.SerialException as serial_error:
+                print("Serial Connection Error:", str(serial_error))
+                self.conn = None
 
     def cleanup(self):
-        # if self.stripchart.conn and self.stripchart.conn.isOpen():
-        #     self.stripchart.stop() # Stop StripChart
+        if self.stripchart.conn and self.stripchart.conn.isOpen():
+            self.stripchart.stop() # Stop StripChart
 
-        #     fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
-        #     self.stripchart.save_logs(fig_name)
-        #     self.stripchart.save_fig(fig_name)
+            fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
+            self.stripchart.save_logs(fig_name)
+            self.stripchart.save_fig(fig_name)
 
         self.cam_feed.stop() # Close Camera
 

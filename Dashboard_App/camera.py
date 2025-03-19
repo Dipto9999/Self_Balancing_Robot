@@ -97,11 +97,43 @@ class TestApp(tk.Tk):
         super().__init__()
         self.title("PiCamera Live Stream")
 
-        self.cam_feed = CameraDisplay(self)
-        self.cam_feed.pack()
+        self.camera_frame = tk.Frame(self, bg = '#141654')
+
+        self.button_frame = tk.Frame(self.camera_frame, bg = '#787882')
+
+        self.record_button = tk.Button(
+            self.button_frame,
+            text = "Start Recording", width = 15,
+            command = self.toggle_record
+        )
+        self.snapshot_button = tk.Button(
+            self.button_frame,
+            text = "Snapshot", width = 15,
+            command = lambda: self.cam_feed.take_snapshot()
+        )
+
+        self.cam_feed = CameraDisplay(self.camera_frame) # Camera Feed
+
+        self.cam_feed.pack(fill = tk.BOTH, expand = True)
+
+        self.record_button.pack(side = tk.LEFT, padx = 5, pady = 5)
+        self.snapshot_button.pack(side = tk.RIGHT, padx = 5, pady = 5)
+        self.button_frame.pack(side = tk.BOTTOM, fill = tk.X)
+
+        self.camera_frame.pack(side = tk.TOP, fill = tk.X)
+
         self.cam_feed.start_recording()
         self.update()
         self.protocol("WM_DELETE_WINDOW", self.close)
+
+    def toggle_record(self):
+        # pass
+        if self.cam_feed.filename: # Currently Recording
+            self.cam_feed.stop_recording()
+            self.record_button.config(text = "Start", bg = "green")
+        else: # Not Recording
+            self.cam_feed.start_recording()
+            self.record_button.config(text = "Stop", bg = "red")
 
     def update(self):
         self.cam_feed.update()
