@@ -92,7 +92,7 @@ class CameraDisplay(tk.Frame):
     def stop(self):
         self.camera.close()
 
-class TestApp(tk.Tk):
+class CameraApp(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("PiCamera Live Stream")
@@ -103,7 +103,7 @@ class TestApp(tk.Tk):
 
         self.record_button = tk.Button(
             self.button_frame,
-            text = "Start Recording", width = 15,
+            text = "Stop", bg = "red", width = 15,
             command = self.toggle_record
         )
         self.snapshot_button = tk.Button(
@@ -122,7 +122,7 @@ class TestApp(tk.Tk):
 
         self.camera_frame.pack(side = tk.TOP, fill = tk.X)
 
-        # self.cam_feed.start_recording()
+        self.cam_feed.start_recording()
         self.update()
         self.protocol("WM_DELETE_WINDOW", self.close)
 
@@ -144,4 +144,4 @@ class TestApp(tk.Tk):
         self.destroy()
 
 if __name__ == "__main__":
-    TestApp().mainloop()
+    CameraApp().mainloop()
