@@ -116,7 +116,7 @@ class Dashboard:
         # pass
         if self.cam_feed.filename: # Currently Recording
             self.cam_feed.stop_recording()
-            self.record_button.config(text = "Start", bg = "SystemButtonFace")
+            self.record_button.config(text = "Start", bg = "green")
         else: # Not Recording
             self.cam_feed.start_recording()
             self.record_button.config(text = "Stop", bg = "red")
