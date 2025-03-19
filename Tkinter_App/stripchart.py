@@ -60,7 +60,7 @@ class StripChart:
         )
 
         self.ax.set_ylim(-self.ylim, self.ylim) # Angle Expected to be Between -180 Deg and 180 Deg
-        self.ax.set_yticks(range(0, self.ylim + 1, 15)) # Set Y-Ticks to 15 Deg Intervals
+        self.ax.set_yticks(np.arange(-self.ylim, self.ylim + 1, 15))
 
         self.ax.tick_params(axis = 'both', labelsize = 8)
 

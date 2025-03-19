@@ -39,6 +39,7 @@ class Dashboard:
         )
 
         self.cam_feed = CameraDisplay(self.camera_frame) # Camera Feed
+        # self.cam_feed = tk.Label(self.camera_frame, bg = '#141654')
 
         self.record_button.pack(side = tk.LEFT, padx = 5, pady = 5)
         self.snapshot_button.pack(side = tk.RIGHT, padx = 5, pady = 5)
@@ -63,18 +64,21 @@ class Dashboard:
         self.port_label.grid(
             row = 0, column = 0,
             rowspan = 1, columnspan = 1,
-            padx = 10, pady = 10, sticky = 'w'
+            padx = 10, pady = 10,
+            sticky = tk.E
         )
         self.port_entry.grid(
             row = 0, column = 1,
             rowspan = 1, columnspan = 1,
-            padx = 10, pady = 10
+            padx = 10, pady = 10,
+            sticky = tk.W
         )
 
         self.baudrate_label.grid(
             row = 1, column = 0,
             rowspan = 1, columnspan = 1,
-            padx = 10, pady = 10, sticky = 'w'
+            padx = 10, pady = 10,
+            sticky = tk.W
         )
         self.baudrate_entry.grid(
             row = 1, column = 1,
@@ -86,7 +90,7 @@ class Dashboard:
             row = 2, column = 1,
             rowspan = 1, columnspan = 1,
             padx = 10, pady = 10,
-            sticky = 'e'
+            sticky = tk.EW
         )
 
         ################################
@@ -99,15 +103,16 @@ class Dashboard:
 
         # Position Widgets
 
-        self.camera_frame.grid(row = 0, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
-        self.serial_frame.grid(row = 1, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
-        self.stripchart_frame.grid(row = 0, column = 1, rowspan = 2, padx = 10, pady = 10, sticky = tk.NSEW)
+        self.camera_frame.grid(row = 0, column = 0, rowspan = 2, padx = 10, pady = 10, sticky = tk.NSEW)
+        self.serial_frame.grid(row = 2, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
+        self.stripchart_frame.grid(row = 1, column = 1, rowspan = 2, padx = 10, pady = 10, sticky = tk.NSEW)
 
         self.dashboard_frame.pack(fill = tk.BOTH, expand = True)
 
         self.master.after(500, self.update_feed)
 
     def toggle_record(self):
+        # pass
         if self.cam_feed.filename: # Currently Recording
             self.cam_feed.stop_recording()
             self.record_button.config(text = "Start", bg = "SystemButtonFace")
@@ -116,11 +121,13 @@ class Dashboard:
             self.record_button.config(text = "Stop", bg = "red")
 
     def update_feed(self):
+        print("Hello")
         self.cam_feed.update()
-        self.after(int(CameraDisplay.SAMPLE_RATE * 10E3), self.update_feed)
+        # self.master.after(50, self.update_feed)
+        self.master.after(CameraDisplay.SAMPLE_RATE, self.update_feed)
 
     def open_serial(self):
-        if self.conn is None :  # Check if Serial Connection Already Established
+        if self.stripchart.conn is None :  # Check if Serial Connection Already Established
             port = self.port_entry.get()
             baudrate = self.baudrate_entry.get()
 
@@ -136,7 +143,7 @@ class Dashboard:
                 self.conn = None
 
     def cleanup(self):
-        if self.conn and self.conn.isOpen():
+        if self.stripchart.conn and self.stripchart.conn.isOpen():
             self.stripchart.stop() # Stop StripChart
 
             fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
@@ -163,3 +170,6 @@ class DashboardApp(tk.Tk):
         # Exit Application
         self.destroy()
         sys.exit()
+
+if __name__ == "__main__":
+    DashboardApp().mainloop()

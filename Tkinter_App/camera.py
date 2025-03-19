@@ -97,18 +97,18 @@ class TestApp(tk.Tk):
         super().__init__()
         self.title("PiCamera Live Stream")
 
-        self.camera_frame = CameraDisplay(self)
-        self.camera_frame.pack()
-        self.camera_frame.start_recording()
+        self.cam_feed = CameraDisplay(self)
+        self.cam_feed.pack()
+        self.cam_feed.start_recording()
         self.update()
         self.protocol("WM_DELETE_WINDOW", self.close)
 
     def update(self):
-        self.camera_frame.update()
+        self.cam_feed.update()
         self.after(int(CameraDisplay.SAMPLE_RATE * 10E3), self.update)
 
     def close(self):
-        self.camera_frame.stop()
+        self.cam_feed.stop()
         self.destroy()
 
 if __name__ == "__main__":
