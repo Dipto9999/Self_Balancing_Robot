@@ -5,7 +5,7 @@ float k = 0.9; // Complementary Filter Constant
 
 // const float ACCELEROMETER_OFFSET = 1.55;
 const float ACCELEROMETER_OFFSET = 0;
-const float STD_ACCELERATION = 1.02;
+const float STD_ACCELERATION = 1;
 
 float prevGyro, prevComplementary;
 float prevAngle = 0;

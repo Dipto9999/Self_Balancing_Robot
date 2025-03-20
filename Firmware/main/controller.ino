@@ -8,7 +8,8 @@ ConfigPWM ConfigMotor = {
     1.0 // 289 RPM (Max) = 100%
 };
 
-const int VCC = 10.8; // 10.8V
+// const int VCC = 10.8; // 10.8 V
+const int VCC = 10.4; // 10.4 V
 
 /* PID Controller Variables */
 float setpointAngle; // Reference Value, r_t (Angle = 180°)

@@ -51,22 +51,33 @@ void bleMovement_Handle(float u_t, float errorAngle) {
             if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAXIMUM) {
                 dutyCycleA = calculateNewDutyCycle(u_t, -PWM_PERCENTAGE_INCREASE_OR_DECREASE_FOR_MOVEMENT);
             }
+            // else if (errorAngle > -ERROR_ANGLE_MAXIMUM && errorAngle < 0)
+            // {
+            //     dutyCycleA = calculateNewDutyCycle(u_t, PWM_PERCENTAGE_INCREASE_OR_DECREASE_FOR_MOVEMENT);
+            // }
+
             break;
         case REVERSE:
+
             if (errorAngle < 0 && errorAngle > -ERROR_ANGLE_MAXIMUM) {
                 dutyCycleA = calculateNewDutyCycle(u_t, -PWM_PERCENTAGE_INCREASE_OR_DECREASE_FOR_MOVEMENT);
             }
+            // else if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAXIMUM)
+            // {
+            //     dutyCycleA = calculateNewDutyCycle(u_t, PWM_PERCENTAGE_INCREASE_OR_DECREASE_FOR_MOVEMENT);
+            // }
+
             break;
         case LEFT:
             if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAXIMUM) {
-                dutyCycleA = calculateNewDutyCycle(u_t, -PWM_PERCENTAGE_INCREASE_OR_DECREASE_FOR_MOVEMENT);
+                dutyCycleA = calculateNewDutyCycle(u_t, -PWM_PERCENTAGE_INCREASE_OR_DECREASE_FOR_MOVEMENT / 2);
                 turnLeft(dutyCycleA, dutyCycleA);
                 return;
             }
             break;
         case RIGHT:
             if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAXIMUM) {
-                dutyCycleA = calculateNewDutyCycle(u_t, PWM_PERCENTAGE_INCREASE_OR_DECREASE_FOR_MOVEMENT);
+                dutyCycleA = calculateNewDutyCycle(u_t, PWM_PERCENTAGE_INCREASE_OR_DECREASE_FOR_MOVEMENT / 2);
                 turnRight(dutyCycleA, dutyCycleA);
                 return;
             }

@@ -21,7 +21,6 @@ void setup() {
 }
 
 void printControlValues() {
-  // printSensorReadings();
   Serial.print("Measured Angle: ");
   Serial.println(measuredAngle);
 
@@ -55,14 +54,18 @@ void printSensorReadings() {
   Serial.print(" ay: ");
   Serial.print(ay);
   Serial.print(" az: ");
-  Serial.println(az);
+  Serial.print(az);
+  Serial.print(" Total Acceleration: ");
+  Serial.println(ax*ax + ay*ay + az*az);
 
   Serial.print("gx: ");
   Serial.print(gx);
   Serial.print(" gy: ");
   Serial.print(gy);
   Serial.print(" gz: ");
-  Serial.println(gz);
+  Serial.print(gz);
+  Serial.print(" Total Angular Velocity: ");
+  Serial.println(gx*gx + gy*gy + gz*gz);
 }
 
 void printAngleValues() {
@@ -93,4 +96,5 @@ void loop() {
 
   // Print Control Values
   // printControlValues();
+  // printSensorReadings();
 }
