@@ -74,17 +74,8 @@ void balanceRobot(int bleDirection) {
     // u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
     u_t = (Kp * errorAngle) + (Kd * errorDifference);
 
-    // TODO: Convert Control Signal to Power (i.e. PWM Duty Cycle)
-    dutyCycle = abs(u_t) / VCC; // Convert Control Signal to Duty Cycle
-    dutyCycle = (dutyCycle > 1) ? 1 : dutyCycle; // Limit Duty Cycle to 100%
-
-    if (u_t > 0) { // FORWARD
-        moveSlowDecay(MotorA, CW, dutyCycle);
-        moveSlowDecay(MotorB, CW, dutyCycle);
-    } else { // REVERSE
-        moveSlowDecay(MotorA, CCW, dutyCycle);
-        moveSlowDecay(MotorB, CCW, dutyCycle);
-    }
+    bleMovement_Handle(u_t, errorAngle);
+    
 
     // TODO: DEPRECATED: Use PID Controller to Balance Robot
     // if (angle >= 215) { // Hard Right (angle ≥ 195)
@@ -109,30 +100,3 @@ void balanceRobot(int bleDirection) {
     return;
 }
 
-void changeDirection(const char* bleBuff) {
-    if (!strcmp(bleBuff, "^") && !forwardAlert) bleDirection = FORWARD; // Drive
-    else if (!strcmp(bleBuff, "v") && !reverseAlert) bleDirection = REVERSE; // Reverse
-    else if (!strcmp(bleBuff, "<")) bleDirection = LEFT; // Turn Left
-    else if (!strcmp(bleBuff, ">")) bleDirection = RIGHT; // Turn Right
-    else bleDirection = PARK; // Park
-}
-
-void moveForward() {
-    moveFastDecay(MotorA, CW, ConfigMotor.RPM_75);
-    moveFastDecay(MotorB, CW, ConfigMotor.RPM_75);
-}
-
-void moveReverse() {
-    moveFastDecay(MotorA, CCW, ConfigMotor.RPM_75);
-    moveFastDecay(MotorB, CCW, ConfigMotor.RPM_75);
-}
-
-void turnLeft() {
-    moveFastDecay(MotorA, CCW, ConfigMotor.RPM_75);
-    moveFastDecay(MotorB, CW, ConfigMotor.RPM_50);
-}
-
-void turnRight() {
-    moveFastDecay(MotorA, CW, ConfigMotor.RPM_50);
-    moveFastDecay(MotorB, CCW, ConfigMotor.RPM_75);
-}

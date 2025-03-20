@@ -5,7 +5,7 @@
 #include "angle.h"
 #include "gpio.h"
 
-enum DirRobot {REVERSE, FORWARD, LEFT, RIGHT, PARK};
+enum DirRobot {REVERSE, FORWARD, LEFT, RIGHT, IDLE};
 
 struct ConfigPWM {
     float RPM_25;
@@ -43,12 +43,7 @@ void timerISR();
 void setupController();
 void setupMotors();
 
-void changeDirection(const char* bleBuff);
 void balanceRobot(int bleDirection);
 
-void moveForward();
-void moveReverse();
-void turnLeft();
-void turnRight();
 
 #endif

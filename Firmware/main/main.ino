@@ -5,6 +5,7 @@
 #include "ble.h"
 #include "serial.h"
 #include "gpio.h"
+#include "ble_movement.h"
 
 void setup() {
   setupSerial();
