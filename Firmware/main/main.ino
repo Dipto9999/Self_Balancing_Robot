@@ -19,8 +19,6 @@ void setup() {
   Serial.println("Setup Complete!");
 }
 
-ANGLES Angles = {0, 0, 0}; // Accelerometer, Gyroscope, Complementary
-
 void printControlValues() {
   Serial.print("Measured Angle: ");
   Serial.println(measuredAngle);

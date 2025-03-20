@@ -36,12 +36,12 @@ void setupIMU() {
       prevGyro -= 90;
 
       initialAngle = prevGyro;
-
       prevComplementary = prevGyro;
     }
   }
 }
 
+ANGLES Angles = {0, 0, 0}; // Accelerometer, Gyroscope, Complementary
 void getAngles(ANGLES &Angles) {
   float currAccel, currGyro, currComplementary;
   float sampleTime, accelCondition;
@@ -62,9 +62,9 @@ void getAngles(ANGLES &Angles) {
   // Account for Negative Angular Velocity Error
   else if (gx < 0) gx *= 1.12;
 
+  sampleTime = 1.0 / IMU.gyroscopeSampleRate();
   // if (dt == 0) sampleTime = 1.0 / IMU.gyroscopeSampleRate();
   // else sampleTime = dt;
-  sampleTime = 1.0 / IMU.gyroscopeSampleRate();
 
   currGyro = prevGyro + gx * sampleTime;
 

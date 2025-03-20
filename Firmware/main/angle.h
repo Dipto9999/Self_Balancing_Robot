@@ -9,10 +9,12 @@ struct ANGLES {
     float Gyroscope;
     float Complementary;
 };
+extern ANGLES Angles;
 
 /* Constants and Variables */
 extern float k;
 
+extern float initialAngle;
 extern float prevGyro, prevComplementary;
 
 extern float gx, gy, gz;
