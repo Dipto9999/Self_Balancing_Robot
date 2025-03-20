@@ -30,7 +30,8 @@ int bleDirection; // Current Direction
 
 void setupController() {
     Kp = 0.64; // Proportional Gain
-    Ki = 0.5; // Integral Gain
+    // Ki = 0.5; // Integral Gain
+    Ki = 1.75; // Integral Gain
     // Kd = 0.0511; // Derivative Gain
     Kd = 0.0511; // Derivative Gain
 

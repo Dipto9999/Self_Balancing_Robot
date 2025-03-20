@@ -23,27 +23,27 @@ void printControlValues() {
   Serial.print("Measured Angle: ");
   Serial.println(measuredAngle);
 
-  Serial.print("Error Angle: ");
+  Serial.print("\nError Angle: ");
   Serial.println(errorAngle);
   Serial.print("Prev Error Angle: ");
   Serial.println(prevErrorAngle);
   Serial.print("Accumulated Error: ");
   Serial.println(errorAccumulation);
 
-  Serial.print("Sampling Frequency (Hz): ");
+  Serial.print("\nSampling Frequency (Hz): ");
   Serial.println(1.0 / dt);
 
-  Serial.print("Kp Component: ");
+  Serial.print("\nKp Component: ");
   Serial.println(Kp * errorAngle);
   Serial.print("Ki Component: ");
   Serial.println(Ki * errorAccumulation);
   Serial.print("Kd Component: ");
   Serial.println(Kd * errorDifference);
 
-  Serial.print("Control Signal: ");
+  Serial.print("\nControl Signal: ");
   Serial.println(u_t);
 
-  Serial.print("Duty Cycle: ");
+  Serial.print("\nDuty Cycle: ");
   Serial.println(currDutyCycle);
 }
 
@@ -73,5 +73,5 @@ void loop() {
   handleData('A', serialMsg);
 
   // Print Control Values
-  // printControlValues();
+  printControlValues();
 }
