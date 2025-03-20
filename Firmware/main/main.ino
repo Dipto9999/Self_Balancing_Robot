@@ -20,6 +20,7 @@ void setup() {
 }
 
 void printControlValues() {
+  // printSensorReadings();
   Serial.print("Measured Angle: ");
   Serial.println(measuredAngle);
 
@@ -45,6 +46,22 @@ void printControlValues() {
 
   Serial.print("\nDuty Cycle: ");
   Serial.println(currDutyCycle);
+}
+
+void printSensorReadings() {
+  Serial.print("\nax: ");
+  Serial.print(ax);
+  Serial.print(" ay: ");
+  Serial.print(ay);
+  Serial.print(" az: ");
+  Serial.println(az);
+
+  Serial.print("gx: ");
+  Serial.print(gx);
+  Serial.print(" gy: ");
+  Serial.print(gy);
+  Serial.print(" gz: ");
+  Serial.println(gz);
 }
 
 void printAngleValues() {
@@ -73,5 +90,5 @@ void loop() {
   handleData('A', serialMsg);
 
   // Print Control Values
-  printControlValues();
+  // printControlValues();
 }

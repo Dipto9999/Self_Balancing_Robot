@@ -30,10 +30,11 @@ int bleDirection; // Current Direction
 
 void setupController() {
     Kp = 0.64; // Proportional Gain
-    // Ki = 0.5; // Integral Gain
-    Ki = 1.75; // Integral Gain
-    // Kd = 0.0511; // Derivative Gain
+    // Kp = 0.64; // Proportional Gain
+    Ki = 1.5; // Integral Gain
+    // Ki = 1.5; // Integral Gain
     Kd = 0.0511; // Derivative Gain
+    // Kd = 0.07; // Derivative Gain
 
     setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
     errorAngle = 0.0; // Error Value, e_t = r_t - y_t
@@ -72,7 +73,7 @@ void balanceRobot(int bleDirection) {
 
     if (prevAngle * measuredAngle < 0) {
         errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
-    } else if (round(measuredAngle) == 0) {
+    } else if ((round(measuredAngle) == setpointAngle) && (abs(setpointAngle - prevAngle) < 1)) {
         errorAccumulation = 0; // Reset Accumulated Error Value ∑e_t
     } else {
         errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
@@ -84,7 +85,8 @@ void balanceRobot(int bleDirection) {
 
     // TODO: Convert Control Signal to Power (i.e. PWM Duty Cycle)
     dutyCycle = abs(u_t) / VCC; // Convert Control Signal to Duty Cycle
-    dutyCycle = (dutyCycle > 1) ? 1 : dutyCycle; // Limit Duty Cycle to 100%
+    // dutyCycle = (dutyCycle > 1) ? 1 : dutyCycle; // Limit Duty Cycle to 100%
+    dutyCycle = (dutyCycle > 0.75) ? 0.75 : dutyCycle; // Limit Duty Cycle to 100%
 
     if (u_t > 0) { // FORWARD
         moveSlowDecay(MotorA, CW, dutyCycle);
