@@ -6,15 +6,16 @@ using namespace std::chrono_literals;
 
 #include "controller.h"
 
-static mbed::Ticker timerTicker;
+static mbed::Ticker controlTicker;
 
 static constexpr auto CONTROL_PERIOD = 20ms;
 
 void setupISR() {
-  timerTicker.attach(&timerISR, CONTROL_PERIOD);
+  controlTicker.attach(&timerISR, CONTROL_PERIOD);
 }
 
 void timerISR() {
+  // getAngles(Angles);
   balanceRobot(bleDirection);
   digitalWrite(PIN_RFID_DISABLED, !digitalRead(PIN_RFID_DISABLED));
 }

@@ -29,10 +29,12 @@ float currDutyCycle; // Current PWM Duty Cycle
 int bleDirection; // Current Direction
 
 void setupController() {
-    Kp = 0.65; // Proportional Gain
-    Ki = 0; // Integral Gain
-    // Kd = 0.0511; // Derivative Gain
-    Kd = 0.051; // Derivative Gain
+    Kp = 0.64; // Proportional Gain
+    // Kp = 0.64; // Proportional Gain
+    Ki = 1.5; // Integral Gain
+    // Ki = 1.5; // Integral Gain
+    Kd = 0.0511; // Derivative Gain
+    // Kd = 0.07; // Derivative Gain
 
     setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
     errorAngle = 0.0; // Error Value, e_t = r_t - y_t
@@ -42,7 +44,7 @@ void setupController() {
     errorAccumulation = 0.0; // Accumulated Error Value, ∑e_t
     errorDifference = 0.0; // Derivative Error Value, e_t - e_(t-1) / dt
 
-    bleDirection = FORWARD; // Set Default Direction
+    bleDirection = IDLE; // Set Default Direction
     currDutyCycle = ConfigMotor.RPM_50; // Set Default PWM Value
 }
 
@@ -68,14 +70,26 @@ void balanceRobot(int bleDirection) {
 
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
-    errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
+
+    if (prevAngle * measuredAngle < 0) {
+        errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
+    } else if ((round(measuredAngle) == setpointAngle) && (abs(setpointAngle - prevAngle) < 1)) {
+        errorAccumulation = 0; // Reset Accumulated Error Value ∑e_t
+    } else {
+        errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
+    }
 
     // Calculate Control Signal : u_t = Kp * e_t + Ki * ∑e_t + Kd * (e_t - e_(t-1) / dt)
-    // u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
-    u_t = (Kp * errorAngle) + (Kd * errorDifference);
+    u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
+    //u_t = (Kp * errorAngle) + (Kd * errorDifference);
+
+    // Serial.print("u_t: ");
+    // Serial.println(u_t);
+
+    // Serial.print("Error Angle: ");
+    // Serial.println(errorAngle);
 
     bleMovement_Handle(u_t, errorAngle);
-    
 
     // TODO: DEPRECATED: Use PID Controller to Balance Robot
     // if (angle >= 215) { // Hard Right (angle ≥ 195)
@@ -99,4 +113,3 @@ void balanceRobot(int bleDirection) {
     currDutyCycle = dutyCycle; // Update Current Duty Cycle
     return;
 }
-

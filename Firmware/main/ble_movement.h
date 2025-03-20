@@ -14,6 +14,4 @@ void turnRight(float dutyCycleA, float dutyCycleB);
 float calculateNewDutyCycle(float u_t, float pwmPercentage);
 void bleMovement_Handle(float u_t, float errorAngle);
 
-
-
 #endif
