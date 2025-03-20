@@ -30,7 +30,7 @@ int bleDirection; // Current Direction
 
 void setupController() {
     Kp = 0.64; // Proportional Gain
-    Ki = 0; // Integral Gain
+    Ki = 0.5; // Integral Gain
     // Kd = 0.0511; // Derivative Gain
     Kd = 0.0511; // Derivative Gain
 
@@ -68,11 +68,18 @@ void balanceRobot(int bleDirection) {
 
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
-    errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
+
+    if (prevAngle * measuredAngle < 0) {
+        errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
+    } else if (round(measuredAngle) == 0) {
+        errorAccumulation = 0; // Reset Accumulated Error Value ∑e_t
+    } else {
+        errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
+    }
 
     // Calculate Control Signal : u_t = Kp * e_t + Ki * ∑e_t + Kd * (e_t - e_(t-1) / dt)
-    // u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
-    u_t = (Kp * errorAngle) + (Kd * errorDifference);
+    u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
+    // u_t = (Kp * errorAngle) + (Kd * errorDifference);
 
     // TODO: Convert Control Signal to Power (i.e. PWM Duty Cycle)
     dutyCycle = abs(u_t) / VCC; // Convert Control Signal to Duty Cycle

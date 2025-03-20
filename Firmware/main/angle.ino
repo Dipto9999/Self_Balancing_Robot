@@ -7,8 +7,8 @@ float k = 0.9; // Complementary Filter Constant
 const float ACCELEROMETER_OFFSET = 0;
 const float STD_ACCELERATION = 1.02;
 
-float prevGyro;
-float prevComplementary;
+float prevGyro, prevComplementary;
+float prevAngle = 0;
 
 float gx, gy, gz;
 float ax, ay, az = 0;
@@ -79,6 +79,7 @@ void getAngles(ANGLES &Angles) {
   // Serial.print("K: ");
   // Serial.println(k);
 
+  prevAngle = prevComplementary;
   currComplementary = k * (prevComplementary + gx * sampleTime) + (1 - k) * currAccel;
 
   /* Update Time Variables */

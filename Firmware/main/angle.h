@@ -16,6 +16,7 @@ extern float k;
 
 extern float initialAngle;
 extern float prevGyro, prevComplementary;
+extern float prevAngle;
 
 extern float gx, gy, gz;
 extern float ax, ay, az;
