@@ -72,6 +72,9 @@ void balanceRobot(int bleDirection) {
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
 
+    if (accelCondition > 0.05) Ki = 0.75;
+    else Ki = 2;
+
     if (prevAngle * measuredAngle < 0) {
         errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
     } else if ((round(measuredAngle) == setpointAngle) && (abs(setpointAngle - prevAngle) < 1)) {

@@ -12,6 +12,7 @@ float prevAngle = 0;
 
 float gx, gy, gz;
 float ax, ay, az = 0;
+float accelCondition;
 
 /* Time Variables */
 unsigned long t_n, t_n1 = 0; // Current and Previous Time
@@ -44,7 +45,7 @@ void setupIMU() {
 ANGLES Angles = {0, 0, 0}; // Accelerometer, Gyroscope, Complementary
 void getAngles(ANGLES &Angles) {
   float currAccel, currGyro, currComplementary;
-  float sampleTime, accelCondition;
+  float sampleTime;
 
   if (!IMU.gyroscopeAvailable()) return;
   IMU.readGyroscope(gx, gy, gz);
