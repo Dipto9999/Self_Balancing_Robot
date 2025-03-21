@@ -1,10 +1,14 @@
 #include "angle.h"
 
 /* Constants and Variables */
-float k = 0.9;
+float k = 0.9; // Complementary Filter Constant
 
-float prevGyro;
-float prevComplementary;
+// const float ACCELEROMETER_OFFSET = 1.55;
+const float ACCELEROMETER_OFFSET = 0;
+const float STD_ACCELERATION = 1.02;
+
+float prevGyro, prevComplementary;
+float prevAngle = 0;
 
 float gx, gy, gz;
 float ax, ay, az = 0;
@@ -12,6 +16,8 @@ float ax, ay, az = 0;
 /* Time Variables */
 unsigned long t_n, t_n1 = 0; // Current and Previous Time
 float dt = 0; // Time Difference
+
+float initialAngle;
 
 void setupIMU() {
   if (!IMU.begin()) {
@@ -29,22 +35,25 @@ void setupIMU() {
       prevGyro = atan2(az, ay) * (180 / PI);
       prevGyro -= 90;
 
+      initialAngle = prevGyro;
       prevComplementary = prevGyro;
     }
   }
 }
 
+ANGLES Angles = {0, 0, 0}; // Accelerometer, Gyroscope, Complementary
 void getAngles(ANGLES &Angles) {
   float currAccel, currGyro, currComplementary;
+  float sampleTime, accelCondition;
 
-  while (!IMU.gyroscopeAvailable());
+  if (!IMU.gyroscopeAvailable()) return;
   IMU.readGyroscope(gx, gy, gz);
 
-  while (!IMU.accelerationAvailable());
+  if (!IMU.accelerationAvailable()) return;
   IMU.readAcceleration(ax, ay, az);
 
   currAccel = atan2(az, ay) * (180 / PI);
-  currAccel -= 90;
+  currAccel = (currAccel - 90) + ACCELEROMETER_OFFSET;
 
   // Offset at Low Angles
   if (gx > 0 && gx < 2) gx = 0;
@@ -53,10 +62,25 @@ void getAngles(ANGLES &Angles) {
   // Account for Negative Angular Velocity Error
   else if (gx < 0) gx *= 1.12;
 
-  if (dt == 0) currGyro = prevGyro + gx * 1 / IMU.gyroscopeSampleRate();
-  else currGyro = prevGyro + gx * dt;
+  sampleTime = 1.0 / IMU.gyroscopeSampleRate();
+  // if (dt == 0) sampleTime = 1.0 / IMU.gyroscopeSampleRate();
+  // else sampleTime = dt;
 
-  currComplementary = k * (prevComplementary + gx * 1 / IMU.gyroscopeSampleRate()) + (1 - k) * currAccel;
+  currGyro = prevGyro + gx * sampleTime;
+
+  // Prevent Robot from Unpredictable Acceleration
+  accelCondition = abs(ax*ax + ay*ay + az*az - STD_ACCELERATION);
+  if (accelCondition > 0.05) k = 1;
+  else k = 0.9;
+
+  // Serial.print("Acceleration Condn: ");
+  // Serial.println(abs(ax*ax + ay*ay + az*az - 1.02));
+
+  // Serial.print("K: ");
+  // Serial.println(k);
+
+  prevAngle = prevComplementary;
+  currComplementary = k * (prevComplementary + gx * sampleTime) + (1 - k) * currAccel;
 
   /* Update Time Variables */
   t_n = millis(); // Current Time in Milliseconds
@@ -74,6 +98,9 @@ void getAngles(ANGLES &Angles) {
   // Serial.print(Angles.Gyroscope);
   // Serial.print(" | Complementary: ");
   // Serial.println(Angles.Complementary);
+
+  // Serial.print("Initial Angle: ");
+  // Serial.println(initialAngle);
 
   /* Assign Previous Angles */
   prevGyro = currGyro;

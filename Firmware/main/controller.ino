@@ -29,9 +29,12 @@ float currDutyCycle; // Current PWM Duty Cycle
 int bleDirection; // Current Direction
 
 void setupController() {
-    Kp = 0.8; // Proportional Gain
-    // Ki = 62.14; // Integral Gain
+    Kp = 0.64; // Proportional Gain
+    // Kp = 0.64; // Proportional Gain
+    Ki = 1.5; // Integral Gain
+    // Ki = 1.5; // Integral Gain
     Kd = 0.0511; // Derivative Gain
+    // Kd = 0.07; // Derivative Gain
 
     setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
     errorAngle = 0.0; // Error Value, e_t = r_t - y_t
@@ -57,7 +60,8 @@ void balanceRobot(int bleDirection) {
     // TODO: Measure Angles in Main Loop
     // getAngles(Angles); // Get Initial Angle Values
 
-    measuredAngle = Angles.Complementary; // Get Measured Angle
+    // Get Measured Angle
+    measuredAngle = Angles.Complementary; // Complementary Filter
 
     // TODO: Ignore Small Angle Values
     // if (abs(measuredAngle) < 1) {
@@ -67,16 +71,22 @@ void balanceRobot(int bleDirection) {
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
 
-    // Include Integral Error Accumulation
-    errorAccumulation += (errorAngle * dt); // ∑e_t
-    u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
+    if (prevAngle * measuredAngle < 0) {
+        errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
+    } else if ((round(measuredAngle) == setpointAngle) && (abs(setpointAngle - prevAngle) < 1)) {
+        errorAccumulation = 0; // Reset Accumulated Error Value ∑e_t
+    } else {
+        errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
+    }
 
     // Calculate Control Signal : u_t = Kp * e_t + Ki * ∑e_t + Kd * (e_t - e_(t-1) / dt)
-    u_t = (Kp * errorAngle) + (Kd * errorDifference);
+    u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
+    // u_t = (Kp * errorAngle) + (Kd * errorDifference);
 
     // TODO: Convert Control Signal to Power (i.e. PWM Duty Cycle)
     dutyCycle = abs(u_t) / VCC; // Convert Control Signal to Duty Cycle
-    dutyCycle = (dutyCycle > 1) ? 1 : dutyCycle; // Limit Duty Cycle to 100%
+    // dutyCycle = (dutyCycle > 1) ? 1 : dutyCycle; // Limit Duty Cycle to 100%
+    dutyCycle = (dutyCycle > 0.75) ? 0.75 : dutyCycle; // Limit Duty Cycle to 100%
 
     if (u_t > 0) { // FORWARD
         moveSlowDecay(MotorA, CW, dutyCycle);
