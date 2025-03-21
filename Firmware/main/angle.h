@@ -17,7 +17,7 @@ extern float k;
 extern float initialAngle;
 
 extern const float ACCELEROMETER_OFFSET;
-extern const float STD_ACCELERATION;
+extern const float STANDARD_ACCEL;
 
 extern float prevGyro, prevComplementary;
 extern float prevAngle;

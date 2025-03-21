@@ -4,8 +4,8 @@
 float k = 0.9; // Complementary Filter Constant
 
 // const float ACCELEROMETER_OFFSET = 1.55;
-const float ACCELEROMETER_OFFSET = 0;
-const float STD_ACCELERATION = 1;
+const float ACCELEROMETER_OFFSET = -0.25;
+const float STANDARD_ACCEL = 0.95;
 
 float prevGyro, prevComplementary;
 float prevAngle = 0;
@@ -64,13 +64,11 @@ void getAngles(ANGLES &Angles) {
   else if (gx < 0) gx *= 1.12;
 
   sampleTime = 1.0 / IMU.gyroscopeSampleRate();
-  // if (dt == 0) sampleTime = 1.0 / IMU.gyroscopeSampleRate();
-  // else sampleTime = dt;
 
   currGyro = prevGyro + gx * sampleTime;
 
   // Prevent Robot from Unpredictable Acceleration
-  accelCondition = abs(ax*ax + ay*ay + az*az - STD_ACCELERATION);
+  accelCondition = abs(ax*ax + ay*ay + az*az - STANDARD_ACCEL);
   if (accelCondition > 0.05) k = 1;
   else k = 0.9;
 
