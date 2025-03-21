@@ -1,7 +1,7 @@
-#include "ble_movement.h"
+#include "driver.h"
 
-#define ERROR_ANGLE_MAXIMUM 3
-#define PWM_PERCENTAGE_INCREASE_OR_DECREASE_FOR_MOVEMENT 0.05
+#define ERROR_ANGLE_MAX 3
+#define PWM_DRIVE_ADJUSTMENT 0.05
 
 void changeDirection(const char* bleBuff) {
     // if (!strcmp(bleBuff, "^") && !forwardAlert) bleDirection = FORWARD; // Drive
@@ -33,51 +33,50 @@ void turnRight(float dutyCycleA, float dutyCycleB) {
     moveSlowDecay(MotorB, CCW, dutyCycleB);
 }
 
-float calculateNewDutyCycle(float u_t, float pwmPercentage) {
-    float dutyCycle = abs(u_t) / VCC *  (1 + pwmPercentage); // Convert Control Signal to Duty Cycle
+float adjustDutyCycle(float u_t, float adjustedPWM) {
+    float dutyCycle = abs(u_t) / VCC *  (1 + adjustedPWM); // Convert Control Signal to Duty Cycle
     return (dutyCycle > 0.75) ? 0.75 : dutyCycle; // Limit Duty Cycle to 100%
 }
 
-void bleMovement_Handle(float u_t, float errorAngle) {
-    float dutyCycleA = calculateNewDutyCycle(u_t, 0);
+void drive(float u_t, float errorAngle) {
+    float dutyCycleA = adjustDutyCycle(u_t, 0);
 
     // Serial.print("BLE Direction: ");
     // Serial.println(bleDirection);
 
-    switch (bleDirection)
-    {
+    switch (bleDirection) {
         case FORWARD:
             // if errorAngle > 0, then should move FORWARD to compensate
-            if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAXIMUM) {
-                dutyCycleA = calculateNewDutyCycle(u_t, -PWM_PERCENTAGE_INCREASE_OR_DECREASE_FOR_MOVEMENT);
+            if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAX) {
+                dutyCycleA = adjustDutyCycle(u_t, -PWM_DRIVE_ADJUSTMENT);
             }
-            // else if (errorAngle > -ERROR_ANGLE_MAXIMUM && errorAngle < 0)
+            // else if (errorAngle > -ERROR_ANGLE_MAX && errorAngle < 0)
             // {
-            //     dutyCycleA = calculateNewDutyCycle(u_t, PWM_PERCENTAGE_INCREASE_OR_DECREASE_FOR_MOVEMENT);
+            //     dutyCycleA = adjustDutyCycle(u_t, PWM_DRIVE_ADJUSTMENT);
             // }
 
             break;
         case REVERSE:
 
-            if (errorAngle < 0 && errorAngle > -ERROR_ANGLE_MAXIMUM) {
-                dutyCycleA = calculateNewDutyCycle(u_t, -PWM_PERCENTAGE_INCREASE_OR_DECREASE_FOR_MOVEMENT);
+            if (errorAngle < 0 && errorAngle > -ERROR_ANGLE_MAX) {
+                dutyCycleA = adjustDutyCycle(u_t, -PWM_DRIVE_ADJUSTMENT);
             }
-            // else if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAXIMUM)
+            // else if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAX)
             // {
-            //     dutyCycleA = calculateNewDutyCycle(u_t, PWM_PERCENTAGE_INCREASE_OR_DECREASE_FOR_MOVEMENT);
+            //     dutyCycleA = adjustDutyCycle(u_t, PWM_DRIVE_ADJUSTMENT);
             // }
 
             break;
         case LEFT:
-            if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAXIMUM) {
-                dutyCycleA = calculateNewDutyCycle(u_t, -PWM_PERCENTAGE_INCREASE_OR_DECREASE_FOR_MOVEMENT / 2);
+            if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAX) {
+                dutyCycleA = adjustDutyCycle(u_t, -PWM_DRIVE_ADJUSTMENT / 2);
                 turnLeft(dutyCycleA, dutyCycleA);
                 return;
             }
             break;
         case RIGHT:
-            if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAXIMUM) {
-                dutyCycleA = calculateNewDutyCycle(u_t, PWM_PERCENTAGE_INCREASE_OR_DECREASE_FOR_MOVEMENT / 2);
+            if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAX) {
+                dutyCycleA = adjustDutyCycle(u_t, PWM_DRIVE_ADJUSTMENT / 2);
                 turnRight(dutyCycleA, dutyCycleA);
                 return;
             }

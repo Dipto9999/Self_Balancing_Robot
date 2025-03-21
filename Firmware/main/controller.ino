@@ -93,7 +93,7 @@ void balanceRobot(int bleDirection) {
     // Serial.print("Error Angle: ");
     // Serial.println(errorAngle);
 
-    bleMovement_Handle(u_t, errorAngle);
+    drive(u_t, errorAngle);
 
     // TODO: DEPRECATED: Use PID Controller to Balance Robot
     // if (angle >= 215) { // Hard Right (angle ≥ 195)
