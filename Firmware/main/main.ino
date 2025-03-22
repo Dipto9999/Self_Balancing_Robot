@@ -15,7 +15,7 @@ void setup() {
 
   setupIMU();
   setupMotors();
-  setupBLE();
+  // setupBLE();
 
   Serial.println("Setup Complete!");
 }
@@ -83,7 +83,7 @@ void loop() {
   checkReverseAlert();
 
   // Wait for BLE Connection to Override Motors
-  if (rxBLE()) changeDirection(buffBLE);
+  // if (rxBLE()) changeDirection(buffBLE);
 
   getAngles(Angles);
   // balanceRobot(bleDirection);

@@ -30,11 +30,11 @@ float currDutyCycle; // Current PWM Duty Cycle
 int bleDirection; // Current Direction
 
 void setupController() {
-    Kp = 0.64; // Proportional Gain
+    Kp = 0.4488; // Proportional Gain
     // Kp = 0.64; // Proportional Gain
-    Ki = 1.5; // Integral Gain
+    Ki = 0; // Integral Gain
     // Ki = 1.5; // Integral Gain
-    Kd = 0.0511; // Derivative Gain
+    Kd = 0.0425; // Derivative Gain
     // Kd = 0.07; // Derivative Gain
 
     setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
@@ -72,8 +72,8 @@ void balanceRobot(int bleDirection) {
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
 
-    if (accelCondition > 0.05) Ki = 0.75;
-    else Ki = 2;
+    // if (accelCondition > 0.05) Ki = 0.75;
+    // else Ki = 2;
 
     if (prevAngle * measuredAngle < 0) {
         errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
