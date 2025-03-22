@@ -111,6 +111,8 @@ class Dashboard:
 
         self.dashboard_frame.pack(fill = tk.BOTH, expand = True)
 
+        self.cam_feed.start_recording()
+
         self.master.after(500, self.update_feed)
 
     def toggle_record(self):
@@ -126,7 +128,7 @@ class Dashboard:
         # print("Hello")
         # self.master.after(50, self.update_feed)
         self.cam_feed.update()
-        self.master.after(CameraDisplay.SAMPLE_RATE, self.update_feed)
+        self.master.after(int(CameraDisplay.SAMPLE_RATE * 10E3), self.update_feed)
 
     def open_serial(self):
         if self.stripchart.conn is None :  # Check if Serial Connection Already Established
