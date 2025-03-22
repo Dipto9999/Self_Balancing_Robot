@@ -30,7 +30,6 @@ class Dashboard:
         self.record_button = tk.Button(
             self.button_frame,
             text = "Stop", bg = "red", width = 15,
-            text = "Snapshot", bg = "white", width = 15,
             command = self.toggle_record
         )
         self.snapshot_button = tk.Button(
