@@ -125,8 +125,6 @@ class Dashboard:
             self.record_button.config(text = "Stop", bg = "red")
 
     def update_feed(self):
-        # print("Hello")
-        # self.master.after(50, self.update_feed)
         self.cam_feed.update()
         self.master.after(int(CameraDisplay.SAMPLE_RATE * 10E3), self.update_feed)
 
