@@ -29,14 +29,14 @@ class Dashboard:
 
         self.record_button = tk.Button(
             self.button_frame,
-            text = "Start", bg = "green",
-            width = 15,
+            text = "Stop", bg = "red", width = 15,
+            text = "Snapshot", bg = "white", width = 15,
             command = self.toggle_record
         )
         self.snapshot_button = tk.Button(
             self.button_frame,
             text = "Snapshot", width = 15,
-            command = lambda: self.cam_feed.take_snapshot()
+            command = lambda: self.take_snapshot()
         )
 
         self.cam_feed = CameraDisplay(self.camera_frame) # Camera Feed
@@ -129,6 +129,12 @@ class Dashboard:
         # self.master.after(50, self.update_feed)
         self.cam_feed.update()
         self.master.after(int(CameraDisplay.SAMPLE_RATE * 10E3), self.update_feed)
+
+    def take_snapshot(self):
+        self.snapshot_button.config(bg = "green")
+        self.cam_feed.take_snapshot()
+
+        self.master.after(2000, lambda: self.snapshot_button.config(bg = "white"))
 
     def open_serial(self):
         if self.stripchart.conn is None :  # Check if Serial Connection Already Established
