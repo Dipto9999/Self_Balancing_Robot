@@ -10,7 +10,7 @@ import matplotlib.animation as animation
 
 from IPython.display import display
 class ArduinoSerial(serial.Serial) :
-    def __init__(self, port = 'COM3', baudrate = 115200):
+    def __init__(self, port = '/dev/ttyS0', baudrate = 115200):
         super().__init__(port = port, baudrate = baudrate)
 
     def open(self) :
