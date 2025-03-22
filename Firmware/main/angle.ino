@@ -4,7 +4,7 @@
 float k = 0.9; // Complementary Filter Constant
 
 // const float ACCELEROMETER_OFFSET = -0.25;
-const float ACCELEROMETER_OFFSET = -1;
+const float ACCELEROMETER_OFFSET = 1;
 
 const float STANDARD_ACCEL = 0.95;
 
