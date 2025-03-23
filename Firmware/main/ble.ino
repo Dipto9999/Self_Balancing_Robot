@@ -17,6 +17,9 @@ void setupBLE() {
     while (1);
   }
 
+  BLE.setAdvertisingInterval(1600); // Increase advertising interval (1000ms)
+  BLE.setConnectionInterval(0x0006, 0x0010); // Min/max connection interval
+
   // Set Local Name and Device Name
   BLE.setLocalName("BLE-B17");
   BLE.setDeviceName("BLE-B17");

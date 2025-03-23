@@ -82,7 +82,9 @@ void drive(float u_t, float errorAngle) {
             }
             break;
         case IDLE:
-            dutyCycleA += 0.03;
+            if (dutyCycleA > 0) {
+                dutyCycleA = (dutyCycleA < 0.03) ? 0.03 : ((dutyCycleA > 1) ? 1 : dutyCycleA);
+            }
         default:
             // Handle unexpected values, if necessary
             break;

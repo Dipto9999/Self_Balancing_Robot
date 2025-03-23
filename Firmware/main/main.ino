@@ -11,12 +11,12 @@ void setup() {
   setupSerial();
   setupGPIO();
 
-  setupISR();
-
   setupIMU();
-  setupMotors();
-  // setupBLE();
+  setupBLE();
 
+  setupMotors();
+
+  setupISR();
   Serial.println("Setup Complete!");
 }
 
@@ -77,24 +77,36 @@ void printAngleValues() {
   Serial.println(Angles.Complementary);
 }
 
+const unsigned long BLE_INTERVAL = 100;
+unsigned long lastBLETime = 0;
+
 void loop() {
   // Respond to STM32 GPIO Inputs
   checkForwardAlert();
   checkReverseAlert();
 
+  unsigned long currentMillis = millis();
   // Wait for BLE Connection to Override Motors
-  // if (rxBLE()) changeDirection(buffBLE);
+  if (currentMillis - lastBLETime >= BLE_INTERVAL) {
+    lastBLETime = currentMillis;
+    if (rxBLE()) changeDirection(buffBLE);
+  }
 
   getAngles(Angles);
   // balanceRobot(bleDirection);
 
   // Send Data
-  serialMsg = String(Angles.Accelerometer, 2) + " " +
-    String(Angles.Gyroscope, 2) + " " +
-    String(Angles.Complementary, 2);
-  handleData('A', serialMsg);
+  // serialMsg = String(Angles.Accelerometer, 2) + " " +
+  //   String(Angles.Gyroscope, 2) + " " +
+  //   String(Angles.Complementary, 2);
+  // handleData('A', serialMsg);
 
   // Print Control Values
   // printControlValues();
   // printSensorReadings();
+
+  Serial.print("\nSampling Frequency (Hz): ");
+  Serial.println(1.0 / dt);
+  Serial.print("BLE Direction: ");
+  Serial.println(bleDirection);
 }
