@@ -3,7 +3,7 @@ import time
 
 # Configure the serial port
 ser = serial.Serial(
-    port='/dev/serial0',  # UART port on Raspberry Pi
+    port='/dev/ttyS0',  # UART port on Raspberry Pi
     baudrate=115200,
     timeout=1
 )
