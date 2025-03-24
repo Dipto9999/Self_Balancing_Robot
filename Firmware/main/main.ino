@@ -106,7 +106,7 @@ void loop() {
   // printSensorReadings();
 
   // Serial.print("\nSampling Frequency (Hz): ");
-  Serial.println(1.0 / dt);
+  // Serial.println(1.0 / dt);
 
   // Serial.println(ax*ax + ay*ay + az*az);
 

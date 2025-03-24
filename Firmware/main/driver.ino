@@ -46,10 +46,11 @@ void drive(float u_t, float errorAngle) {
 
     switch (bleDirection) {
         case FORWARD:
+            setpointAngle = 0.5; // Reference Value, r_t (Angle = 180°)
             // if errorAngle > 0, then should move FORWARD to compensate
-            if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAX) {
-                dutyCycleA = adjustDutyCycle(u_t, -PWM_DRIVE_ADJUSTMENT);
-            }
+            // if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAX) {
+            //     dutyCycleA = adjustDutyCycle(u_t, -PWM_DRIVE_ADJUSTMENT);
+            // }
             // else if (errorAngle > -ERROR_ANGLE_MAX && errorAngle < 0)
             // {
             //     dutyCycleA = adjustDutyCycle(u_t, PWM_DRIVE_ADJUSTMENT);
@@ -57,10 +58,10 @@ void drive(float u_t, float errorAngle) {
 
             break;
         case REVERSE:
-
-            if (errorAngle < 0 && errorAngle > -ERROR_ANGLE_MAX) {
-                dutyCycleA = adjustDutyCycle(u_t, -PWM_DRIVE_ADJUSTMENT);
-            }
+            setpointAngle = -0.5; // Reference Value, r_t (Angle = 180°)
+            // if (errorAngle < 0 && errorAngle > -ERROR_ANGLE_MAX) {
+            //     dutyCycleA = adjustDutyCycle(u_t, -PWM_DRIVE_ADJUSTMENT);
+            // }
             // else if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAX)
             // {
             //     dutyCycleA = adjustDutyCycle(u_t, PWM_DRIVE_ADJUSTMENT);
@@ -69,19 +70,20 @@ void drive(float u_t, float errorAngle) {
             break;
         case LEFT:
             if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAX) {
-                dutyCycleA = adjustDutyCycle(u_t, -PWM_DRIVE_ADJUSTMENT / 2);
+                // dutyCycleA = adjustDutyCycle(u_t, -PWM_DRIVE_ADJUSTMENT / 2);
                 turnLeft(dutyCycleA, dutyCycleA);
                 return;
             }
             break;
         case RIGHT:
             if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAX) {
-                dutyCycleA = adjustDutyCycle(u_t, PWM_DRIVE_ADJUSTMENT / 2);
+                // dutyCycleA = adjustDutyCycle(u_t, PWM_DRIVE_ADJUSTMENT / 2);
                 turnRight(dutyCycleA, dutyCycleA);
                 return;
             }
             break;
         case IDLE:
+            setpointAngle = 0.75; // Reference Value, r_t (Angle = 180°)
             break;
         default:
             // Handle unexpected values, if necessary

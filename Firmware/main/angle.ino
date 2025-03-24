@@ -1,7 +1,7 @@
 #include "angle.h"
 
 /* Constants and Variables */
-float k = 0.95; // Complementary Filter Constant
+float k; // Complementary Filter Constant
 
 // const float ACCELEROMETER_OFFSET = -0.25;
 const float ACCELEROMETER_OFFSET = 0;
@@ -33,6 +33,7 @@ void setupIMU() {
   // Serial.println("Reading Raw Data from Gyroscope and Accelerometer...");
   // Serial.println("Gyroscope (rad/s) | Accelerometer (g)");
 
+  k = 0.95;
   while (az == 0) {
     if (IMU.accelerationAvailable()) {
       IMU.readAcceleration(ax, ay, az);
@@ -77,7 +78,7 @@ void getAngles(ANGLES &Angles) {
     k = 1;
   }
   else {
-    k = 0.9;
+    k = 0.95;
   }
 
   // Serial.print("Acceleration Condn: ");
