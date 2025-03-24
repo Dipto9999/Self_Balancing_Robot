@@ -33,7 +33,7 @@ class BLEManager:
         scanned = await BleakScanner.discover()
 
         self.devices = [
-            {"name" : device.name, "address" : device.address} for device in scanned if device.name and ("BLE" in device.name)
+            {"name" : device.name, "address" : device.address} for device in scanned if device.name and ("BLE-B17" in device.name)
         ] # Filter BLE Devices
         return self.devices
 
@@ -82,7 +82,7 @@ class RobotDriverApp:
         @self.app.route("/scan", methods = ["GET"])
         def scan():
             future = self.ble_manager.run_async(self.ble_manager.scan_devices())
-            devices = future.result(timeout = 15) # Wait for 15 Seconds
+            devices = future.result(timeout = 30) # Wait for 30 Seconds
             return jsonify(devices)
 
         @self.app.route("/connect", methods = ["POST"])
@@ -91,7 +91,7 @@ class RobotDriverApp:
             if not data or "deviceAddress" not in data:
                 return jsonify({"error": "No Address Provided"}), 400
             future = self.ble_manager.run_async(self.ble_manager.connect_device(data["deviceAddress"]))
-            success = future.result(timeout = 10) # Wait for 10 Seconds
+            success = future.result(timeout = 15) # Wait for 15 Seconds
             return (jsonify({"status": "Connected"}) if success
                     else (jsonify({"status": "Failed"}), 400))
 

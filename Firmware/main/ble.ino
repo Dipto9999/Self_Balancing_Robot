@@ -18,8 +18,8 @@ void setupBLE() {
   }
 
   // ToDo: Investigate BLE Configuration
-  BLE.setAdvertisingInterval(16000); // Advertising Interval (10s)
-  BLE.setConnectionInterval(0x0028, 0x0050); // Connection Interval (50ms - 100ms)
+  BLE.setAdvertisingInterval(1600); // Advertising Interval (10s)
+  BLE.setConnectionInterval(0x0028, 0x0064); // Connection Interval (50ms - 100ms)
 
   // Set Local Name and Device Name
   BLE.setLocalName("BLE-B17");
