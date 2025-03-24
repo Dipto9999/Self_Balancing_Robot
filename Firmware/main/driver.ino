@@ -35,7 +35,7 @@ void turnRight(float dutyCycleA, float dutyCycleB) {
 
 float adjustDutyCycle(float u_t, float adjustedPWM) {
     float dutyCycle = abs(u_t) / VCC *  (1 + adjustedPWM); // Convert Control Signal to Duty Cycle
-    return (dutyCycle > 0.75) ? 0.75 : dutyCycle; // Limit Duty Cycle to 100%
+    return (dutyCycle < 0.055) ? 0.055 : ((dutyCycle > 1) ? 1 : dutyCycle); // Limit Duty Cycle to 100%
 }
 
 void drive(float u_t, float errorAngle) {
@@ -82,15 +82,15 @@ void drive(float u_t, float errorAngle) {
             }
             break;
         case IDLE:
-            if (dutyCycleA > 0) {
-                dutyCycleA = (dutyCycleA < 0.03) ? 0.03 : ((dutyCycleA > 1) ? 1 : dutyCycleA);
-            }
+            break;
         default:
             // Handle unexpected values, if necessary
             break;
     }
     // Serial.print("Duty Cycle A: ");
     // Serial.println(dutyCycleA);
+
+    currDutyCycle = dutyCycleA; // Update Current Duty Cycle
 
     if (u_t > 0) moveForward(dutyCycleA);
     else moveReverse(dutyCycleA);

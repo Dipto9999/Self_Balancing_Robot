@@ -98,7 +98,7 @@ class RobotDriverApp:
         @self.app.route("/disconnect", methods = ["GET"])
         def disconnect():
             future = self.ble_manager.run_async(self.ble_manager.disconnect_device())
-            future.result(timeout = 5) # Wait for 5 Seconds
+            future.result(timeout = 10) # Wait for 5 Seconds
             return jsonify({"status": "Disconnected"})
 
         @self.app.route("/move", methods = ["POST"])
@@ -110,7 +110,7 @@ class RobotDriverApp:
             future = self.ble_manager.run_async(
                 self.ble_manager.send_cmd(data["command"])
             )
-            success, message = future.result(timeout = 5) # Wait for 5 Seconds
+            success, message = future.result(timeout = 10) # Wait for 5 Seconds
 
             if success:
                 return jsonify({"status": "OK", "msg": message})

@@ -105,8 +105,11 @@ void loop() {
   // printControlValues();
   // printSensorReadings();
 
-  Serial.print("\nSampling Frequency (Hz): ");
+  // Serial.print("\nSampling Frequency (Hz): ");
   Serial.println(1.0 / dt);
-  Serial.print("BLE Direction: ");
-  Serial.println(bleDirection);
+
+  // Serial.println(ax*ax + ay*ay + az*az);
+
+  // printSensorReadings();
+  // printAngleValues();
 }

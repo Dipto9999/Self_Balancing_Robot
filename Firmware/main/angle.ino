@@ -1,10 +1,10 @@
 #include "angle.h"
 
 /* Constants and Variables */
-float k = 0.9; // Complementary Filter Constant
+float k = 0.95; // Complementary Filter Constant
 
 // const float ACCELEROMETER_OFFSET = -0.25;
-const float ACCELEROMETER_OFFSET = 1;
+const float ACCELEROMETER_OFFSET = 0;
 
 const float STANDARD_ACCEL = 0.95;
 
@@ -14,6 +14,8 @@ float prevAngle = 0;
 float gx, gy, gz;
 float ax, ay, az = 0;
 float accelCondition;
+
+float driftingCondition = false;
 
 /* Time Variables */
 unsigned long t_n, t_n1 = 0; // Current and Previous Time
@@ -70,8 +72,13 @@ void getAngles(ANGLES &Angles) {
 
   // Prevent Robot from Unpredictable Acceleration
   accelCondition = abs(ax*ax + ay*ay + az*az - STANDARD_ACCEL);
-  if (accelCondition > 0.05) k = 1;
-  else k = 0.9;
+  if (accelCondition > 0.05) {
+    driftingCondition = true;
+    k = 1;
+  }
+  else {
+    k = 0.9;
+  }
 
   // Serial.print("Acceleration Condn: ");
   // Serial.println(abs(ax*ax + ay*ay + az*az - 1.02));

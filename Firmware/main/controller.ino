@@ -30,14 +30,15 @@ float currDutyCycle; // Current PWM Duty Cycle
 int bleDirection; // Current Direction
 
 void setupController() {
-    // Kp = 0.4488; // Proportional Gain
-    Kp = 0.64; // Proportional Gain
-    // Ki = 0; // Integral Gain
-    Ki = 1.5; // Integral Gain
-    // Kd = 0.0425; // Derivative Gain
-    Kd = 0.07; // Derivative Gain
+    Kp = 0.55; // Proportional Gain
+    // Kp = 0.45; // Proportional Gain
+    // Ki = 1.5; // Integral Gain
+    Ki = 1; // Integral Gain
+    Kd = 0.05; // Derivative Gain
+    // Kd = 0.043; // Derivative Gain
 
-    setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
+    // setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
+    setpointAngle = 0.8; // Reference Value, r_t (Angle = 180°)
     errorAngle = 0.0; // Error Value, e_t = r_t - y_t
     prevErrorAngle = 0.0; // Previous Error Value, e_(t-1)
 
@@ -56,8 +57,6 @@ void setupMotors() {
 }
 
 void balanceRobot(int bleDirection) {
-    float dutyCycle;
-
     // TODO: Measure Angles in Main Loop
     // getAngles(Angles); // Get Initial Angle Values
 
@@ -69,13 +68,17 @@ void balanceRobot(int bleDirection) {
     //     return; // Implement BLE Control
     // }
 
+    // if (driftingCondition) {
+    //     setpointAngle = -0.5 * measuredAngle; // Invert Setpoint Angle
+    // } else {
+    //     setpointAngle = 0; // Setpoint Angle = 0°
+    // }
+
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
 
-    // if (accelCondition > 0.05) Ki = 0.75;
-    // else Ki = 2;
-
     if (prevAngle * measuredAngle < 0) {
+        // driftingCondition = false; // Reset Drifting Condition
         errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
     } else if ((round(measuredAngle) == setpointAngle) && (abs(setpointAngle - prevAngle) < 1)) {
         errorAccumulation = 0; // Reset Accumulated Error Value ∑e_t
@@ -85,7 +88,7 @@ void balanceRobot(int bleDirection) {
 
     // Calculate Control Signal : u_t = Kp * e_t + Ki * ∑e_t + Kd * (e_t - e_(t-1) / dt)
     u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
-    //u_t = (Kp * errorAngle) + (Kd * errorDifference);
+    // u_t = (Kp * errorAngle) + (Kd * errorDifference);
 
     // Serial.print("u_t: ");
     // Serial.println(u_t);
@@ -114,6 +117,5 @@ void balanceRobot(int bleDirection) {
     // }
 
     prevErrorAngle = errorAngle; // Update Previous Error Value
-    currDutyCycle = dutyCycle; // Update Current Duty Cycle
     return;
 }
