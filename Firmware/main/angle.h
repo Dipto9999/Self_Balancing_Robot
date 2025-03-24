@@ -15,8 +15,15 @@ extern ANGLES Angles;
 extern float k;
 
 extern float initialAngle;
+
+extern const float ACCELEROMETER_OFFSET;
+extern const float STANDARD_ACCEL;
+
 extern float prevGyro, prevComplementary;
 extern float prevAngle;
+extern float accelCondition;
+
+extern float driftingCondition;
 
 extern float gx, gy, gz;
 extern float ax, ay, az;

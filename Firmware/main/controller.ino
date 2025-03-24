@@ -8,7 +8,8 @@ ConfigPWM ConfigMotor = {
     1.0 // 289 RPM (Max) = 100%
 };
 
-const int VCC = 10.8; // 10.8V
+// const int VCC = 10.8; // 10.8 V
+const int VCC = 10.4; // 10.4 V
 
 /* PID Controller Variables */
 float setpointAngle; // Reference Value, r_t (Angle = 180°)
@@ -29,14 +30,15 @@ float currDutyCycle; // Current PWM Duty Cycle
 int bleDirection; // Current Direction
 
 void setupController() {
-    Kp = 0.64; // Proportional Gain
-    // Kp = 0.64; // Proportional Gain
-    Ki = 1.5; // Integral Gain
+    Kp = 0.55; // Proportional Gain
+    // Kp = 0.45; // Proportional Gain
     // Ki = 1.5; // Integral Gain
-    Kd = 0.0511; // Derivative Gain
-    // Kd = 0.07; // Derivative Gain
+    Ki = 1.0; // Integral Gain
+    Kd = 0.035; // Derivative Gain
+    // Kd = 0.043; // Derivative Gain
 
-    setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
+    // setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
+    setpointAngle = 0.75; // Reference Value, r_t (Angle = 180°)
     errorAngle = 0.0; // Error Value, e_t = r_t - y_t
     prevErrorAngle = 0.0; // Previous Error Value, e_(t-1)
 
@@ -44,7 +46,7 @@ void setupController() {
     errorAccumulation = 0.0; // Accumulated Error Value, ∑e_t
     errorDifference = 0.0; // Derivative Error Value, e_t - e_(t-1) / dt
 
-    bleDirection = FORWARD; // Set Default Direction
+    bleDirection = IDLE; // Set Default Direction
     currDutyCycle = ConfigMotor.RPM_50; // Set Default PWM Value
 }
 
@@ -55,8 +57,6 @@ void setupMotors() {
 }
 
 void balanceRobot(int bleDirection) {
-    float dutyCycle;
-
     // TODO: Measure Angles in Main Loop
     // getAngles(Angles); // Get Initial Angle Values
 
@@ -68,10 +68,17 @@ void balanceRobot(int bleDirection) {
     //     return; // Implement BLE Control
     // }
 
+    // if (driftingCondition) {
+    //     setpointAngle = -0.5 * measuredAngle; // Invert Setpoint Angle
+    // } else {
+    //     setpointAngle = 0; // Setpoint Angle = 0°
+    // }
+
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
 
     if (prevAngle * measuredAngle < 0) {
+        // driftingCondition = false; // Reset Drifting Condition
         errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
     } else if ((round(measuredAngle) == setpointAngle) && (abs(setpointAngle - prevAngle) < 1)) {
         errorAccumulation = 0; // Reset Accumulated Error Value ∑e_t
@@ -83,18 +90,13 @@ void balanceRobot(int bleDirection) {
     u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
     // u_t = (Kp * errorAngle) + (Kd * errorDifference);
 
-    // TODO: Convert Control Signal to Power (i.e. PWM Duty Cycle)
-    dutyCycle = abs(u_t) / VCC; // Convert Control Signal to Duty Cycle
-    // dutyCycle = (dutyCycle > 1) ? 1 : dutyCycle; // Limit Duty Cycle to 100%
-    dutyCycle = (dutyCycle > 0.75) ? 0.75 : dutyCycle; // Limit Duty Cycle to 100%
+    // Serial.print("u_t: ");
+    // Serial.println(u_t);
 
-    if (u_t > 0) { // FORWARD
-        moveSlowDecay(MotorA, CW, dutyCycle);
-        moveSlowDecay(MotorB, CW, dutyCycle);
-    } else { // REVERSE
-        moveSlowDecay(MotorA, CCW, dutyCycle);
-        moveSlowDecay(MotorB, CCW, dutyCycle);
-    }
+    // Serial.print("Error Angle: ");
+    // Serial.println(errorAngle);
+
+    drive(u_t, errorAngle);
 
     // TODO: DEPRECATED: Use PID Controller to Balance Robot
     // if (angle >= 215) { // Hard Right (angle ≥ 195)
@@ -115,34 +117,5 @@ void balanceRobot(int bleDirection) {
     // }
 
     prevErrorAngle = errorAngle; // Update Previous Error Value
-    currDutyCycle = dutyCycle; // Update Current Duty Cycle
     return;
-}
-
-void changeDirection(const char* bleBuff) {
-    if (!strcmp(bleBuff, "^") && !forwardAlert) bleDirection = FORWARD; // Drive
-    else if (!strcmp(bleBuff, "v") && !reverseAlert) bleDirection = REVERSE; // Reverse
-    else if (!strcmp(bleBuff, "<")) bleDirection = LEFT; // Turn Left
-    else if (!strcmp(bleBuff, ">")) bleDirection = RIGHT; // Turn Right
-    else bleDirection = PARK; // Park
-}
-
-void moveForward() {
-    moveFastDecay(MotorA, CW, ConfigMotor.RPM_75);
-    moveFastDecay(MotorB, CW, ConfigMotor.RPM_75);
-}
-
-void moveReverse() {
-    moveFastDecay(MotorA, CCW, ConfigMotor.RPM_75);
-    moveFastDecay(MotorB, CCW, ConfigMotor.RPM_75);
-}
-
-void turnLeft() {
-    moveFastDecay(MotorA, CCW, ConfigMotor.RPM_75);
-    moveFastDecay(MotorB, CW, ConfigMotor.RPM_50);
-}
-
-void turnRight() {
-    moveFastDecay(MotorA, CW, ConfigMotor.RPM_50);
-    moveFastDecay(MotorB, CCW, ConfigMotor.RPM_75);
 }
