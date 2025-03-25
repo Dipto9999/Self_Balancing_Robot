@@ -5,7 +5,7 @@
 #include "angle.h"
 #include "gpio.h"
 
-#define ORIGINAL_SET_POINT_ANGLE 0
+#define ORIGINAL_SET_POINT_ANGLE -0.6
 
 enum DirRobot {REVERSE, FORWARD, LEFT, RIGHT, IDLE};
 
