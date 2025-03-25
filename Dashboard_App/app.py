@@ -55,9 +55,11 @@ class Dashboard:
 
         self.port_label = tk.Label(self.serial_frame, text = "Serial Line : ", bg = '#787882')
         self.port_entry = tk.Entry(self.serial_frame, bg = '#6e9eeb')
+        self.port_entry.insert(0, ArduinoSerial.PORT)
 
         self.baudrate_label = tk.Label(self.serial_frame, text = "Speed : ", bg = '#787882')
         self.baudrate_entry = tk.Entry(self.serial_frame, bg = '#6e9eeb')
+        self.baudrate_entry.insert(0, str(ArduinoSerial.BAUDRATE))
 
         self.open_button = tk.Button(
             self.serial_frame, text = "Open", command = self.open_serial, bg = '#6e9eeb',

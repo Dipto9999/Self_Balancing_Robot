@@ -4,12 +4,16 @@ import serial
 import pandas as pd
 import numpy as np
 
+import tkinter as tk
+
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.animation as animation
 
 from IPython.display import display
 class ArduinoSerial(serial.Serial) :
+    PORT = '/dev/ttyS0'
+    BAUDRATE = 115200
     def __init__(self, port = '/dev/ttyS0', baudrate = 115200):
         super().__init__(port = port, baudrate = baudrate)
 
@@ -30,8 +34,8 @@ class ArduinoSerial(serial.Serial) :
         return self.isOpen()
 
 class StripChart:
-    SAMPLE_RATE = 0.5 # 500ms
-    def __init__(self, master, conn = None, data_size = 50, ylim = 180):
+    SAMPLE_RATE = 1 # 1s
+    def __init__(self, master, conn = None, data_size = 25, ylim = 90):
         self.master = master
         self.conn = conn
         self.fig, self.ax = plt.subplots(figsize = (900 / 100, 755 / 100))
@@ -55,7 +59,7 @@ class StripChart:
             np.arange(
                 0,  # Start at 0s
                 1.25 * self.data_size * StripChart.SAMPLE_RATE, # End at 25% More Data
-                0.5  # Set Ticks to 0.5s Intervals
+                1  # Set Ticks to 0.5s Intervals
             )
         )
 
@@ -103,7 +107,7 @@ class StripChart:
         self.canvas = FigureCanvasTkAgg(self.fig, master = self.master)
         self.canvas_widget = self.canvas.get_tk_widget()
 
-    def update(self, data_size):
+    def update(self, frame):
         """Update StripChart with New Data."""
         self.rx_angle()
 
@@ -114,28 +118,28 @@ class StripChart:
         self.complementary_line.set_data(t_data, self.complementary_data)
 
         # Adjust x Limits to Scroll Forward
-        if (len(self.sample_data) > 0) and (self.sample_data[-1] > data_size):
+        if (len(self.sample_data) > 0) and (self.sample_data[-1] > frame):
             self.ax.set_xlim(
                 t_data[0], # Start at First Data Point
-                t_data[0] + 1.25 * data_size * StripChart.SAMPLE_RATE # End at 25% More Data
+                t_data[0] + 1.25 * frame * StripChart.SAMPLE_RATE # End at 25% More Data
             ) # Display 25% More Data
             self.ax.set_xticks(
                 np.arange(
                     t_data[0], # Start at First Data Point
-                    t_data[0] + 1.25 * data_size * StripChart.SAMPLE_RATE, # End at 25% More Data
-                    0.5  # Set Ticks to 0.5s Intervals
+                    t_data[0] + 1.25 * frame * StripChart.SAMPLE_RATE, # End at 25% More Data
+                    1  # Set Ticks to 1s Intervals
                 )
             )
         else:
             self.ax.set_xlim(
                 0, # Start at 0s
-                1.25 * data_size * StripChart.SAMPLE_RATE # End at 25% More Data
+                1.25 * frame * StripChart.SAMPLE_RATE # End at 25% More Data
             )
             self.ax.set_xticks(
                 np.arange(
                     0,  # Start at 0s
-                    1.25 * data_size * StripChart.SAMPLE_RATE, # End at 25% More Data
-                    0.5  # Set Ticks to 0.5s Intervals
+                    1.25 * frame * StripChart.SAMPLE_RATE, # End at 25% More Data
+                    1  # Set Ticks to 1s Intervals
                 )
             )
 
@@ -221,3 +225,109 @@ class StripChart:
 
         print(f"Data Exported to {file_path}\n\nData Preview:\n")
         display(data_df.head(2))
+
+class StripchartApp(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Stripchart App")
+        self.geometry("1000x800")
+        # self.resizable(False, False)
+
+        self.dashboard_frame = tk.Frame(self, bg = '#000000')
+        self.serial_frame = tk.Frame(self.dashboard_frame)
+        self.stripchart_frame = tk.Frame(self.dashboard_frame)
+
+        self.port_label = tk.Label(self.serial_frame, text = "Port:")
+        self.port_entry = tk.Entry(self.serial_frame, width = 10)
+
+        ############################
+        ### Serial Frame Widgets ###
+        ############################
+
+        self.port_label = tk.Label(self.serial_frame, text = "Serial Line : ", bg = '#787882')
+        self.port_entry = tk.Entry(self.serial_frame, bg = '#6e9eeb')
+        self.port_entry.insert(0, ArduinoSerial.PORT)
+
+        self.baudrate_label = tk.Label(self.serial_frame, text = "Speed : ", bg = '#787882')
+        self.baudrate_entry = tk.Entry(self.serial_frame, bg = '#6e9eeb')
+        self.baudrate_entry.insert(0, str(ArduinoSerial.BAUDRATE))
+
+        self.open_button = tk.Button(
+            self.serial_frame, text = "Open", command = self.open_serial, bg = '#6e9eeb',
+        )
+
+        self.port_label.grid(
+            row = 0, column = 0,
+            rowspan = 1, columnspan = 1,
+            padx = 10, pady = 10,
+            sticky = tk.E
+        )
+        self.port_entry.grid(
+            row = 0, column = 1,
+            rowspan = 1, columnspan = 1,
+            padx = 10, pady = 10,
+            sticky = tk.W
+        )
+
+        self.baudrate_label.grid(
+            row = 1, column = 0,
+            rowspan = 1, columnspan = 1,
+            padx = 10, pady = 10,
+            sticky = tk.W
+        )
+        self.baudrate_entry.grid(
+            row = 1, column = 1,
+            rowspan = 1, columnspan = 1,
+            padx = 10, pady = 10
+        )
+
+        self.open_button.grid(
+            row = 2, column = 1,
+            rowspan = 1, columnspan = 1,
+            padx = 10, pady = 10,
+            sticky = tk.EW
+        )
+
+        ################################
+        ### StripChart Frame Widgets ###
+        ################################
+
+        self.stripchart = StripChart(self.stripchart_frame)
+        self.stripchart.canvas_widget.grid(row = 0, column = 0)
+
+        # Position Widgets
+
+        self.serial_frame.grid(row = 0, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
+        self.stripchart_frame.grid(row = 0, column = 1, rowspan = 3, columnspan = 2, padx = 10, pady = 10, sticky = tk.NSEW)
+
+        self.dashboard_frame.pack(fill = tk.BOTH, expand = True)
+
+        self.protocol("WM_DELETE_WINDOW", self.on_close) # Cleanup
+
+    def open_serial(self):
+        if self.stripchart.conn is None :  # Check if Serial Connection Already Established
+            port = self.port_entry.get()
+            baudrate = self.baudrate_entry.get()
+
+            try :
+                self.conn = ArduinoSerial(
+                    port = port, baudrate = int(baudrate)
+                )
+
+                self.stripchart.start(self.conn) # Start StripChart
+                self.stripchart.canvas_widget.grid(row = 0, column = 0)
+            except serial.SerialException as serial_error:
+                print("Serial Connection Error:", str(serial_error))
+                self.conn = None
+
+    def on_close(self):
+        """Close Serial Connection on Application Exit."""
+        if self.stripchart.conn is not None:
+            self.stripchart.stop()
+            self.stripchart.conn.close()
+
+        # Exit Application
+        self.destroy()
+
+if __name__ == "__main__":
+    StripchartApp().mainloop()
