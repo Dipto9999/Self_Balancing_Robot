@@ -89,7 +89,7 @@ void loop() {
   // Wait for BLE Connection to Override Motors
   if (currentMillis - lastBLETime >= BLE_INTERVAL) {
     lastBLETime = currentMillis;
-    if (rxBLE()) changeDirection(buffBLE);
+    BLE.poll(); // Poll the BLE Device
   }
 
   getAngles(Angles);
