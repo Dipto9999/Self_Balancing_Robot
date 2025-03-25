@@ -103,7 +103,7 @@ class StripChart:
         self.canvas = FigureCanvasTkAgg(self.fig, master = self.master)
         self.canvas_widget = self.canvas.get_tk_widget()
 
-    def update(self):
+    def update(self, data_size):
         """Update StripChart with New Data."""
         self.rx_angle()
 
@@ -114,27 +114,27 @@ class StripChart:
         self.complementary_line.set_data(t_data, self.complementary_data)
 
         # Adjust x Limits to Scroll Forward
-        if (len(self.sample_data) > 0) and (self.sample_data[-1] > self.data_size):
+        if (len(self.sample_data) > 0) and (self.sample_data[-1] > data_size):
             self.ax.set_xlim(
                 t_data[0], # Start at First Data Point
-                t_data[0] + 1.25 * self.data_size * StripChart.SAMPLE_RATE # End at 25% More Data
+                t_data[0] + 1.25 * data_size * StripChart.SAMPLE_RATE # End at 25% More Data
             ) # Display 25% More Data
             self.ax.set_xticks(
                 np.arange(
                     t_data[0], # Start at First Data Point
-                    t_data[0] + 1.25 * self.data_size * StripChart.SAMPLE_RATE, # End at 25% More Data
+                    t_data[0] + 1.25 * data_size * StripChart.SAMPLE_RATE, # End at 25% More Data
                     0.5  # Set Ticks to 0.5s Intervals
                 )
             )
         else:
             self.ax.set_xlim(
                 0, # Start at 0s
-                1.25 * self.data_size * StripChart.SAMPLE_RATE # End at 25% More Data
+                1.25 * data_size * StripChart.SAMPLE_RATE # End at 25% More Data
             )
             self.ax.set_xticks(
                 np.arange(
                     0,  # Start at 0s
-                    1.25 * self.data_size * StripChart.SAMPLE_RATE, # End at 25% More Data
+                    1.25 * data_size * StripChart.SAMPLE_RATE, # End at 25% More Data
                     0.5  # Set Ticks to 0.5s Intervals
                 )
             )
