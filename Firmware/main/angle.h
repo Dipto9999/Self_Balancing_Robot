@@ -1,7 +1,8 @@
 #ifndef ANGLE_H
 #define ANGLE_H
 
-#include "Arduino_BMI270_BMM150.h"
+// #include "Arduino_BMI270_BMM150.h"
+#include "Arduino_LSM9DS1.h"
 #include "serial.h"
 
 struct ANGLES {

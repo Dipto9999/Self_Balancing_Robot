@@ -5,6 +5,8 @@
 #include "angle.h"
 #include "gpio.h"
 
+#define ORIGINAL_SET_POINT_ANGLE 0
+
 enum DirRobot {REVERSE, FORWARD, LEFT, RIGHT, IDLE};
 
 struct ConfigPWM {

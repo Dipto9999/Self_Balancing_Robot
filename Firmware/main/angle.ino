@@ -61,9 +61,9 @@ void getAngles(ANGLES &Angles) {
   currAccel = (currAccel - 90) + ACCELEROMETER_OFFSET;
 
   // Offset at Low Angles
-  if (gx > 0 && gx < 2) gx = 0;
+  //if (gx > 0 && gx < 2) gx = 0;
   // Offset at Low Angles
-  else if (gx > 0) gx *= 1.10;
+  if (gx > 0) gx *= 1.10;
   // Account for Negative Angular Velocity Error
   else if (gx < 0) gx *= 1.12;
 

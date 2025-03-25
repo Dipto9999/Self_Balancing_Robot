@@ -30,15 +30,15 @@ float currDutyCycle; // Current PWM Duty Cycle
 int bleDirection; // Current Direction
 
 void setupController() {
-    Kp = 0.55; // Proportional Gain
+    Kp = 0.4; // Proportional Gain
     // Kp = 0.45; // Proportional Gain
     // Ki = 1.5; // Integral Gain
-    Ki = 1.0; // Integral Gain
+    Ki = 1; // Integral Gain
     Kd = 0.035; // Derivative Gain
     // Kd = 0.043; // Derivative Gain
 
     // setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
-    setpointAngle = 0.75; // Reference Value, r_t (Angle = 180°)
+    setpointAngle = ORIGINAL_SET_POINT_ANGLE; // Reference Value, r_t (Angle = 180°)
     errorAngle = 0.0; // Error Value, e_t = r_t - y_t
     prevErrorAngle = 0.0; // Previous Error Value, e_(t-1)
 

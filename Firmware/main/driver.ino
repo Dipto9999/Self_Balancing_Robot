@@ -46,7 +46,7 @@ void drive(float u_t, float errorAngle) {
 
     switch (bleDirection) {
         case FORWARD:
-            setpointAngle = 0.5; // Reference Value, r_t (Angle = 180°)
+            setpointAngle = ORIGINAL_SET_POINT_ANGLE + 0.3; // Reference Value, r_t (Angle = 180°)
             // if errorAngle > 0, then should move FORWARD to compensate
             // if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAX) {
             //     dutyCycleA = adjustDutyCycle(u_t, -PWM_DRIVE_ADJUSTMENT);
@@ -58,7 +58,7 @@ void drive(float u_t, float errorAngle) {
 
             break;
         case REVERSE:
-            setpointAngle = -0.5; // Reference Value, r_t (Angle = 180°)
+            setpointAngle = ORIGINAL_SET_POINT_ANGLE - 0.3; // Reference Value, r_t (Angle = 180°)
             // if (errorAngle < 0 && errorAngle > -ERROR_ANGLE_MAX) {
             //     dutyCycleA = adjustDutyCycle(u_t, -PWM_DRIVE_ADJUSTMENT);
             // }
