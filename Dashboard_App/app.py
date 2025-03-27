@@ -190,8 +190,8 @@ class DashboardApp(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Robot Dashboard")
-        self.geometry("1000x800")
-        self.resizable(False, False)
+        # self.geometry("1000x800")
+        # self.resizable(False, False)
 
         self.dashboard = Dashboard(self)
 
