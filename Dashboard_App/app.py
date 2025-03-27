@@ -46,10 +46,10 @@ class Dashboard:
         self.record_button.pack(side = tk.LEFT, padx = 5, pady = 5)
         self.snapshot_button.pack(side = tk.RIGHT, padx = 5, pady = 5)
 
-        self.cam_feed.grid(row = 0, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
-        self.button_frame.grid(row = 1, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
+        self.button_frame.grid(row = 0, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
+        self.cam_feed.grid(row = 1, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
 
-        self.camera_frame.grid_rowconfigure(0, weight = 1)
+        self.camera_frame.grid_rowconfigure(0, weight = 0)
         self.camera_frame.grid_rowconfigure(1, weight = 0)
 
         self.button_frame.grid_columnconfigure(0, weight = 0)
