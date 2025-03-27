@@ -49,6 +49,12 @@ class Dashboard:
         self.cam_feed.grid(row = 0, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
         self.button_frame.grid(row = 1, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
 
+        self.camera_frame.grid_rowconfigure(0, weight = 1)
+        self.camera_frame.grid_rowconfigure(1, weight = 0)
+
+        self.button_frame.grid_columnconfigure(0, weight = 0)
+        self.button_frame.grid_columnconfigure(1, weight = 0)
+
         ############################
         ### Serial Frame Widgets ###
         ############################
