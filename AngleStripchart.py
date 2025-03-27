@@ -14,7 +14,7 @@ from IPython.display import display
 
 class Serial(serial.Serial) :
     def __init__(self,
-            port = 'COM11',
+            port = 'COM3',
             baudrate = 115200,
         ):
         super().__init__(

@@ -17,6 +17,9 @@ float accelCondition;
 
 float driftingCondition = false;
 
+const long MAX_CALIBRATION = 50;
+unsigned long calibration_count = 0;
+
 /* Time Variables */
 unsigned long t_n, t_n1 = 0; // Current and Previous Time
 float dt = 0; // Time Difference
