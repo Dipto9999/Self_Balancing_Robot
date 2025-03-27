@@ -17,6 +17,9 @@ float accelCondition;
 
 float driftingCondition = false;
 
+const long MAX_CALIBRATION = 50;
+unsigned long calibration_count = 0;
+
 /* Time Variables */
 unsigned long t_n, t_n1 = 0; // Current and Previous Time
 float dt = 0; // Time Difference
@@ -61,9 +64,9 @@ void getAngles(ANGLES &Angles) {
   currAccel = (currAccel - 90) + ACCELEROMETER_OFFSET;
 
   // Offset at Low Angles
-  if (gx > 0 && gx < 2) gx = 0;
+  //if (gx > 0 && gx < 2) gx = 0;
   // Offset at Low Angles
-  else if (gx > 0) gx *= 1.10;
+  if (gx > 0) gx *= 1.10;
   // Account for Negative Angular Velocity Error
   else if (gx < 0) gx *= 1.12;
 
@@ -76,9 +79,14 @@ void getAngles(ANGLES &Angles) {
   if (accelCondition > 0.05) {
     driftingCondition = true;
     k = 1;
-  }
-  else {
-    k = 0.95;
+  } else {
+    calibration_count++; // Increment Angle Counter
+    if (calibration_count > MAX_CALIBRATION) {
+      calibration_count = 0;
+      k = 0.1;
+    } else {
+      k = 0.95;
+    }
   }
 
   // Serial.print("Acceleration Condn: ");

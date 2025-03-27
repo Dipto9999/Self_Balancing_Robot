@@ -7,54 +7,52 @@ BLECharacteristic customCharacteristic(
     BLERead | BLEWrite | BLENotify, BUFFER_SIZE, false
 );
 
-BLEDevice central;
+char buffBLE[BUFFER_SIZE];
+
 void setupBLE() {
   pinMode(LED_BUILTIN, OUTPUT); // Init Built-in LED to Indicate Connection Status
 
-  delay(2000); // Delay to Allow Serial Monitor to Connect
   if (!BLE.begin()) {
     Serial.println("Starting BLE Failed!");
     while (1);
   }
 
   // ToDo: Investigate BLE Configuration
-  BLE.setAdvertisingInterval(1600); // Advertising Interval (10s)
-  BLE.setConnectionInterval(0x0028, 0x0064); // Connection Interval (50ms - 100ms)
+  // BLE.setAdvertisingInterval(800); // Advertising Interval (500ms)
+  // BLE.setConnectionInterval(0x0028, 0x0064); // Connection Interval (50ms - 100ms)
 
   // Set Local Name and Device Name
   BLE.setLocalName("BLE-B17");
   BLE.setDeviceName("BLE-B17");
 
+  BLE.setAdvertisedService(customService);
   customService.addCharacteristic(customCharacteristic);  // Add the Characteristic to the Service
   BLE.addService(customService); // Add the Service to the BLE Device
+
   customCharacteristic.writeValue("BLE Rdy"); // Set Initial Value for the Characteristic
 
+  // ----- Callback Event Handlers ----- //
+  BLE.setEventHandler(BLEConnected, connectBLE);
+  BLE.setEventHandler(BLEDisconnected, disconnectBLE);
+  customCharacteristic.setEventHandler(BLEWritten, rxBLE);
+
   BLE.advertise(); // Advertising the BLE Device
-  Serial.println("Bluetooth® Device Active | Waiting for Connections...");
 }
 
-char buffBLE[BUFFER_SIZE];
+void connectBLE(BLEDevice central) {
+  digitalWrite(LED_BUILTIN, HIGH);
+}
 
-bool rxBLE() {
-  central = BLE.central();
+void disconnectBLE(BLEDevice central) {
+  digitalWrite(LED_BUILTIN, LOW);
+}
 
-  if (central) { // If Central Device is Detected
-    if (central.connected()) { // If Device is Actively Connected
-      if (customCharacteristic.written()) {
-        int length = customCharacteristic.valueLength();
-        const unsigned char* receivedData = customCharacteristic.value();
+void rxBLE(BLEDevice central, BLECharacteristic characteristic) {
+  int length = characteristic.valueLength();
+  const unsigned char* receivedData = characteristic.value();
 
-        memcpy(buffBLE, receivedData, length);
-        buffBLE[length] = '\0'; // Null-Terminated
+  memcpy(buffBLE, receivedData, length);
+  buffBLE[length] = '\0'; // Null-Terminated
 
-        // Serial.print("Received Data: ");
-        // Serial.println(buffBLE);
-
-        customCharacteristic.writeValue("BLE RX"); // Send Acknowledgement
-        return true; // Data Received
-      }
-    }
-  }
-  digitalWrite(LED_BUILTIN, HIGH); // Turn On LED when Disconnected
-  return false; // Disconnected
+  changeDirection(buffBLE); // Change Direction based on BLE Input
 }

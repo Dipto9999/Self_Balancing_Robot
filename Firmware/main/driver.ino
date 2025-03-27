@@ -34,8 +34,8 @@ void turnRight(float dutyCycleA, float dutyCycleB) {
 }
 
 float adjustDutyCycle(float u_t, float adjustedPWM) {
-    float dutyCycle = abs(u_t) / VCC *  (1 + adjustedPWM); // Convert Control Signal to Duty Cycle
-    return (dutyCycle < 0.055) ? 0.055 : ((dutyCycle > 1) ? 1 : dutyCycle); // Limit Duty Cycle to 100%
+    float dutyCycle = (abs(u_t) - 0.055) / (VCC - 0.055) *  (1 + adjustedPWM); // Convert Control Signal to Duty Cycle
+    return (dutyCycle > 1) ? 1 : dutyCycle; // Limit Duty Cycle to 100%
 }
 
 void drive(float u_t, float errorAngle) {
@@ -46,7 +46,7 @@ void drive(float u_t, float errorAngle) {
 
     switch (bleDirection) {
         case FORWARD:
-            setpointAngle = 0.5; // Reference Value, r_t (Angle = 180°)
+            setpointAngle = SETPOINT_0+ 0.3; // Reference Value, r_t (Angle = 180°)
             // if errorAngle > 0, then should move FORWARD to compensate
             // if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAX) {
             //     dutyCycleA = adjustDutyCycle(u_t, -PWM_DRIVE_ADJUSTMENT);
@@ -58,7 +58,7 @@ void drive(float u_t, float errorAngle) {
 
             break;
         case REVERSE:
-            setpointAngle = -0.5; // Reference Value, r_t (Angle = 180°)
+            setpointAngle = SETPOINT_0- 0.3; // Reference Value, r_t (Angle = 180°)
             // if (errorAngle < 0 && errorAngle > -ERROR_ANGLE_MAX) {
             //     dutyCycleA = adjustDutyCycle(u_t, -PWM_DRIVE_ADJUSTMENT);
             // }
@@ -83,7 +83,7 @@ void drive(float u_t, float errorAngle) {
             }
             break;
         case IDLE:
-            setpointAngle = 0.75; // Reference Value, r_t (Angle = 180°)
+            setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
             break;
         default:
             // Handle unexpected values, if necessary

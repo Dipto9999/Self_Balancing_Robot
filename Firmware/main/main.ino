@@ -17,7 +17,57 @@ void setup() {
   setupMotors();
 
   setupISR();
+
+  // while (!Serial); // Wait for Serial Connection
   Serial.println("Setup Complete!");
+}
+
+void updatePID() {
+  int parseIndex;
+  String paramType, valueStr;
+  if (Serial.available() > 0) {
+    // Check for PID Parameter Update Command
+    String command = Serial.readStringUntil('\n');
+    command.trim(); // Remove Leading/Trailing Whitespace
+
+    // Check if command starts with a valid prefix
+    if (
+      command.startsWith("k=") ||
+      command.startsWith("set=") ||
+      command.startsWith("Kp=") ||
+      command.startsWith("Ki=") ||
+      command.startsWith("Kd=")
+    ) {
+      parseIndex = command.indexOf('=');
+      paramType = command.substring(0, parseIndex);
+      valueStr = command.substring(parseIndex + 1);
+
+      float newValue = valueStr.toFloat();
+
+      if (valueStr != "0" && newValue == 0) {
+        Serial.println("Invalid Value!");
+        return;
+      }
+
+      if (paramType == "k") k = newValue;
+      else if (paramType == "set") setpointAngle = newValue;
+      else if (paramType == "Kp") Kp = newValue;
+      else if (paramType == "Ki") Ki = newValue;
+      else if (paramType == "Kd") Kd = newValue;
+
+      Serial.print("\r\nk: ");
+      Serial.print(k, 3);
+      Serial.print(" Setpoint: ");
+      Serial.println(setpointAngle, 3);
+
+      Serial.print("Kp: ");
+      Serial.print(Kp, 4);
+      Serial.print(" Ki: ");
+      Serial.print(Ki, 4);
+      Serial.print(" Kd: ");
+      Serial.print(Kd, 4);
+    }
+  }
 }
 
 void printControlValues() {
@@ -89,17 +139,19 @@ void loop() {
   // Wait for BLE Connection to Override Motors
   if (currentMillis - lastBLETime >= BLE_INTERVAL) {
     lastBLETime = currentMillis;
-    if (rxBLE()) changeDirection(buffBLE);
+    BLE.poll(); // Poll the BLE Device
   }
 
   getAngles(Angles);
   // balanceRobot(bleDirection);
 
+  updatePID();
+
   // Send Data
   // serialMsg = String(Angles.Accelerometer, 2) + " " +
-  //   String(Angles.Gyroscope, 2) + " " +
-  //   String(Angles.Complementary, 2);
-  // handleData('A', serialMsg);
+  //    String(Angles.Gyroscope, 2) + " " +
+  //    String(Angles.Complementary, 2);
+  //  handleData('A', serialMsg);
 
   // Print Control Values
   // printControlValues();
