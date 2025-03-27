@@ -63,6 +63,7 @@ rfid RFID_Module;
 distancesensor Front;
 distancesensor Back;
 speaker Speaker;
+colorsensor Color;
 //colorsensor Color;
 
 char Data[64];
@@ -157,27 +158,21 @@ int main(void)
   DistanceSensor_Init(&Back, &htim22, DISTANCE_SENSOR_BACK_ID, DISTANCE_SENSOR_BACK_INPUT_CAPTURE_GPIO_Port, DISTANCE_SENSOR_BACK_INPUT_CAPTURE_Pin, DISTANCE_SENSOR_BACK_STATUS_GPIO_Port, DISTANCE_SENSOR_BACK_STATUS_Pin);
   RFID_Init(&RFID_Module);
   Speaker_Init(&Speaker, &RFID_Module, &htim2);
+  //ColorSensor_Init(&Color, &hi2c1);
   //ColorSensor_Init(&Color, &hi2c1, COLORSENSOR_SLAVE_ADDRESS);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   DistanceSensor_Start(&Front);
-  DistanceSensor_Start(&Back);
+  //DistanceSensor_Start(&Back);
   //ColorSensor_EnableStatus(&Color, true);
   //RFID_Module.botEnabled = true;
-  /*
-  uint8_t buffer[12];
-  uint8_t registers[] = {0x00, 0x04, 0x05, 0x06, 0x07, 0x08, 0x0c};
-  uint8_t i = 0;
-	*/
-
-
   while (1)
   {
-	  //buffer[0] = registers[i];
 	  //ColorSensor_ReceiveTransmit(&Color, sendData, receiveData);
 	  RFID_SecurityLogic(&RFID_Module);
+	  //ColorSensor_Handle(&Color);
 	  /*
 	  if (HAL_I2C_Master_Transmit(&hi2c1, 0x10 << 1, buffer, 1, HAL_MAX_DELAY) != HAL_OK) {
 		  Error_Handler();
