@@ -30,15 +30,16 @@ float currDutyCycle; // Current PWM Duty Cycle
 int bleDirection; // Current Direction
 
 void setupController() {
-    Kp = 0.4; // Proportional Gain
-    // Kp = 0.45; // Proportional Gain
-    // Ki = 1.5; // Integral Gain
-    Ki = 1.2; // Integral Gain
-    Kd = 0.03; // Derivative Gain
-    // Kd = 0.043; // Derivative Gain
+    // Kp = 0.5; // Proportional Gain
+    // Ki = 0; // Integral Gain
+    // Kd = 0.07; // Derivative Gain
+
+    Kp = 0.08; // Proportional Gain
+    Ki = 3.5; // Integral Gain
+    Kd = 0.04; // Derivative Gain
 
     // setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
-    setpointAngle = ORIGINAL_SET_POINT_ANGLE; // Reference Value, r_t (Angle = 180°)
+    setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
     errorAngle = 0.0; // Error Value, e_t = r_t - y_t
     prevErrorAngle = 0.0; // Previous Error Value, e_(t-1)
 
@@ -87,8 +88,8 @@ void balanceRobot(int bleDirection) {
     }
 
     // Calculate Control Signal : u_t = Kp * e_t + Ki * ∑e_t + Kd * (e_t - e_(t-1) / dt)
-    u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
     // u_t = (Kp * errorAngle) + (Kd * errorDifference);
+    u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
 
     // Serial.print("u_t: ");
     // Serial.println(u_t);

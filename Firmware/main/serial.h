@@ -7,9 +7,6 @@ extern String serialMsg;
 
 /* Function Prototypes */
 void setupSerial();
-
 void handleData(char expectedByte, String txData);
-
-void updatePID();
 
 #endif

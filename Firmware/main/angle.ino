@@ -79,9 +79,14 @@ void getAngles(ANGLES &Angles) {
   if (accelCondition > 0.05) {
     driftingCondition = true;
     k = 1;
-  }
-  else {
-    k = 0.95;
+  } else {
+    calibration_count++; // Increment Angle Counter
+    if (calibration_count > MAX_CALIBRATION) {
+      calibration_count = 0;
+      k = 0.1;
+    } else {
+      k = 0.95;
+    }
   }
 
   // Serial.print("Acceleration Condn: ");
