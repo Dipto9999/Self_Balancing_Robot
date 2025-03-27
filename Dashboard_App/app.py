@@ -18,8 +18,10 @@ class Dashboard:
         self.dashboard_frame = tk.Frame(self.master, bg = '#000000')
 
         self.camera_frame = tk.Frame(self.dashboard_frame, bg = '#141654')
-        self.serial_frame = tk.Frame(self.dashboard_frame, bg = '#787882')
-        self.stripchart_frame = tk.Frame(self.dashboard_frame, bg = '#48484d')
+        self.diagnostic_frame = tk.Frame(self.dashboard_frame, bg = '#48484d')
+
+        self.serial_frame = tk.Frame(self.diagnostic_frame, bg = '#787882')
+        self.stripchart_frame = tk.Frame(self.diagnostic_frame, bg = '#48484d')
 
         ############################
         ### Camera Frame Widgets ###
@@ -67,53 +69,76 @@ class Dashboard:
 
         self.port_label.grid(
             row = 0, column = 0,
-            rowspan = 1, columnspan = 1,
-            padx = 10, pady = 10,
-            sticky = tk.E
-        )
-        self.port_entry.grid(
-            row = 0, column = 1,
-            rowspan = 1, columnspan = 1,
-            padx = 10, pady = 10,
-            sticky = tk.W
-        )
-
-        self.baudrate_label.grid(
-            row = 1, column = 0,
-            rowspan = 1, columnspan = 1,
-            padx = 10, pady = 10,
-            sticky = tk.W
-        )
-        self.baudrate_entry.grid(
-            row = 1, column = 1,
-            rowspan = 1, columnspan = 1,
-            padx = 10, pady = 10
-        )
-
-        self.open_button.grid(
-            row = 2, column = 1,
-            rowspan = 1, columnspan = 1,
+            columnspan = 2,
             padx = 10, pady = 10,
             sticky = tk.EW
         )
+        self.port_entry.grid(
+            row = 0, column = 2,
+            columnspan = 1,
+            padx = 10, pady = 10,
+            sticky = tk.EW
+        )
+
+        self.baudrate_label.grid(
+            row = 0, column = 3,
+            columnspan = 2,
+            padx = 10, pady = 10,
+            sticky = tk.EW
+        )
+        self.baudrate_entry.grid(
+            row = 0, column = 5,
+            columnspan = 1,
+            padx = 10, pady = 10,
+            sticky = tk.EW
+        )
+
+        self.open_button.grid(
+            row = 0, column = 6,
+            columnspan = 2,
+            padx = 10, pady = 10,
+            sticky = tk.EW
+        )
+
+        self.serial_frame.grid_rowconfigure(0, weight = 1)
+
+        self.serial_frame.grid_columnconfigure(0, weight = 1)
+        self.serial_frame.grid_columnconfigure(1, weight = 1)
+        self.serial_frame.grid_columnconfigure(2, weight = 0)
+
+        self.serial_frame.grid_columnconfigure(3, weight = 1)
+        self.serial_frame.grid_columnconfigure(4, weight = 1)
+        self.serial_frame.grid_columnconfigure(5, weight = 0)
+
+        self.serial_frame.grid_columnconfigure(6, weight = 2)
 
         ################################
         ### StripChart Frame Widgets ###
         ################################
 
         self.stripchart = StripChart(self.stripchart_frame)
+        self.save_button = tk.Button(
+            self.stripchart_frame, text = "Save", command = self.stripchart.stop, bg = '#6e9eeb',
+        )
+
         self.stripchart.canvas_widget.grid(row = 0, column = 0)
+        self.save_button.grid(
+            row = 1, column = 0,
+            padx = 10, pady = 10,
+            sticky = tk.EW
+        )
+
+        self.serial_frame.grid(row = 0, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
+        self.stripchart_frame.grid(row = 1, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
 
         # Position Widgets
 
         self.camera_frame.grid(row = 0, column = 0, rowspan = 2, padx = 10, pady = 10, sticky = tk.NSEW)
-        self.serial_frame.grid(row = 2, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
-        self.stripchart_frame.grid(row = 1, column = 1, rowspan = 2, padx = 10, pady = 10, sticky = tk.NSEW)
+        self.diagnostic_frame.grid(row = 0, column = 1, padx = 10, pady = 10, sticky = tk.NSEW)
 
         self.dashboard_frame.pack(fill = tk.BOTH, expand = True)
 
         self.cam_feed.start_recording()
-
         self.master.after(500, self.update_feed)
 
     def toggle_record(self):
