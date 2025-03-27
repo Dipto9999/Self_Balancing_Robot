@@ -43,11 +43,11 @@ class Dashboard:
         self.cam_feed = CameraDisplay(self.camera_frame) # Camera Feed
         # self.cam_feed = tk.Label(self.camera_frame, bg = '#141654')
 
-        self.cam_feed.pack(fill = tk.BOTH, expand = True)
-
         self.record_button.pack(side = tk.LEFT, padx = 5, pady = 5)
         self.snapshot_button.pack(side = tk.RIGHT, padx = 5, pady = 5)
-        self.button_frame.pack(side = tk.BOTTOM, fill = tk.X)
+
+        self.cam_feed.grid(row = 0, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
+        self.button_frame.grid(row = 1, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
 
         ############################
         ### Serial Frame Widgets ###
