@@ -49,8 +49,6 @@ class Dashboard:
         self.snapshot_button.pack(side = tk.RIGHT, padx = 5, pady = 5)
         self.button_frame.pack(side = tk.BOTTOM, fill = tk.X)
 
-        self.camera_frame.pack(side = tk.TOP, fill = tk.X)
-
         ############################
         ### Serial Frame Widgets ###
         ############################
@@ -133,7 +131,7 @@ class Dashboard:
 
         # Position Widgets
 
-        self.camera_frame.grid(row = 0, column = 0, rowspan = 2, padx = 10, pady = 10, sticky = tk.NSEW)
+        self.camera_frame.grid(row = 0, column = 0, padx = 10, pady = 10, sticky = tk.NSEW)
         self.diagnostic_frame.grid(row = 0, column = 1, padx = 10, pady = 10, sticky = tk.NSEW)
 
         self.dashboard_frame.pack(fill = tk.BOTH, expand = True)
