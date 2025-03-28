@@ -38,7 +38,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define COLORSENSOR_SLAVE_ADDRESS 0x10 << 1
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -97,10 +96,9 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) {
 
 }
 /*
-
 void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c) {
     if (hi2c->Instance == I2C1) {
-    	ColorSensor_ReceiveInterrupt(&ColorSensor);
+    	ColorSensor_ReceiveInterrupt(&Color);
     }
 }
 */
@@ -158,21 +156,20 @@ int main(void)
   DistanceSensor_Init(&Back, &htim22, DISTANCE_SENSOR_BACK_ID, DISTANCE_SENSOR_BACK_INPUT_CAPTURE_GPIO_Port, DISTANCE_SENSOR_BACK_INPUT_CAPTURE_Pin, DISTANCE_SENSOR_BACK_STATUS_GPIO_Port, DISTANCE_SENSOR_BACK_STATUS_Pin);
   RFID_Init(&RFID_Module);
   Speaker_Init(&Speaker, &RFID_Module, &htim2);
-  //ColorSensor_Init(&Color, &hi2c1);
+  ColorSensor_Init(&Color, &hi2c1);
   //ColorSensor_Init(&Color, &hi2c1, COLORSENSOR_SLAVE_ADDRESS);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   DistanceSensor_Start(&Front);
-  //DistanceSensor_Start(&Back);
-  //ColorSensor_EnableStatus(&Color, true);
-  //RFID_Module.botEnabled = true;
+  DistanceSensor_Start(&Back);
   while (1)
   {
 	  //ColorSensor_ReceiveTransmit(&Color, sendData, receiveData);
 	  RFID_SecurityLogic(&RFID_Module);
 	  //ColorSensor_Handle(&Color);
+	  ColorSensor_Handle(&Color);
 	  /*
 	  if (HAL_I2C_Master_Transmit(&hi2c1, 0x10 << 1, buffer, 1, HAL_MAX_DELAY) != HAL_OK) {
 		  Error_Handler();
@@ -264,7 +261,7 @@ static void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.Timing = 0x00807CBB;
+  hi2c1.Init.Timing = 0x00300F38;
   hi2c1.Init.OwnAddress1 = 32;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
@@ -319,7 +316,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;

@@ -2,5 +2,5 @@
 ../Core/Src/colorsensor.c:27:6:ColorSensor_EnableStatus	1
 ../Core/Src/colorsensor.c:33:10:ColorSensor_Read16	3
 ../Core/Src/colorsensor.c:51:6:ColorSensor_ReadAll	1
-../Core/Src/colorsensor.c:59:7:ColorSensor_CalculateColor	4
+../Core/Src/colorsensor.c:59:7:ColorSensor_CalculateColor	3
 ../Core/Src/colorsensor.c:70:6:ColorSensor_Handle	3

@@ -7,7 +7,7 @@ void ColorSensor_Init(colorsensor* sensor, I2C_HandleTypeDef* i2c_handle) {
     sensor->slave_address = TCS3472_SLAVE_ADDRESS;
 
     memset(sensor->rgb_data, 0, sizeof(sensor->rgb_data));  // Clear RGB data
-    sensor->enabled = false;
+    sensor->enabled = true;
 
     // Define initialization sequence
     uint8_t init_data[][2] = {
@@ -49,7 +49,7 @@ uint16_t ColorSensor_Read16(colorsensor* sensor, uint8_t reg) {
 }
 
 void ColorSensor_ReadAll(colorsensor* sensor) {
-    sensor->rgb_data[0] = ColorSensor_Read16(sensor, TCS3472_CDATAL_REG); // TCS3472_CDATAL
+    //sensor->rgb_data[0] = ColorSensor_Read16(sensor, TCS3472_CDATAL_REG); // TCS3472_CDATAL
     sensor->rgb_data[1]   = ColorSensor_Read16(sensor, TCS3472_RDATAL_REG); // TCS3472_RDATAL
     sensor->rgb_data[2] = ColorSensor_Read16(sensor, TCS3472_GDATAL_REG); // TCS3472_GDATAL
     sensor->rgb_data[3]  = ColorSensor_Read16(sensor, TCS3472_BDATAL_REG); // TCS3472_BDATAL
@@ -58,9 +58,9 @@ void ColorSensor_ReadAll(colorsensor* sensor) {
 
 color ColorSensor_CalculateColor(colorsensor* sensor)
 {
-	uint16_t max_val = sensor->rgb_data[0];
-	color detected_color = CLEAR;
-	if (sensor->rgb_data[1] > max_val) detected_color = RED;
+	uint16_t max_val = sensor->rgb_data[1];
+	color detected_color = RED;
+
 	if (sensor->rgb_data[2] > max_val) detected_color = GREEN;
 	if (sensor->rgb_data[3] > max_val) detected_color = BLUE;
 
@@ -79,6 +79,10 @@ void ColorSensor_Handle(colorsensor* sensor)
 	{
 		Speaker_Stop(&Speaker, COLOR_SENSOR_ID);
 	}
+
+	sprintf(Data, "%u %u %u %u\r\n", (uint8_t) detected_color, sensor->rgb_data[1], sensor->rgb_data[2], sensor->rgb_data[3]);
+	HAL_UART_Transmit(&huart1, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
+	HAL_Delay(100);
 
 }
 

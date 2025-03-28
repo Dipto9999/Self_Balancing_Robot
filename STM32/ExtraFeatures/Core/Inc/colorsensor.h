@@ -5,7 +5,7 @@
 #include "main.h"
 #include "speaker.h"
 
-#define TCS3472_SLAVE_ADDRESS 0x29
+#define TCS3472_SLAVE_ADDRESS 0x29 << 1
 #define TCS3472_EXPECTED_ID 0x44
 
 #define TCS3472_ID_REG 0x12
@@ -18,6 +18,10 @@
 #define TCS3472_RDATAL_REG 0x16
 #define TCS3472_GDATAL_REG 0x18
 #define TCS3472_BDATAL_REG 0x1A
+
+extern UART_HandleTypeDef huart1;
+extern char Data[64];
+
 
 typedef enum
 {
