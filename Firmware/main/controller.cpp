@@ -17,5 +17,5 @@ void setupISR() {
 void timerISR() {
   // getAngles(Angles);
   balanceRobot(bleDirection);
-  digitalWrite(PIN_RFID_DISABLED, !digitalRead(PIN_RFID_DISABLED));
+  // digitalWrite(PIN_RFID_DISABLED, !digitalRead(PIN_RFID_DISABLED));
 }

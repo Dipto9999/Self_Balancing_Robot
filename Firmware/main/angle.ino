@@ -63,31 +63,24 @@ void getAngles(ANGLES &Angles) {
   currAccel = atan2(az, ay) * (180 / PI);
   currAccel = (currAccel - 90) + ACCELEROMETER_OFFSET;
 
-  // Offset at Low Angles
-  //if (gx > 0 && gx < 2) gx = 0;
-  // Offset at Low Angles
-  if (gx > 0) gx *= 1.10;
-  // Account for Negative Angular Velocity Error
-  else if (gx < 0) gx *= 1.12;
-
   sampleTime = 1.0 / IMU.gyroscopeSampleRate();
 
   currGyro = prevGyro + gx * sampleTime;
 
   // Prevent Robot from Unpredictable Acceleration
-  accelCondition = abs(ax*ax + ay*ay + az*az - STANDARD_ACCEL);
-  if (accelCondition > 0.2) {
-    driftingCondition = true;
-    k = 1;
-  } else {
-    calibration_count++; // Increment Angle Counter
-    if (calibration_count > MAX_CALIBRATION) {
-      calibration_count = 0;
-      k = 0.1;
-    } else {
-      k = 0.9;
-    }
-  }
+  // accelCondition = abs(ax*ax + ay*ay + az*az - STANDARD_ACCEL);
+  // if (accelCondition > 0.2) {
+  //   driftingCondition = true;
+  //   k = 1;
+  // } else {
+  //   calibration_count++; // Increment Angle Counter
+  //   if (calibration_count > MAX_CALIBRATION) {
+  //     calibration_count = 0;
+  //     k = 0.1;
+  //   } else {
+  //     k = 0.9;
+  //   }
+  // }
 
   // Serial.print("Acceleration Condn: ");
   // Serial.println(abs(ax*ax + ay*ay + az*az - 1.02));

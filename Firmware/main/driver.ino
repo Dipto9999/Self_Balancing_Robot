@@ -41,57 +41,25 @@ float adjustDutyCycle(float u_t, float adjustedPWM) {
 void drive(float u_t, float errorAngle) {
     float dutyCycleA = adjustDutyCycle(u_t, 0);
 
-    // Serial.print("BLE Direction: ");
-    // Serial.println(bleDirection);
-
     switch (bleDirection) {
         case FORWARD:
-            setpointAngle = SETPOINT_0+ 0.3; // Reference Value, r_t (Angle = 180°)
-            // if errorAngle > 0, then should move FORWARD to compensate
-            // if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAX) {
-            //     dutyCycleA = adjustDutyCycle(u_t, -PWM_DRIVE_ADJUSTMENT);
-            // }
-            // else if (errorAngle > -ERROR_ANGLE_MAX && errorAngle < 0)
-            // {
-            //     dutyCycleA = adjustDutyCycle(u_t, PWM_DRIVE_ADJUSTMENT);
-            // }
-
+            moveForward(0.5);
             break;
         case REVERSE:
-            setpointAngle = SETPOINT_0- 0.3; // Reference Value, r_t (Angle = 180°)
-            // if (errorAngle < 0 && errorAngle > -ERROR_ANGLE_MAX) {
-            //     dutyCycleA = adjustDutyCycle(u_t, -PWM_DRIVE_ADJUSTMENT);
-            // }
-            // else if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAX)
-            // {
-            //     dutyCycleA = adjustDutyCycle(u_t, PWM_DRIVE_ADJUSTMENT);
-            // }
-
+            moveReverse(0.5);
             break;
         case LEFT:
-            if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAX) {
-                // dutyCycleA = adjustDutyCycle(u_t, -PWM_DRIVE_ADJUSTMENT / 2);
-                turnLeft(dutyCycleA, dutyCycleA);
-                return;
-            }
+            turnLeft(0.75, 0.5);
             break;
         case RIGHT:
-            if (errorAngle > 0 && errorAngle < ERROR_ANGLE_MAX) {
-                // dutyCycleA = adjustDutyCycle(u_t, PWM_DRIVE_ADJUSTMENT / 2);
-                turnRight(dutyCycleA, dutyCycleA);
-                return;
-            }
+            turnRight(0.75, 0.5);
             break;
         case IDLE:
-            setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
             break;
         default:
             // Handle unexpected values, if necessary
             break;
     }
-    // Serial.print("Duty Cycle A: ");
-    // Serial.println(dutyCycleA);
-
     currDutyCycle = dutyCycleA; // Update Current Duty Cycle
 
     if (u_t > 0) moveForward(dutyCycleA);
