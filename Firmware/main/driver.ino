@@ -3,8 +3,11 @@
 #define ERROR_ANGLE_MAX 3
 #define PWM_DRIVE_ADJUSTMENT 0.05
 
+int balanceCounter = 0; // Counter for Balance Control Loop
 void changeDirection(const char* bleBuff) {
     // if (!strcmp(bleBuff, "^") && !forwardAlert) bleDirection = FORWARD; // Drive
+
+    balanceCounter = 0; // Reset Balance Counter
     if (!strcmp(bleBuff, "^")) bleDirection = FORWARD; // Drive
     // else if (!strcmp(bleBuff, "v") && !reverseAlert) bleDirection = REVERSE; // Reverse
     else if (!strcmp(bleBuff, "v")) bleDirection = REVERSE; // Reverse
@@ -23,42 +26,65 @@ void moveReverse(float dutyCycle) {
     moveSlowDecay(MotorB, CCW, dutyCycle);
 }
 
-void turnLeft(float dutyCycleA, float dutyCycleB) {
-    moveSlowDecay(MotorA, CCW, dutyCycleA);
+void turnLeft(float dutyCycle, float dutyCycleB) {
+    moveSlowDecay(MotorA, CCW, dutyCycle);
     moveSlowDecay(MotorB, CW, dutyCycleB);
 }
 
-void turnRight(float dutyCycleA, float dutyCycleB) {
-    moveSlowDecay(MotorA, CW, dutyCycleA);
+void turnRight(float dutyCycle, float dutyCycleB) {
+    moveSlowDecay(MotorA, CW, dutyCycle);
     moveSlowDecay(MotorB, CCW, dutyCycleB);
 }
 
-float adjustDutyCycle(float u_t, float adjustedPWM) {
+float normalizePWM(float u_t, float adjustedPWM) {
     float dutyCycle = (abs(u_t) - 0.055) / (VCC - 0.055) *  (1 + adjustedPWM); // Convert Control Signal to Duty Cycle
     return (dutyCycle > 1) ? 1 : dutyCycle; // Limit Duty Cycle to 100%
 }
 
 void drive(float u_t, float errorAngle) {
-
-    float dutyCycleA = adjustDutyCycle(u_t, 0);
-    currDutyCycle = dutyCycleA; // Update Current Duty Cycle
+    float dutyCycle = normalizePWM(u_t, 0);
 
     switch (bleDirection) {
         case FORWARD:
-            moveForward(0.5);
+            setpointAngle = SETPOINT_0 + 3; // Reference Value, r_t (Angle = 180°)
+
+            if (u_t > 0) moveForward(dutyCycle);
+            else moveReverse(dutyCycle);
             break;
         case REVERSE:
-            moveReverse(0.5);
-            break;
+            setpointAngle = SETPOINT_0 - 3; // Reference Value, r_t (Angle = 180°)
+
+            if (u_t > 0) moveForward(dutyCycle);
+            else moveReverse(dutyCycle);
+        break;
         case LEFT:
-            turnLeft(0.75, 0.5);
-            break;
+            setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
+
+            if (balanceCounter++ == 4) {
+                balanceCounter = 0; // Reset Balance Counter
+                turnLeft(dutyCycle, 0);
+            } else {
+                if (u_t > 0) moveForward(dutyCycle);
+                else moveReverse(dutyCycle);
+            }
+        break;
         case RIGHT:
-            turnRight(0.75, 0.5);
-            break;
+            setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
+
+            if (balanceCounter++ == 4) {
+                balanceCounter = 0; // Reset Balance Counter
+                turnRight(0, dutyCycle);
+            } else {
+                if (u_t > 0) moveForward(dutyCycle);
+                else moveReverse(dutyCycle);
+            }
+        break;
         default:
-            if (u_t > 0) moveForward(dutyCycleA);
-            else moveReverse(dutyCycleA);
-            break;
+            setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
+
+            if (u_t > 0) moveForward(dutyCycle);
+            else moveReverse(dutyCycle);
+        break;
     }
+    currDutyCycle = dutyCycle; // Update Current Duty Cycle
 }
