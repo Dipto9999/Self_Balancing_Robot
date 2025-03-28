@@ -39,7 +39,9 @@ float adjustDutyCycle(float u_t, float adjustedPWM) {
 }
 
 void drive(float u_t, float errorAngle) {
+
     float dutyCycleA = adjustDutyCycle(u_t, 0);
+    currDutyCycle = dutyCycleA; // Update Current Duty Cycle
 
     switch (bleDirection) {
         case FORWARD:
@@ -54,14 +56,9 @@ void drive(float u_t, float errorAngle) {
         case RIGHT:
             turnRight(0.75, 0.5);
             break;
-        case IDLE:
-            break;
         default:
-            // Handle unexpected values, if necessary
+            if (u_t > 0) moveForward(dutyCycleA);
+            else moveReverse(dutyCycleA);
             break;
     }
-    currDutyCycle = dutyCycleA; // Update Current Duty Cycle
-
-    if (u_t > 0) moveForward(dutyCycleA);
-    else moveReverse(dutyCycleA);
 }

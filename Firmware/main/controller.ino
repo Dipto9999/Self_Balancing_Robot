@@ -25,9 +25,9 @@ void setupController() {
     // Ki = 6.5; // Integral Gain
     // Kd = 0.08; // Derivative Gain
 
-    Kp: 1.0;
-    Ki: 6.75;
-    Kd: 0.08;
+    Kp = 1.0;
+    Ki = 6.75;
+    Kd = 0.08;
 
     // setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
     setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)

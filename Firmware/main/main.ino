@@ -9,7 +9,7 @@
 
 void setup() {
   setupSerial();
-  setupGPIO();
+  // setupGPIO();
 
   setupIMU();
   setupBLE();
@@ -97,5 +97,4 @@ void loop() {
 
   // Serial.print("\nSampling Frequency (Hz): ");
   // Serial.println(1.0 / dt);
-
 }
