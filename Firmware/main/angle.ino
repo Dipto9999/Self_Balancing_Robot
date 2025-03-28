@@ -76,7 +76,7 @@ void getAngles(ANGLES &Angles) {
 
   // Prevent Robot from Unpredictable Acceleration
   accelCondition = abs(ax*ax + ay*ay + az*az - STANDARD_ACCEL);
-  if (accelCondition > 0.05) {
+  if (accelCondition > 0.2) {
     driftingCondition = true;
     k = 1;
   } else {
@@ -85,7 +85,7 @@ void getAngles(ANGLES &Angles) {
       calibration_count = 0;
       k = 0.1;
     } else {
-      k = 0.95;
+      k = 0.9;
     }
   }
 

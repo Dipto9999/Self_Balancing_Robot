@@ -145,13 +145,13 @@ void loop() {
   getAngles(Angles);
   // balanceRobot(bleDirection);
 
-  updatePID();
+  // updatePID();
 
   // Send Data
-  // serialMsg = String(Angles.Accelerometer, 2) + " " +
-  //    String(Angles.Gyroscope, 2) + " " +
-  //    String(Angles.Complementary, 2);
-  //  handleData('A', serialMsg);
+  serialMsg = String(Angles.Accelerometer, 2) + " " +
+     String(Angles.Gyroscope, 2) + " " +
+     String(Angles.Complementary, 2);
+  handleData('A', serialMsg);
 
   // Print Control Values
   // printControlValues();
@@ -164,4 +164,8 @@ void loop() {
 
   // printSensorReadings();
   // printAngleValues();
+  // Serial.print("Drifting Condition: ");
+  // Serial.println(abs(ax*ax + ay*ay + az*az - STANDARD_ACCEL));
+  // Serial.print("k: ");
+  // Serial.println(k, 3);
 }
