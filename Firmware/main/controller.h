@@ -5,18 +5,9 @@
 #include "angle.h"
 #include "gpio.h"
 
-#define SETPOINT_0 -0.6
+#define SETPOINT_0 0.0
 
 enum DirRobot {REVERSE, FORWARD, LEFT, RIGHT, IDLE};
-
-struct ConfigPWM {
-    float RPM_25;
-    float RPM_50;
-    float RPM_75;
-    float RPM_100;
-};
-
-extern ConfigPWM ConfigMotor;
 
 extern const int VCC;
 
