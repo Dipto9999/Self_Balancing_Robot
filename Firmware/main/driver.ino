@@ -46,7 +46,7 @@ void drive(float u_t, float errorAngle) {
 
     switch (bleDirection) {
         case FORWARD:
-            setpointAngle = SETPOINT_0 + 3; // Reference Value, r_t (Angle = 180°)
+            // setpointAngle = SETPOINT_0 + 3; // Reference Value, r_t (Angle = 180°)
 
             if (u_t > 0) moveForward(dutyCycle);
             else moveReverse(dutyCycle);
@@ -58,7 +58,7 @@ void drive(float u_t, float errorAngle) {
             else moveReverse(dutyCycle);
         break;
         case LEFT:
-            setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
+            // setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
 
             if (balanceCounter++ == 4) {
                 balanceCounter = 0; // Reset Balance Counter
@@ -69,7 +69,7 @@ void drive(float u_t, float errorAngle) {
             }
         break;
         case RIGHT:
-            setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
+            // setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
 
             if (balanceCounter++ == 4) {
                 balanceCounter = 0; // Reset Balance Counter
@@ -80,7 +80,7 @@ void drive(float u_t, float errorAngle) {
             }
         break;
         default:
-            setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
+            // setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
 
             if (u_t > 0) moveForward(dutyCycle);
             else moveReverse(dutyCycle);

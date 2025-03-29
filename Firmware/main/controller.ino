@@ -25,11 +25,13 @@ void setupController() {
     // Ki = 6.5; // Integral Gain
     // Kd = 0.08; // Derivative Gain
 
-    Kp = 1.0;
-    Ki = 6.75;
-    Kd = 0.08;
+    Kp = 0.7;
+    Ki = 11.5;
+    Kd = 0.05;
 
     // setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
+    
+    // 3/28: setpoint angle is about 0.6 deg
     setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
     errorAngle = 0.0; // Error Value, e_t = r_t - y_t
     prevErrorAngle = 0.0; // Previous Error Value, e_(t-1)
