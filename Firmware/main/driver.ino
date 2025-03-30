@@ -1,8 +1,5 @@
 #include "driver.h"
 
-#define ERROR_ANGLE_MAX 3
-#define PWM_DRIVE_ADJUSTMENT 0.05
-
 int balanceCounter = 0; // Counter for Balance Control Loop
 void changeDirection(const char* bleBuff) {
     // if (!strcmp(bleBuff, "^") && !forwardAlert) bleDirection = FORWARD; // Drive
@@ -46,13 +43,13 @@ void drive(float u_t, float errorAngle) {
 
     switch (bleDirection) {
         case FORWARD:
-            setpointAngle = SETPOINT_0 + 3; // Reference Value, r_t (Angle = 180°)
+            setpointAngle = SETPOINT_0 + ANGLE_TILT; // Reference Value, r_t (Angle = 180°)
 
             if (u_t > 0) moveForward(dutyCycle);
             else moveReverse(dutyCycle);
             break;
         case REVERSE:
-            setpointAngle = SETPOINT_0 - 3; // Reference Value, r_t (Angle = 180°)
+            setpointAngle = SETPOINT_0 - ANGLE_TILT; // Reference Value, r_t (Angle = 180°)
 
             if (u_t > 0) moveForward(dutyCycle);
             else moveReverse(dutyCycle);
@@ -60,9 +57,9 @@ void drive(float u_t, float errorAngle) {
         case LEFT:
             setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
 
-            if (balanceCounter++ == 4) {
+            if (balanceCounter++ == DIRECTION_COUNT) {
                 balanceCounter = 0; // Reset Balance Counter
-                turnLeft(dutyCycle, 0);
+                turnLeft(1, 0);
             } else {
                 if (u_t > 0) moveForward(dutyCycle);
                 else moveReverse(dutyCycle);
@@ -71,9 +68,9 @@ void drive(float u_t, float errorAngle) {
         case RIGHT:
             setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
 
-            if (balanceCounter++ == 4) {
+            if (balanceCounter++ == DIRECTION_COUNT) {
                 balanceCounter = 0; // Reset Balance Counter
-                turnRight(0, dutyCycle);
+                turnRight(0, 1);
             } else {
                 if (u_t > 0) moveForward(dutyCycle);
                 else moveReverse(dutyCycle);

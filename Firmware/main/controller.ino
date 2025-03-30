@@ -22,7 +22,8 @@ int bleDirection; // Current Direction
 
 void setupController() {
     Kp = 0.7;
-    Ki = 11.5;
+    // Ki = 11.5;
+    Ki = 12.5;
     Kd = 0.05;
 
     setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
