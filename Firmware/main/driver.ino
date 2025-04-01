@@ -1,8 +1,5 @@
 #include "driver.h"
 
-#define ERROR_ANGLE_MAX 3
-#define PWM_DRIVE_ADJUSTMENT 0.05
-
 int balanceCounter = 0; // Counter for Balance Control Loop
 void changeDirection(const char* bleBuff) {
     // if (!strcmp(bleBuff, "^") && !forwardAlert) bleDirection = FORWARD; // Drive
@@ -26,14 +23,16 @@ void moveReverse(float dutyCycle) {
     moveSlowDecay(MotorB, CCW, dutyCycle);
 }
 
-void turnLeft(float dutyCycle, float dutyCycleB) {
-    moveSlowDecay(MotorA, CCW, dutyCycle);
-    moveSlowDecay(MotorB, CW, dutyCycleB);
+void turnLeft(float u_t, float scaleFactor) {
+    DirPWM direction = (u_t > 0) ? CW : CCW;
+    moveSlowDecay(MotorA, direction, normalizePWM(u_t, scaleFactor));
+    moveSlowDecay(MotorB, direction, normalizePWM(u_t, -scaleFactor));
 }
 
-void turnRight(float dutyCycle, float dutyCycleB) {
-    moveSlowDecay(MotorA, CW, dutyCycle);
-    moveSlowDecay(MotorB, CCW, dutyCycleB);
+void turnRight(float u_t, float scaleFactor) {
+    DirPWM direction = (u_t > 0) ? CW : CCW;
+    moveSlowDecay(MotorA, direction, normalizePWM(u_t, -scaleFactor));
+    moveSlowDecay(MotorB, direction, normalizePWM(u_t, scaleFactor));
 }
 
 float normalizePWM(float u_t, float adjustedPWM) {
@@ -46,42 +45,53 @@ void drive(float u_t, float errorAngle) {
 
     switch (bleDirection) {
         case FORWARD:
-            // setpointAngle = SETPOINT_0 + 3; // Reference Value, r_t (Angle = 180°)
+            if (balanceCounter++ == DIRECTION_COUNT) {
+                balanceCounter = 0; // Reset Balance Counter
+                setpointAngle = SETPOINT_0 + ANGLE_TILT; // Reference Value, r_t (Angle = 180°)
+            }
+            else {
+                setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
+            }
 
             if (u_t > 0) moveForward(dutyCycle);
             else moveReverse(dutyCycle);
             break;
         case REVERSE:
-            setpointAngle = SETPOINT_0 - 3; // Reference Value, r_t (Angle = 180°)
+            if (balanceCounter++ == DIRECTION_COUNT) {
+                balanceCounter = 0; // Reset Balance Counter
+                setpointAngle = SETPOINT_0 - ANGLE_TILT; // Reference Value, r_t (Angle = 180°)
+            }
+            else {
+                setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
+            }
 
             if (u_t > 0) moveForward(dutyCycle);
             else moveReverse(dutyCycle);
-        break;
+            break;
         case LEFT:
-            // setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
+            setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
 
-            if (balanceCounter++ == 4) {
+            if (balanceCounter++ == DIRECTION_COUNT) {
                 balanceCounter = 0; // Reset Balance Counter
-                turnLeft(dutyCycle, 0);
+                turnLeft(u_t, 0.2);
             } else {
                 if (u_t > 0) moveForward(dutyCycle);
                 else moveReverse(dutyCycle);
             }
-        break;
+            break;
         case RIGHT:
-            // setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
+            setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
 
-            if (balanceCounter++ == 4) {
+            if (balanceCounter++ == DIRECTION_COUNT) {
                 balanceCounter = 0; // Reset Balance Counter
-                turnRight(0, dutyCycle);
+                turnRight(u_t, 0.2);
             } else {
                 if (u_t > 0) moveForward(dutyCycle);
                 else moveReverse(dutyCycle);
             }
         break;
         default:
-            // setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
-
+            setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
             if (u_t > 0) moveForward(dutyCycle);
             else moveReverse(dutyCycle);
         break;

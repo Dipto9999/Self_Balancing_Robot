@@ -16,8 +16,6 @@ void setup() {
 
   setupMotors();
 
-  // setupISR();
-
   Serial.println("Setup Complete!");
 }
 
@@ -87,13 +85,13 @@ void loop() {
   getAngles(Angles);
   balanceRobot(bleDirection);
 
-  updatePID();
+  // updatePID();
 
   // Send Data
-  serialMsg = String(Angles.Accelerometer, 2) + " " +
-     String(Angles.Gyroscope, 2) + " " +
-     String(Angles.Complementary, 2);
-  handleData('A', serialMsg);
+  // serialMsg = String(Angles.Accelerometer, 2) + " " +
+  //    String(Angles.Gyroscope, 2) + " " +
+  //    String(Angles.Complementary, 2);
+  // handleData('A', serialMsg);
 
   // Serial.print("\nSampling Frequency (Hz): ");
   // Serial.println(1.0 / dt);

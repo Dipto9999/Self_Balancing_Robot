@@ -1,4 +1,5 @@
 #include "ble.h"
+#include "controller.h"
 
 // Define a Custom BLE Service and Characteristic.
 BLEService customService("00000000-5EC4-4083-81CD-A10B8D5CF6EC");
@@ -9,6 +10,43 @@ BLECharacteristic customCharacteristic(
 
 char buffBLE[BUFFER_SIZE];
 
+void updateParamBLE(const char* bleBuff) {
+  int parseIndex;
+  String paramType, valueStr;
+
+  // Check for PID Parameter Update Command
+
+  String command = String(bleBuff);
+  command.trim(); // Remove Leading/Trailing Whitespace
+
+  // Check if command starts with a valid prefix
+  if (
+    command.startsWith("k=") ||
+    command.startsWith("set=") ||
+    command.startsWith("Kp=") ||
+    command.startsWith("Ki=") ||
+    command.startsWith("Kd=")
+  ) {
+      parseIndex = command.indexOf('=');
+      paramType = command.substring(0, parseIndex);
+      valueStr = command.substring(parseIndex + 1);
+
+      float newValue = valueStr.toFloat();
+
+      if (valueStr != "0" && newValue == 0) return;
+
+      if (paramType == "k") k = newValue;
+      else if (paramType == "set") setpointAngle = newValue;
+      else if (paramType == "Kp") Kp = newValue;
+      else if (paramType == "Ki") Ki = newValue;
+      else if (paramType == "Kd") Kd = newValue;
+      else return; // Invalid Command
+
+      customCharacteristic.writeValue(paramType.c_str());
+      customCharacteristic.writeValue(valueStr.c_str());
+  }
+}
+
 void setupBLE() {
   pinMode(LED_BUILTIN, OUTPUT); // Init Built-in LED to Indicate Connection Status
 
@@ -16,10 +54,6 @@ void setupBLE() {
     Serial.println("Starting BLE Failed!");
     while (1);
   }
-
-  // ToDo: Investigate BLE Configuration
-  // BLE.setAdvertisingInterval(800); // Advertising Interval (500ms)
-  // BLE.setConnectionInterval(0x0028, 0x0064); // Connection Interval (50ms - 100ms)
 
   // Set Local Name and Device Name
   BLE.setLocalName("BLE-B17");
@@ -37,6 +71,7 @@ void setupBLE() {
   customCharacteristic.setEventHandler(BLEWritten, rxBLE);
 
   BLE.advertise(); // Advertising the BLE Device
+  while (!BLE.connected()); // Wait for Connection
 }
 
 void connectBLE(BLEDevice central) {
@@ -55,4 +90,5 @@ void rxBLE(BLEDevice central, BLECharacteristic characteristic) {
   buffBLE[length] = '\0'; // Null-Terminated
 
   changeDirection(buffBLE); // Change Direction based on BLE Input
+  // updateParamBLE(buffBLE); // Update PID Parameters based on BLE Input
 }
