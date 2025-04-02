@@ -3,7 +3,7 @@
 
 #include "controller.h"
 
-#define ANGLE_TILT 0.5
+#define ANGLE_TILT 0.6
 #define DIRECTION_COUNT 5
 
 void changeDirection(const char* bleBuff);

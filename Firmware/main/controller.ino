@@ -25,7 +25,7 @@ void setupController() {
     // Ki = 6.5; // Integral Gain
     // Kd = 0.08; // Derivative Gain
 
-    Kp = 0.65;
+    Kp = 0.7;
     Ki = 11.25;
     Kd = 0.055;
 
