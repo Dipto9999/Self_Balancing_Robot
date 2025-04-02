@@ -4,7 +4,7 @@ from bleak import BleakScanner, BleakClient
 SERVICE_UUID = "00000000-5EC4-4083-81CD-A10B8D5CF6EC"
 CHARACTERISTIC_UUID = "00000001-5EC4-4083-81CD-A10B8D5CF6EC"
 
-def notification_handler(sender, data):
+def display_data(sender, data):
     # Decode the received bytes to string and print them
     try:
         text = data.decode("utf-8")
@@ -25,7 +25,7 @@ async def main():
         print("No BLE-B17 Device Found.")
         return
 
-    print(f"Found {target.name} @Addr {target.address}. Connecting...")
+    print(f"Found {target.name} @Address {target.address}. Connecting...")
 
     async with BleakClient(target.address) as client:
         if not client.is_connected:
@@ -34,7 +34,7 @@ async def main():
         print("Connected.")
 
         # Start notifications on the characteristic
-        await client.start_notify(CHARACTERISTIC_UUID, notification_handler)
+        await client.start_notify(CHARACTERISTIC_UUID, display_data)
 
         try:
             while True:
