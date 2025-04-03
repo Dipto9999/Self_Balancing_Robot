@@ -4,7 +4,7 @@
 #include "controller.h"
 
 #define ANGLE_TILT 0.6
-#define DIRECTION_COUNT 5
+#define DIRECTION_COUNT 3
 
 void changeDirection(const char* bleBuff);
 void moveForward(float dutyCycle);

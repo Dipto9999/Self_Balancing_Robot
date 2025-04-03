@@ -13,14 +13,13 @@ void changeDirection(const char* bleBuff) {
         bleDirection = FORWARD; // Drive
     } else if (!strcmp(bleBuff, "v")) {
         bleDirection = REVERSE; // Reverse
-    }
-    else if (!strcmp(bleBuff, "<")) {
+    } else if (!strcmp(bleBuff, "<")) {
         setpointAngle = SETPOINT_0;
         bleDirection = LEFT; // Turn Left
     } else if (!strcmp(bleBuff, ">")) {
         setpointAngle = SETPOINT_0;
         bleDirection = RIGHT; // Turn Right
-    } else {
+    } else if (!strcmp(bleBuff, "X")) {
         setpointAngle = SETPOINT_0;
         bleDirection = IDLE; // IDLE
     }
@@ -37,26 +36,15 @@ void moveReverse(float dutyCycle) {
 }
 
 void turnLeft(float u_t, float scaleFactor) {
-    /*
-    DirPWM direction = (u_t > 0) ? CW : CCW;
-    moveSlowDecay(MotorA, direction, normalizePWM(u_t, scaleFactor));
-    moveSlowDecay(MotorB, direction, normalizePWM(u_t, -scaleFactor));
-    */
-
     moveSlowDecay(MotorA, CW, normalizePWM(u_t, scaleFactor));
     moveSlowDecay(MotorB, CCW, normalizePWM(u_t, 0));
 
 }
 
 void turnRight(float u_t, float scaleFactor) {
-    DirPWM direction = (u_t > 0) ? CW : CCW;
-    moveSlowDecay(MotorA, direction, normalizePWM(u_t, -scaleFactor));
-    moveSlowDecay(MotorB, direction, normalizePWM(u_t, scaleFactor));
+    moveSlowDecay(MotorA, CCW, normalizePWM(u_t, scaleFactor));
+    moveSlowDecay(MotorB, CW, normalizePWM(u_t, 0));
 
-     /*
-    moveSlowDecay(MotorA, CW, normalizePWM(u_t, scaleFactor));
-    moveSlowDecay(MotorB, CCW, normalizePWM(u_t, 0));
-    */
 }
 
 float normalizePWM(float u_t, float adjustedPWM) {
@@ -65,55 +53,88 @@ float normalizePWM(float u_t, float adjustedPWM) {
 }
 
 void drive(float u_t, float errorAngle) {
-    float dutyCycle = normalizePWM(u_t, 0);
+    currDutyCycle = normalizePWM(u_t, 0);
 
-    if (millis() - startTime >= 2000) {
-        startTime = currTime; // Reset Start Time
-        setpointAngle = SETPOINT_0;
-        bleDirection = IDLE; // Stop Robot
-    }
-
+    // ToDo: Overshoots
     switch (bleDirection) {
-        case FORWARD: // ToDo: Overshoots
-            if (errorAngle >= 0 && errorAngle < 0.5) setpointAngle = SETPOINT_0;
-            else if (errorAngle < 0 && errorAngle > -0.5) setpointAngle = SETPOINT_0 + ANGLE_TILT;
+        case FORWARD:
+           if (abs(errorAngle) < 0.8 && balanceCounter++ == DIRECTION_COUNT) {
+                balanceCounter = 0;
+                setpointAngle = SETPOINT_0 + ANGLE_TILT;
+            } else {
+                setpointAngle = SETPOINT_0;
+            }
 
-            if (u_t > 0) moveForward(dutyCycle);
-            else moveReverse(dutyCycle);
+            if (u_t > 0) moveForward(currDutyCycle);
+            else moveReverse(currDutyCycle);
+
+            if (millis() - startTime >= 1000) {
+                startTime = currTime; // Reset Start Time
+                setpointAngle = SETPOINT_0;
+                bleDirection = IDLE; // Stop Robot
+            }
             break;
         case REVERSE:
-            if (errorAngle >= 0 && errorAngle < 0.5) setpointAngle = SETPOINT_0 - ANGLE_TILT;
-            else if (errorAngle < 0 && errorAngle > -0.5) setpointAngle = SETPOINT_0;
+            if (abs(errorAngle) < 0.8 && balanceCounter++ == DIRECTION_COUNT) {
+                balanceCounter = 0;
+                setpointAngle = SETPOINT_0 - ANGLE_TILT;
+            } else {
+                setpointAngle = SETPOINT_0;
+            }
 
-            if (u_t > 0) moveForward(dutyCycle);
-            else moveReverse(dutyCycle);
+            if (u_t > 0) moveForward(currDutyCycle);
+            else moveReverse(currDutyCycle);
+
+            if (millis() - startTime >= 1000) {
+                startTime = currTime; // Reset Start Time
+                setpointAngle = SETPOINT_0;
+                bleDirection = IDLE; // Stop Robot
+            }
             break;
         case LEFT:
-            if (errorAngle >= 0 && errorAngle < 0.5) {
-                turnLeft(u_t, -0.03);
-            }
-            else if (errorAngle < 0 && errorAngle > -0.5) {
-                turnLeft(u_t, 0.03);
+            if (balanceCounter++ == DIRECTION_COUNT) {
+                balanceCounter = 0;
+                if (errorAngle >= 0 && errorAngle < 0.8) {
+                    turnLeft(u_t, -0.015);
+                }
+                // else if (errorAngle < 0 && errorAngle > -0.8) {
+                //     turnLeft(u_t, 0.0);
+                // }
             } else {
-                if (u_t > 0) moveForward(dutyCycle);
-                else moveReverse(dutyCycle);
+                if (u_t > 0) moveForward(currDutyCycle);
+                else moveReverse(currDutyCycle);
             }
-            break;
-        case RIGHT: // ToDo: Does Not Work, Test
-            if (errorAngle >= 0 && errorAngle < 0.5) {
-                turnRight(u_t, -0.03);
+
+            if (millis() - startTime >= 1000) {
+                startTime = currTime; // Reset Start Time
+                setpointAngle = SETPOINT_0;
+                bleDirection = IDLE; // Stop Robot
             }
-            else if (errorAngle < 0 && errorAngle > -0.5) {
-                turnRight(u_t, 0.03);
-            } else {
-                if (u_t > 0) moveForward(dutyCycle);
-                else moveReverse(dutyCycle);
+        break;
+
+        case RIGHT:
+            if (errorAngle >= 0 && errorAngle < 0.8) {
+                turnRight(u_t, -0.015);
+            }
+            // else if (errorAngle < 0 && errorAngle > -0.8) {
+            //     turnRight(u_t, 0.0);
+            // }
+            else {
+                if (u_t > 0) moveForward(currDutyCycle);
+                else moveReverse(currDutyCycle);
+            }
+
+            if (millis() - startTime >= 1000) {
+                startTime = currTime; // Reset Start Time
+                setpointAngle = SETPOINT_0;
+                bleDirection = IDLE; // Stop Robot
             }
         break;
         default:
-            if (u_t > 0) moveForward(dutyCycle);
-            else moveReverse(dutyCycle);
+            if (u_t > 0) moveForward(currDutyCycle);
+            else moveReverse(currDutyCycle);
+            return;
         break;
+        return;
     }
-    currDutyCycle = dutyCycle; // Update Current Duty Cycle
 }

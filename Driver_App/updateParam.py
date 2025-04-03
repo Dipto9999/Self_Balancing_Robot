@@ -16,20 +16,20 @@ class BLEControlApp:
         self.loop = None
         self.task = None
 
-        self.setup_ui()
+        self.config()
 
         # Set up event loop in a separate thread
         self.loop = asyncio.new_event_loop()
         self.thread = threading.Thread(target=self.start_loop, daemon=True)
         self.thread.start()
 
-    def setup_ui(self):
+    def config(self):
         # Frame for connection controls
         connection_frame = ttk.LabelFrame(self.root, text="Connection")
         connection_frame.pack(fill=tk.X, padx=10, pady=10)
 
         # Connect button
-        self.connect_button = ttk.Button(connection_frame, text="Connect to BLE-B17", command=self.toggle_connection)
+        self.connect_button = ttk.Button(connection_frame, text="Connect to BLE-B17", command=self.toggle_conn)
         self.connect_button.pack(fill=tk.X, padx=10, pady=10)
 
         # Status indicator
@@ -62,14 +62,14 @@ class BLEControlApp:
         button_frame = ttk.Frame(command_frame)
         button_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
 
-        self.send_button = ttk.Button(button_frame, text="Send", command=self.send_command, state=tk.DISABLED)
+        self.send_button = ttk.Button(button_frame, text="Send", command=self.send_cmd, state=tk.DISABLED)
         self.send_button.pack(side=tk.LEFT, padx=(0, 5))
 
         self.clear_button = ttk.Button(button_frame, text="Clear Log", command=self.clear_log)
         self.clear_button.pack(side=tk.LEFT)
 
         # Bind Enter key to send command
-        self.command_entry.bind("<Return>", lambda event: self.send_command())
+        self.command_entry.bind("<Return>", lambda event: self.send_cmd())
 
     def start_loop(self):
         asyncio.set_event_loop(self.loop)
@@ -86,16 +86,16 @@ class BLEControlApp:
         self.log_text.delete(1.0, tk.END)
         self.log_text.config(state=tk.DISABLED)
 
-    def toggle_connection(self):
+    def toggle_conn(self):
         if not self.connected:
             # Start connection
             self.connect_button.config(state=tk.DISABLED)
-            asyncio.run_coroutine_threadsafe(self.connect_to_device(), self.loop)
+            asyncio.run_coroutine_threadsafe(self.connect(), self.loop)
         else:
             # Disconnect
             asyncio.run_coroutine_threadsafe(self.disconnect_device(), self.loop)
 
-    def send_command(self):
+    def send_cmd(self):
         command = self.command_entry.get().strip()
         if not command or not self.connected:
             return
@@ -111,7 +111,7 @@ class BLEControlApp:
 
         self.root.after(0, lambda: self.update_log(f"Received: {text}"))
 
-    async def connect_to_device(self):
+    async def connect(self):
         SERVICE_UUID = "00000000-5EC4-4083-81CD-A10B8D5CF6EC"
         CHARACTERISTIC_UUID = "00000001-5EC4-4083-81CD-A10B8D5CF6EC"
 

@@ -58,11 +58,20 @@ void balanceRobot(int bleDirection) {
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
 
-    if (prevAngle * measuredAngle < 0) {
+    if (((prevAngle - setpointAngle) * (measuredAngle - setpointAngle)) < 0) {
         errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
     } else {
         errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
     }
+
+    // if (((prevAngle - measuredAngle) - setpointAngle) < 0) {
+    //     errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
+    // } else if ((abs(setpointAngle - measuredAngle) < 0.3) && (abs(setpointAngle - prevAngle) < 1)) {
+    //     errorAccumulation = 0; // Reset Accumulated Error Value ∑e_t
+    // } else {
+    //     errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
+    // }
+
 
     // Calculate Control Signal : u_t = Kp * e_t + Ki * ∑e_t + Kd * (e_t - e_(t-1) / dt)
     // u_t = (Kp * errorAngle) + (Kd * errorDifference);

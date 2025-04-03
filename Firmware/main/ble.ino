@@ -33,8 +33,6 @@ void updateParamBLE(const char* bleBuff) {
 
       float newValue = valueStr.toFloat();
 
-      if (valueStr != "0") return;
-
       if (paramType == "k") k = newValue;
       else if (paramType == "set") setpointAngle = newValue;
       else if (paramType == "Kp") Kp = newValue;
@@ -45,7 +43,7 @@ void updateParamBLE(const char* bleBuff) {
       customCharacteristic.writeValue(paramType.c_str());
       customCharacteristic.writeValue(valueStr.c_str());
   } else {
-    changeDirection(buffBLE); // Change Direction based on BLE Input
+    return; // Invalid Command
   }
 }
 
@@ -92,4 +90,5 @@ void rxBLE(BLEDevice central, BLECharacteristic characteristic) {
   buffBLE[length] = '\0'; // Null-Terminated
 
   updateParamBLE(buffBLE); // Update PID Parameters based on BLE Input
+  // changeDirection(buffBLE); // Change Direction based on BLE Input
 }
