@@ -61,13 +61,13 @@ void balanceRobot(int bleDirection) {
         errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
     }
 
-    // Serial.print("Error Angle: ");
-    // Serial.println(errorAngle, 3);
-    // Serial.print(" Previous Error Angle: ");
-    // Serial.println(prevErrorAngle, 3);
-    // Serial.print(" Error Accumulation: ");
-    // Serial.println(errorAccumulation, 3);
-    // Serial.println("");
+    Serial.print("Error Angle: ");
+    Serial.println(errorAngle, 3);
+    Serial.print(" Previous Error Angle: ");
+    Serial.println(prevErrorAngle, 3);
+    Serial.print(" Error Accumulation: ");
+    Serial.println(errorAccumulation, 3);
+    Serial.println("");
 
     // if (((prevAngle - measuredAngle) - setpointAngle) < 0) {
     //     errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
