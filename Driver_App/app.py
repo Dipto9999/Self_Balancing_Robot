@@ -4,7 +4,6 @@ import threading
 from bleak import BleakScanner, BleakClient, BleakError
 from flask import Flask, request, jsonify, render_template
 
-
 class BLEManager:
     # Define UUIDs for BLE Service and Characteristic
     SERVICE_UUID = "00000000-5EC4-4083-81CD-A10B8D5CF6EC"

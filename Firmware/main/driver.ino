@@ -37,13 +37,12 @@ void moveReverse(float dutyCycle) {
 
 void turnLeft(float u_t, float scaleFactor) {
     moveSlowDecay(MotorA, CW, normalizePWM(u_t, scaleFactor));
-    moveSlowDecay(MotorB, CCW, normalizePWM(u_t, 0));
-
+    moveSlowDecay(MotorB, CW, normalizePWM(u_t, -scaleFactor));
 }
 
 void turnRight(float u_t, float scaleFactor) {
-    moveSlowDecay(MotorA, CCW, normalizePWM(u_t, scaleFactor));
-    moveSlowDecay(MotorB, CW, normalizePWM(u_t, 0));
+    moveSlowDecay(MotorA, CW, normalizePWM(u_t, -scaleFactor));
+    moveSlowDecay(MotorB, CW, normalizePWM(u_t, scaleFactor));
 
 }
 
@@ -58,7 +57,7 @@ void drive(float u_t, float errorAngle) {
     // ToDo: Overshoots
     switch (bleDirection) {
         case FORWARD:
-           if (abs(errorAngle) < 0.8 && balanceCounter++ == DIRECTION_COUNT) {
+           if (abs(errorAngle) < 0.8 && balanceCounter++ % 2 == 0) {
                 balanceCounter = 0;
                 setpointAngle = SETPOINT_0 + ANGLE_TILT;
             } else {
@@ -68,14 +67,14 @@ void drive(float u_t, float errorAngle) {
             if (u_t > 0) moveForward(currDutyCycle);
             else moveReverse(currDutyCycle);
 
-            if (millis() - startTime >= 1000) {
+            if (millis() - startTime >= 2000) {
                 startTime = currTime; // Reset Start Time
                 setpointAngle = SETPOINT_0;
                 bleDirection = IDLE; // Stop Robot
             }
             break;
         case REVERSE:
-            if (abs(errorAngle) < 0.8 && balanceCounter++ == DIRECTION_COUNT) {
+            if (abs(errorAngle) < 0.8 && balanceCounter++ % 2 == 0) {
                 balanceCounter = 0;
                 setpointAngle = SETPOINT_0 - ANGLE_TILT;
             } else {
@@ -85,27 +84,22 @@ void drive(float u_t, float errorAngle) {
             if (u_t > 0) moveForward(currDutyCycle);
             else moveReverse(currDutyCycle);
 
-            if (millis() - startTime >= 1000) {
+            if (millis() - startTime >= 2000) {
                 startTime = currTime; // Reset Start Time
                 setpointAngle = SETPOINT_0;
                 bleDirection = IDLE; // Stop Robot
             }
             break;
         case LEFT:
-            if (balanceCounter++ == DIRECTION_COUNT) {
+            if (abs(errorAngle) < 0.8 && balanceCounter++ % 2 == 0) {
                 balanceCounter = 0;
-                if (errorAngle >= 0 && errorAngle < 0.8) {
-                    turnLeft(u_t, -0.015);
-                }
-                // else if (errorAngle < 0 && errorAngle > -0.8) {
-                //     turnLeft(u_t, 0.0);
-                // }
+                turnLeft(u_t, 0.4);
             } else {
                 if (u_t > 0) moveForward(currDutyCycle);
                 else moveReverse(currDutyCycle);
             }
 
-            if (millis() - startTime >= 1000) {
+            if (millis() - startTime >= 1250) {
                 startTime = currTime; // Reset Start Time
                 setpointAngle = SETPOINT_0;
                 bleDirection = IDLE; // Stop Robot
@@ -113,18 +107,15 @@ void drive(float u_t, float errorAngle) {
         break;
 
         case RIGHT:
-            if (errorAngle >= 0 && errorAngle < 0.8) {
-                turnRight(u_t, -0.015);
-            }
-            // else if (errorAngle < 0 && errorAngle > -0.8) {
-            //     turnRight(u_t, 0.0);
-            // }
-            else {
+            if (abs(errorAngle) < 0.8 && balanceCounter++ % 2 == 0) {
+                balanceCounter = 0;
+                turnRight(u_t, 0.4);
+            } else {
                 if (u_t > 0) moveForward(currDutyCycle);
                 else moveReverse(currDutyCycle);
             }
 
-            if (millis() - startTime >= 1000) {
+            if (millis() - startTime >= 1250) {
                 startTime = currTime; // Reset Start Time
                 setpointAngle = SETPOINT_0;
                 bleDirection = IDLE; // Stop Robot

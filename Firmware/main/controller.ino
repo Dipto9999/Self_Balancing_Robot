@@ -29,9 +29,6 @@ void setupController() {
     Ki = 11.25;
     Kd = 0.055;
 
-    // setpointAngle = 0.0; // Reference Value, r_t (Angle = 180°)
-
-    // 3/28: setpoint angle is about 0.6 deg
     setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
     errorAngle = 0.0; // Error Value, e_t = r_t - y_t
     prevErrorAngle = 0.0; // Previous Error Value, e_(t-1)
@@ -51,18 +48,26 @@ void setupMotors() {
 }
 
 void balanceRobot(int bleDirection) {
-    // TODO: Measure Angles in Main Loop
-
     // Get Measured Angle
     measuredAngle = Angles.Complementary; // Complementary Filter
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
 
-    if (((prevAngle - setpointAngle) * (measuredAngle - setpointAngle)) < 0) {
+    if ((prevErrorAngle * errorAngle) < 0) {
+        errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
+    } else if (abs(errorAngle) < 0.3) {
         errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
     } else {
         errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
     }
+
+    // Serial.print("Error Angle: ");
+    // Serial.println(errorAngle, 3);
+    // Serial.print(" Previous Error Angle: ");
+    // Serial.println(prevErrorAngle, 3);
+    // Serial.print(" Error Accumulation: ");
+    // Serial.println(errorAccumulation, 3);
+    // Serial.println("");
 
     // if (((prevAngle - measuredAngle) - setpointAngle) < 0) {
     //     errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
@@ -71,7 +76,6 @@ void balanceRobot(int bleDirection) {
     // } else {
     //     errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
     // }
-
 
     // Calculate Control Signal : u_t = Kp * e_t + Ki * ∑e_t + Kd * (e_t - e_(t-1) / dt)
     // u_t = (Kp * errorAngle) + (Kd * errorDifference);

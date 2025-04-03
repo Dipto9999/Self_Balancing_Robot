@@ -10,38 +10,79 @@ BLECharacteristic customCharacteristic(
 
 char buffBLE[BUFFER_SIZE];
 
-void updateParamBLE(const char* bleBuff) {
-  int parseIndex;
-  String paramType, valueStr;
+// void updateParamBLE(const char* bleBuff) {
+  // int parseIndex;
+  // String paramType, valueStr;
 
   // Check for PID Parameter Update Command
 
-  String command = String(bleBuff);
-  command.trim(); // Remove Leading/Trailing Whitespace
+  // String cmd = String(bleBuff);
+  // cmd.trim(); // Remove Leading/Trailing Whitespace
 
-  // Check if command starts with a valid prefix
+  // if (
+    // cmd.startsWith("k=") ||
+    // cmd.startsWith("set=") ||
+    // cmd.startsWith("Kp=") ||
+    // cmd.startsWith("Ki=") ||
+    // cmd.startsWith("Kd=")
+  // ) {
+      // parseIndex = cmd.indexOf('=');
+      // paramType = cmd.substring(0, parseIndex);
+      // valueStr = cmd.substring(parseIndex + 1);
+
+      // float newValue = valueStr.toFloat();
+
+      // if (paramType == "k") k = newValue;
+      // else if (paramType == "set") setpointAngle = newValue;
+      // else if (paramType == "Kp") Kp = newValue;
+      // else if (paramType == "Ki") Ki = newValue;
+      // else if (paramType == "Kd") Kd = newValue;
+      // else return; // Invalid Command
+
+      // customCharacteristic.writeValue(paramType.c_str());
+      // customCharacteristic.writeValue(valueStr.c_str());
+  // } else {
+    // return; // Invalid Command
+  // }
+// }
+
+void updateParamBLE(const char* bleBuff) {
+  char paramType[BUFFER_SIZE] = {0};
+  char valueStr[BUFFER_SIZE] = {0};
+  float newValue = 0.0f;
+
+  char cmd[BUFFER_SIZE] = {0};
+  strcpy(cmd, bleBuff); // Copy Command to Local Buffer
+
+  int start = 0;
+  while ((cmd[start] == ' ') || (cmd[start] == '\t')) start++; // Skip Leading Whitespace
+
   if (
-    command.startsWith("k=") ||
-    command.startsWith("set=") ||
-    command.startsWith("Kp=") ||
-    command.startsWith("Ki=") ||
-    command.startsWith("Kd=")
+    strncmp(&cmd[start], "k=", 2) == 0 ||
+    strncmp(&cmd[start], "set=", 4) == 0 ||
+    strncmp(&cmd[start], "Kp=", 3) == 0 ||
+    strncmp(&cmd[start], "Ki=", 3) == 0 ||
+    strncmp(&cmd[start], "Kd=", 3) == 0
   ) {
-      parseIndex = command.indexOf('=');
-      paramType = command.substring(0, parseIndex);
-      valueStr = command.substring(parseIndex + 1);
+    char* equalsPos = strchr(&cmd[start], '='); // Find '=' Position
+    if (!equalsPos) return;
 
-      float newValue = valueStr.toFloat();
+    int paramLength = equalsPos - &cmd[start]; // Length of Parameter Name
+    strncpy(paramType, &cmd[start], paramLength); // Copy Parameter Name
+    paramType[paramLength] = '\0'; // Null-Termination
 
-      if (paramType == "k") k = newValue;
-      else if (paramType == "set") setpointAngle = newValue;
-      else if (paramType == "Kp") Kp = newValue;
-      else if (paramType == "Ki") Ki = newValue;
-      else if (paramType == "Kd") Kd = newValue;
-      else return; // Invalid Command
+    strcpy(valueStr, equalsPos + 1); // Copy Value String
+    newValue = atof(valueStr); // Convert Value String to Float
 
-      customCharacteristic.writeValue(paramType.c_str());
-      customCharacteristic.writeValue(valueStr.c_str());
+    if (strcmp(paramType, "k") == 0) k = newValue;
+    else if (strcmp(paramType, "set") == 0) setpointAngle = newValue;
+    else if (strcmp(paramType, "Kp") == 0) Kp = newValue;
+    else if (strcmp(paramType, "Ki") == 0) Ki = newValue;
+    else if (strcmp(paramType, "Kd") == 0) Kd = newValue;
+    else return; // Invalid Command
+
+    customCharacteristic.writeValue(paramType);
+    customCharacteristic.writeValue(valueStr);
   } else {
     return; // Invalid Command
   }
@@ -89,6 +130,6 @@ void rxBLE(BLEDevice central, BLECharacteristic characteristic) {
   memcpy(buffBLE, receivedData, length);
   buffBLE[length] = '\0'; // Null-Terminated
 
-  updateParamBLE(buffBLE); // Update PID Parameters based on BLE Input
-  // changeDirection(buffBLE); // Change Direction based on BLE Input
+  // updateParamBLE(buffBLE); // Update PID Parameters based on BLE Input
+  changeDirection(buffBLE); // Change Direction based on BLE Input
 }

@@ -31,8 +31,6 @@ extern float currDutyCycle;
 extern int bleDirection;
 
 /* Function Prototypes */
-void setupISR();
-void timerISR();
 
 void setupController();
 void setupMotors();
