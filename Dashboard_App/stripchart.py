@@ -41,7 +41,8 @@ class ArduinoSerial(serial.Serial) :
         print('Serial Port is Open')
 
 class StripChart:
-    SAMPLE_RATE = 0.250 # 250 ms
+    # SAMPLE_RATE = 0.250 # 250 ms
+    SAMPLE_RATE = 1 # 1000 ms
     def __init__(self, master, conn = None, data_size = 25, ylim = 90):
         self.master = master
         self.conn = conn
