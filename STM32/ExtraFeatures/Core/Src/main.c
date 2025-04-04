@@ -121,6 +121,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   */
 int main(void)
 {
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -163,13 +164,13 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   DistanceSensor_Start(&Front);
-  DistanceSensor_Start(&Back);
+  //DistanceSensor_Start(&Back);
   while (1)
   {
 	  //ColorSensor_ReceiveTransmit(&Color, sendData, receiveData);
 	  RFID_SecurityLogic(&RFID_Module);
-	  //ColorSensor_Handle(&Color);
 	  ColorSensor_Handle(&Color);
+	  //ColorSensor_Handle(&Color);
 	  /*
 	  if (HAL_I2C_Master_Transmit(&hi2c1, 0x10 << 1, buffer, 1, HAL_MAX_DELAY) != HAL_OK) {
 		  Error_Handler();
@@ -593,8 +594,8 @@ static void MX_DMA_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-/* USER CODE BEGIN MX_GPIO_Init_1 */
-/* USER CODE END MX_GPIO_Init_1 */
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+  /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
@@ -630,8 +631,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-/* USER CODE BEGIN MX_GPIO_Init_2 */
-/* USER CODE END MX_GPIO_Init_2 */
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+  /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */

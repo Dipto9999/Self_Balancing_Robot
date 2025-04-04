@@ -25,9 +25,9 @@
 #include <string.h>
 
 #include "distancesensor.h"
-#include "speaker.h"
-#include "colorsensor.h"
-#include "rfid.h"
+//#include "speaker.h"
+//#include "colorsensor.h"
+//#include "rfid.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -60,9 +60,6 @@ UART_HandleTypeDef huart2;
 /* USER CODE BEGIN PV */
 distancesensor Front;
 distancesensor Back;
-speaker Speaker;
-colorsensor ColorSensor;
-rfid RFIDModule;
 char Data[64];
 /* USER CODE END PV */
 
@@ -102,7 +99,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		//Front.risingEdge = true;
 	}
 }
-
+/*
 void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 {
 	if (htim->Instance == TIM3)
@@ -110,7 +107,7 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 		//DistanceSensor_StopPWM(&Front);
 	}
 }
-
+*/
 
 /* USER CODE END 0 */
 
@@ -120,6 +117,7 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
   */
 int main(void)
 {
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -151,21 +149,22 @@ int main(void)
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
   //Speaker_Init(&Speaker, &htim17);
-  //DistanceSensor_Init(&Front, &htim3, DISTANCE_SENSOR_FRONT_ID, DISTANCE_SENSOR_FRONT_INPUT_CAPTURE_GPIO_Port, DISTANCE_SENSOR_FRONT_INPUT_CAPTURE_Pin, DISTANCE_SENSOR_FRONT_STATUS_GPIO_Port, DISTANCE_SENSOR_FRONT_STATUS_Pin);
+  DistanceSensor_Init(&Front, &htim3);
   //DistanceSensor_Init(&Back, &htim2, DISTANCE_SENSOR_BACK_ID, DISTANCE_SENSOR_BACK_INPUT_CAPTURE_GPIO_Port, DISTANCE_SENSOR_BACK_INPUT_CAPTURE_Pin, DISTANCE_SENSOR_BACK_STATUS_GPIO_Port, DISTANCE_SENSOR_BACK_STATUS_Pin);
   //ColorSensor_Init(&ColorSensor, &hi2c1, 0x10);
-  RFID_Init(&RFIDModule, &hspi2);
-  HAL_Delay(100);
+  //RFID_Init(&RFIDModule, &hspi2);
+  //HAL_Delay(100);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   //DistanceSensor_Start(&FrontDistanceSensor);
   //__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_2, 1000);
-  //DistanceSensor_Start(&Front);
+  DistanceSensor_Start(&Front);
   //DistanceSensor_Start(&Front);
   //DistanceSensor_Start(&Back);
-  uint8_t value;
+  //uint8_t value;
+  //HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
   while (1)
   {
 	  /*
@@ -176,7 +175,7 @@ int main(void)
 	*/
 
 	  //RFID_ReadRegister(&RFIDModule, TPrescalerReg, 1, &value, 0);
-	  sprintf(Data, "%02X\r\n", value);
+	  sprintf(Data, "%f\r\n", DistanceSensor_GetDistance(&Front));
 	  HAL_UART_Transmit(&huart2, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
 	  HAL_Delay(250);
 
@@ -593,8 +592,8 @@ static void MX_DMA_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-/* USER CODE BEGIN MX_GPIO_Init_1 */
-/* USER CODE END MX_GPIO_Init_1 */
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+  /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
@@ -612,8 +611,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-/* USER CODE BEGIN MX_GPIO_Init_2 */
-/* USER CODE END MX_GPIO_Init_2 */
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+  /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */

@@ -3,4 +3,4 @@
 ../Core/Src/colorsensor.c:33:10:ColorSensor_Read16	40	static
 ../Core/Src/colorsensor.c:51:6:ColorSensor_ReadAll	16	static
 ../Core/Src/colorsensor.c:59:7:ColorSensor_CalculateColor	24	static
-../Core/Src/colorsensor.c:70:6:ColorSensor_Handle	40	static
+../Core/Src/colorsensor.c:70:6:ColorSensor_Handle	32	static
