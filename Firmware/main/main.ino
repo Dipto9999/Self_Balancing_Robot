@@ -7,9 +7,12 @@
 #include "gpio.h"
 #include "driver.h"
 
+unsigned long lastBLETime = 0;
+const unsigned long BLE_INTERVAL = 100;
+
 void setup() {
   setupSerial();
-  // setupGPIO();
+  setupGPIO();
 
   setupIMU();
   setupBLE();
@@ -19,11 +22,13 @@ void setup() {
   Serial.println("Setup Complete!");
 }
 
-const unsigned long BLE_INTERVAL = 100;
-unsigned long lastBLETime = 0;
-
 void loop() {
-  // Respond to STM32 GPIO Inputs
+  unsigned long currentMillis = millis();
+  // Wait for BLE Connection to Override Motors
+  if (currentMillis - lastBLETime >= BLE_INTERVAL) {
+    lastBLETime = currentMillis;
+    BLE.poll(); // Poll the BLE Device
+  }
 
   // Serial.print("STM32 Connected: ");
   // Serial.println(stmConnected ? "True" : "False");
@@ -34,26 +39,18 @@ void loop() {
   // Serial.print("Reverse Alert: ");
   // Serial.println(reverseAlert ? "True" : "False");
 
-  // if (stmConnected) {
-  //   // checkRFID(); // Check RFID Status
-  //   // checkForwardAlert();
-  //   // checkReverseAlert();
-  // } else {
-  //   botEnabled = true; // Default to Enabled if STM32 Not Connected
-  // }
-
-  // if (!botEnabled) {
-  //   drive(0, 0); // Stop Motors if Bot Disabled
-  //   return;
-  // }
-
-  unsigned long currentMillis = millis();
-  // Wait for BLE Connection to Override Motors
-  if (currentMillis - lastBLETime >= BLE_INTERVAL) {
-    lastBLETime = currentMillis;
-    BLE.poll(); // Poll the BLE Device
+  if (stmConnected) {
+    checkRFID(); // Check RFID Status
+    checkForwardAlert();
+    checkReverseAlert();
+  } else {
+    botEnabled = true; // Default to Enabled if STM32 Not Connected
   }
 
+  if (!botEnabled) {
+    moveForward(0); // Stop Motors
+    return;
+  }
   getAngles(Angles);
   balanceRobot(bleDirection);
 

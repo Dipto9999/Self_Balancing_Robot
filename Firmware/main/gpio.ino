@@ -25,23 +25,14 @@ void setupGPIO() {
 void checkRFID() {
     if (digitalRead(PIN_RFID_DISABLED) == LOW) botEnabled = true;
     else botEnabled = false;
-
-    Serial.print("RFID Disabled: ");
-    Serial.println(botEnabled ? "True" : "False");
 }
 
 void checkForwardAlert() {
     if (digitalRead(PIN_FORWARD_ALERT) == LOW) forwardAlert = true;
     else forwardAlert = false;
-
-    Serial.print("Forward Alert: ");
-    Serial.println(forwardAlert ? "True" : "False");
 }
 
 void checkReverseAlert() {
     if (digitalRead(PIN_REVERSE_ALERT) == LOW) reverseAlert = true;
     else reverseAlert = false;
-
-    Serial.print("Reverse Alert: ");
-    Serial.println(reverseAlert ? "True" : "False");
 }

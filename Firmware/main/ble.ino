@@ -112,7 +112,7 @@ void setupBLE() {
   customCharacteristic.setEventHandler(BLEWritten, rxBLE);
 
   BLE.advertise(); // Advertising the BLE Device
-  while (!BLE.connected()); // Wait for Connection
+  while (!BLE.connected()) BLE.poll(); // Wait for Connection
 }
 
 void connectBLE(BLEDevice central) {

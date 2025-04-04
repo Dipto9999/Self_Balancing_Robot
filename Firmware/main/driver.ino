@@ -4,15 +4,19 @@ int balanceCounter = 0; // Counter for Balance Control Loop
 float startTime, currTime; // Time Variables for Control Loop
 
 void changeDirection(const char* bleBuff) {
-    // if (!strcmp(bleBuff, "^") && !forwardAlert) bleDirection = FORWARD; // Drive
-    // else if (!strcmp(bleBuff, "v") && !reverseAlert) bleDirection = REVERSE; // Reverse
-
     balanceCounter = 0; // Reset Balance Counter
     startTime = millis(); // Reset Start Time
+
+    // if (!strcmp(bleBuff, "^")) {
+        //     bleDirection = FORWARD; // Drive
+        // } else if (!strcmp(bleBuff, "v")) {
+            //     bleDirection = REVERSE; // Reverse
     if (!strcmp(bleBuff, "^")) {
-        bleDirection = FORWARD; // Drive
+        setpointAngle = SETPOINT_0 + ANGLE_TILT;
+        bleDirection = (!forwardAlert) ? FORWARD : IDLE; // Drive
     } else if (!strcmp(bleBuff, "v")) {
-        bleDirection = REVERSE; // Reverse
+        setpointAngle = SETPOINT_0 - ANGLE_TILT;
+        bleDirection = (!reverseAlert) ? REVERSE : IDLE; // Reverse
     } else if (!strcmp(bleBuff, "<")) {
         setpointAngle = SETPOINT_0;
         bleDirection = LEFT; // Turn Left
@@ -36,14 +40,13 @@ void moveReverse(float dutyCycle) {
 }
 
 void turnLeft(float u_t, float scaleFactor) {
-    moveSlowDecay(MotorA, CW, normalizePWM(u_t, scaleFactor));
-    moveSlowDecay(MotorB, CW, normalizePWM(u_t, -scaleFactor));
+    moveSlowDecay(MotorA, CCW, normalizePWM(u_t, -scaleFactor));
+    moveSlowDecay(MotorB, CCW, normalizePWM(u_t, scaleFactor));
 }
 
 void turnRight(float u_t, float scaleFactor) {
-    moveSlowDecay(MotorA, CW, normalizePWM(u_t, -scaleFactor));
-    moveSlowDecay(MotorB, CW, normalizePWM(u_t, scaleFactor));
-
+    moveSlowDecay(MotorA, CCW, normalizePWM(u_t, scaleFactor));
+    moveSlowDecay(MotorB, CCW, normalizePWM(u_t, -scaleFactor));
 }
 
 float normalizePWM(float u_t, float adjustedPWM) {
@@ -59,7 +62,7 @@ void drive(float u_t, float errorAngle) {
         case FORWARD:
            if (abs(errorAngle) < 0.8 && balanceCounter++ % 2 == 0) {
                 balanceCounter = 0;
-                setpointAngle = SETPOINT_0 + ANGLE_TILT;
+                setpointAngle = SETPOINT_0 - ANGLE_TILT;
             } else {
                 setpointAngle = SETPOINT_0;
             }
@@ -76,7 +79,7 @@ void drive(float u_t, float errorAngle) {
         case REVERSE:
             if (abs(errorAngle) < 0.8 && balanceCounter++ % 2 == 0) {
                 balanceCounter = 0;
-                setpointAngle = SETPOINT_0 - ANGLE_TILT;
+                setpointAngle = SETPOINT_0 + ANGLE_TILT;
             } else {
                 setpointAngle = SETPOINT_0;
             }
@@ -93,7 +96,7 @@ void drive(float u_t, float errorAngle) {
         case LEFT:
             if (abs(errorAngle) < 0.8 && balanceCounter++ % 2 == 0) {
                 balanceCounter = 0;
-                turnLeft(u_t, 0.4);
+                turnLeft(u_t, 0.3);
             } else {
                 if (u_t > 0) moveForward(currDutyCycle);
                 else moveReverse(currDutyCycle);
@@ -109,7 +112,7 @@ void drive(float u_t, float errorAngle) {
         case RIGHT:
             if (abs(errorAngle) < 0.8 && balanceCounter++ % 2 == 0) {
                 balanceCounter = 0;
-                turnRight(u_t, 0.4);
+                turnRight(u_t, 0.3);
             } else {
                 if (u_t > 0) moveForward(currDutyCycle);
                 else moveReverse(currDutyCycle);
