@@ -22,9 +22,8 @@ int bleDirection; // Current Direction
 
 void setupController() {
     Kp = 0.7;
-    // Ki = 11.5;
-    Ki = 12.5;
-    Kd = 0.05;
+    Ki = 11.25;
+    Kd = 0.055;
 
     setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
     errorAngle = 0.0; // Error Value, e_t = r_t - y_t
@@ -36,6 +35,8 @@ void setupController() {
 
     bleDirection = IDLE; // Set Default Direction
     currDutyCycle = 0.5; // Set Default PWM Value
+
+    pinMode(DISABLE_INTEGRAL_BUTTON, INPUT_PULLUP);
 }
 
 void setupMotors() {
@@ -45,20 +46,50 @@ void setupMotors() {
 }
 
 void balanceRobot(int bleDirection) {
-    // TODO: Measure Angles in Main Loop
-
     // Get Measured Angle
     measuredAngle = Angles.Complementary; // Complementary Filter
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
-
-    if (prevAngle * measuredAngle < 0) {
+    errorAccumulation += (errorAngle * dt);
+    /*
+    if ((prevErrorAngle * errorAngle) < 0) {
         errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
-    } else if ((round(measuredAngle) == setpointAngle) && (abs(setpointAngle - prevAngle) < 1)) {
-        errorAccumulation = 0; // Reset Accumulated Error Value ∑e_t
+    } else if (abs(errorAngle) < 0.3) {
+        errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
     } else {
         errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
     }
+    */
+    /*
+    if (errorAccumulation > MAX_ERROR_ACCUMULATION)
+    {
+        errorAccumulation = MAX_ERROR_ACCUMULATION; // Limit Accumulated Error Value ∑e_t
+    }
+    else if (errorAccumulation < -MAX_ERROR_ACCUMULATION)
+    {
+        errorAccumulation = -MAX_ERROR_ACCUMULATION; // Limit Accumulated Error Value ∑e_t
+    }
+    */
+
+    if (digitalRead(DISABLE_INTEGRAL_BUTTON) == LOW) {
+        errorAccumulation = 0; // Reset Accumulated Error Value ∑e_t
+    }
+
+    // Serial.print("Error Angle: ");
+    // Serial.println(errorAngle, 3);
+    // Serial.print(" Previous Error Angle: ");
+    // Serial.println(prevErrorAngle, 3);
+    // Serial.print(" Error Accumulation: ");
+    // Serial.println(errorAccumulation, 3);
+    // Serial.println("");
+
+    // if (((prevAngle - measuredAngle) - setpointAngle) < 0) {
+    //     errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
+    // } else if ((abs(setpointAngle - measuredAngle) < 0.3) && (abs(setpointAngle - prevAngle) < 1)) {
+    //     errorAccumulation = 0; // Reset Accumulated Error Value ∑e_t
+    // } else {
+    //     errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
+    // }
 
     // Calculate Control Signal : u_t = Kp * e_t + Ki * ∑e_t + Kd * (e_t - e_(t-1) / dt)
     // u_t = (Kp * errorAngle) + (Kd * errorDifference);

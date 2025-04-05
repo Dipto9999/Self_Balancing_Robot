@@ -5,7 +5,10 @@
 #include "angle.h"
 #include "gpio.h"
 
-#define SETPOINT_0 0.3
+// #define SETPOINT_0 0.625
+#define SETPOINT_0 -0.625
+#define DISABLE_INTEGRAL_BUTTON 10
+#define MAX_ERROR_ACCUMULATION 5
 
 enum DirRobot {REVERSE, FORWARD, LEFT, RIGHT, IDLE};
 
@@ -30,8 +33,6 @@ extern float currDutyCycle;
 extern int bleDirection;
 
 /* Function Prototypes */
-void setupISR();
-void timerISR();
 
 void setupController();
 void setupMotors();
