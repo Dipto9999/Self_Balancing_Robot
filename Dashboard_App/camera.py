@@ -79,6 +79,9 @@ class CameraDisplay(tk.Frame):
             self.camera.stop()
 
     def update(self):
+        if self.filename == "":
+            return
+
         frame = self.camera.capture_array()
         if (frame is not None) and (frame.size != 0):
             frame = frame[..., ::-1] # BGR -> RGB
