@@ -39,6 +39,8 @@ void setupController() {
 
     bleDirection = IDLE; // Set Default Direction
     currDutyCycle = 0.5; // Set Default PWM Value
+
+    pinMode(DISABLE_INTEGRAL_BUTTON, INPUT_PULLUP);
 }
 
 void setupMotors() {
@@ -52,7 +54,8 @@ void balanceRobot(int bleDirection) {
     measuredAngle = Angles.Complementary; // Complementary Filter
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
-
+    errorAccumulation += (errorAngle * dt);
+    /*
     if ((prevErrorAngle * errorAngle) < 0) {
         errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
     } else if (abs(errorAngle) < 0.3) {
@@ -60,7 +63,22 @@ void balanceRobot(int bleDirection) {
     } else {
         errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
     }
+    */
+    /*
+    if (errorAccumulation > MAX_ERROR_ACCUMULATION)
+    {
+        errorAccumulation = MAX_ERROR_ACCUMULATION; // Limit Accumulated Error Value ∑e_t
+    }
+    else if (errorAccumulation < -MAX_ERROR_ACCUMULATION)
+    {
+        errorAccumulation = -MAX_ERROR_ACCUMULATION; // Limit Accumulated Error Value ∑e_t
+    }
+    */
 
+    if (digitalRead(DISABLE_INTEGRAL_BUTTON) == LOW) {
+        errorAccumulation = 0; // Reset Accumulated Error Value ∑e_t
+    }
+        
     // Serial.print("Error Angle: ");
     // Serial.println(errorAngle, 3);
     // Serial.print(" Previous Error Angle: ");
