@@ -18,7 +18,7 @@ void setupPWM() {
     MotorB.Pin1->period_us(PWM_PeriodUs);
     MotorB.Pin2->period_us(PWM_PeriodUs);
 
-    Serial.println("PWM Initialized!");
+    Serial1.println("PWM Initialized!");
 }
 
 /*

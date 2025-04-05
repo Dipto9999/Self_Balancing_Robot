@@ -46,7 +46,7 @@ void setupController() {
 void setupMotors() {
     setupPWM(); // Initialize PWM Pins
     setupController(); // Initialize PID Controller
-    Serial.println("Motors Initialized!");
+    Serial1.println("Motors Initialized!");
 }
 
 void balanceRobot(int bleDirection) {
@@ -55,50 +55,13 @@ void balanceRobot(int bleDirection) {
     errorAngle = setpointAngle - measuredAngle; // e_t = r_t - y_t
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
     errorAccumulation += (errorAngle * dt);
-    /*
-    if ((prevErrorAngle * errorAngle) < 0) {
-        errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
-    } else if (abs(errorAngle) < 0.3) {
-        errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
-    } else {
-        errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
-    }
-    */
-    /*
-    if (errorAccumulation > MAX_ERROR_ACCUMULATION)
-    {
-        errorAccumulation = MAX_ERROR_ACCUMULATION; // Limit Accumulated Error Value ∑e_t
-    }
-    else if (errorAccumulation < -MAX_ERROR_ACCUMULATION)
-    {
-        errorAccumulation = -MAX_ERROR_ACCUMULATION; // Limit Accumulated Error Value ∑e_t
-    }
-    */
 
     if (digitalRead(DISABLE_INTEGRAL_BUTTON) == LOW) {
         errorAccumulation = 0; // Reset Accumulated Error Value ∑e_t
     }
-        
-    // Serial.print("Error Angle: ");
-    // Serial.println(errorAngle, 3);
-    // Serial.print(" Previous Error Angle: ");
-    // Serial.println(prevErrorAngle, 3);
-    // Serial.print(" Error Accumulation: ");
-    // Serial.println(errorAccumulation, 3);
-    // Serial.println("");
-
-    // if (((prevAngle - measuredAngle) - setpointAngle) < 0) {
-    //     errorAccumulation = errorAngle * dt; // Reset Accumulated Error Value ∑e_t
-    // } else if ((abs(setpointAngle - measuredAngle) < 0.3) && (abs(setpointAngle - prevAngle) < 1)) {
-    //     errorAccumulation = 0; // Reset Accumulated Error Value ∑e_t
-    // } else {
-    //     errorAccumulation += (errorAngle * dt); // Include Integral Error Accumulation ∑e_t
-    // }
 
     // Calculate Control Signal : u_t = Kp * e_t + Ki * ∑e_t + Kd * (e_t - e_(t-1) / dt)
-    // u_t = (Kp * errorAngle) + (Kd * errorDifference);
     u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
-
     drive(u_t, errorAngle);
 
     prevErrorAngle = errorAngle; // Update Previous Error Value

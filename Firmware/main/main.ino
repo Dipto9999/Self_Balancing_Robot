@@ -19,7 +19,7 @@ void setup() {
 
   setupMotors();
 
-  Serial.println("Setup Complete!");
+  Serial1.println("Setup Complete!");
 }
 
 void loop() {
@@ -29,15 +29,6 @@ void loop() {
     lastBLETime = currentMillis;
     BLE.poll(); // Poll the BLE Device
   }
-
-  // Serial.print("STM32 Connected: ");
-  // Serial.println(stmConnected ? "True" : "False");
-  // Serial.print("Bot Enabled: ");
-  // Serial.println(botEnabled ? "True" : "False");
-  // Serial.print("Forward Alert: ");
-  // Serial.println(forwardAlert ? "True" : "False");
-  // Serial.print("Reverse Alert: ");
-  // Serial.println(reverseAlert ? "True" : "False");
 
   if (stmConnected) {
     checkRFID(); // Check RFID Status
@@ -57,8 +48,8 @@ void loop() {
   // updatePID();
 
   // Send Data
-  // serialMsg = String(Angles.Accelerometer, 2) + " " +
-  //    String(Angles.Gyroscope, 2) + " " +
-  //    String(Angles.Complementary, 2);
-  // handleData('A', serialMsg);
+  serialMsg = String(Angles.Accelerometer, 2) + " " +
+     String(Angles.Gyroscope, 2) + " " +
+     String(Angles.Complementary, 2);
+  handleData('A', serialMsg);
 }

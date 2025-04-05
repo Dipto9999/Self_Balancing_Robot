@@ -114,7 +114,7 @@ class BLECommandApp:
         asyncio.run_coroutine_threadsafe(self.write(cmd), self.loop)
         self.cmd_entry.delete(0, tk.END)
 
-    def display_data(self, data):
+    def display_data(self, sender, data):
         try:
             text = data.decode("utf-8")
         except Exception:
@@ -177,7 +177,7 @@ class BLECommandApp:
                 await self.client.stop_notify(BLECommandApp.CHARACTERISTIC_UUID)
                 await self.client.disconnect()
             except Exception as e:
-                self.root.after(0, lambda: self.update_log(f"Error Disconnecting: {str(e)}", "error"))
+                self.root.after(0, lambda e=e: self.update_log(f"Error Disconnecting!\n{str(e)}\n", "error"))
 
         self.client = None
         self.connected = False
