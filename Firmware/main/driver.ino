@@ -2,14 +2,17 @@
 
 float startTime, currTime; // Time Variables for Control Loop
 
+int directionCount; // Direction Count for BLE Commands
+
 void changeDirection(const char* bleBuff) {
     startTime = millis(); // Reset Start Time
+    directionCount = 0; // Reset Direction Count
 
     if (!strcmp(bleBuff, "^")) {
-        setpointAngle = SETPOINT_0 + ANGLE_TILT;
+        setpointAngle = SETPOINT_0 - ANGLE_TILT;
         bleDirection = (!forwardAlert) ? FORWARD : IDLE; // Drive
     } else if (!strcmp(bleBuff, "v")) {
-        setpointAngle = SETPOINT_0 - ANGLE_TILT;
+        setpointAngle = SETPOINT_0 + ANGLE_TILT;
         bleDirection = (!reverseAlert) ? REVERSE : IDLE; // Reverse
     } else if (!strcmp(bleBuff, "<")) {
         setpointAngle = SETPOINT_0;
@@ -44,54 +47,39 @@ void turnRight(float u_t, float scaleFactor) {
 }
 
 float normalizePWM(float u_t, float adjustedPWM) {
-    float dutyCycle = (abs(u_t) - 0.055) / (VCC - 0.055) *  (1 + adjustedPWM); // Convert Control Signal to Duty Cycle
+    float dutyCycle = (abs(u_t) - DEADZONE_PWM) / (VCC - DEADZONE_PWM) *  (1 + adjustedPWM); // Convert Control Signal to Duty Cycle
     return (dutyCycle > 1) ? 1 : ((dutyCycle < 0) ? 0 : dutyCycle); // Clamp Duty Cycle to [0, 1]
 }
 
 void drive(float u_t, float errorAngle) {
     currDutyCycle = normalizePWM(u_t, 0);
 
-    if (millis() - startTime >= 1250) {
+    if (millis() - startTime >= 2000) {
         startTime = currTime; // Reset Start Time
         setpointAngle = SETPOINT_0;
         bleDirection = IDLE; // Stop Robot
     }
 
     switch (bleDirection) {
-        case FORWARD:
-            if (u_t > 0) moveForward(currDutyCycle);
-            else moveReverse(currDutyCycle);
-            break;
-        case REVERSE:
-            if (u_t > 0) moveForward(currDutyCycle);
-            else moveReverse(currDutyCycle);
-            break;
         case LEFT:
-            if (errorAngle < 0.6 && errorAngle > 0) {
-                turnLeft(u_t, -0.05);
-            } else if (errorAngle > -0.6 && errorAngle < 0) {
-                turnLeft(u_t, 0.05);
-            } else {
+            if ((directionCount++ % 3 == 0) || (abs(errorAngle) > 0.8)) {
                 if (u_t > 0) moveForward(currDutyCycle);
                 else moveReverse(currDutyCycle);
+            } else {
+                turnLeft(currDutyCycle, 0.5);
             }
-
         break;
         case RIGHT:
-            if (errorAngle < 0.6 && errorAngle > 0) {
-                turnRight(u_t, -0.05);
-            } else if (errorAngle > -0.6 && errorAngle < 0) {
-                turnRight(u_t, 0.05);
-            } else {
+            if ((directionCount++ % 3 == 0) || (abs(errorAngle) > 0.8)) {
                 if (u_t > 0) moveForward(currDutyCycle);
                 else moveReverse(currDutyCycle);
+            } else {
+                turnRight(currDutyCycle, 0.5);
             }
         break;
         default:
             if (u_t > 0) moveForward(currDutyCycle);
             else moveReverse(currDutyCycle);
-            return;
         break;
-        return;
     }
 }

@@ -26,7 +26,6 @@ void updatePID() {
     String command = Serial1.readStringUntil('\n');
     command.trim(); // Remove Leading/Trailing Whitespace
 
-    // Check if command starts with a valid prefix
     if (
       command.startsWith("k=") ||
       command.startsWith("set=") ||
