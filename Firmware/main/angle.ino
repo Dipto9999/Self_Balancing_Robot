@@ -28,13 +28,13 @@ float initialAngle;
 
 void setupIMU() {
   if (!IMU.begin()) {
-    // Serial.println("Failed to Initialize IMU!");
+    // Serial1.println("Failed to Initialize IMU!");
     while (1);
   }
 
-  // Serial.println("IMU Initialized!");
-  // Serial.println("Reading Raw Data from Gyroscope and Accelerometer...");
-  // Serial.println("Gyroscope (rad/s) | Accelerometer (g)");
+  // Serial1.println("IMU Initialized!");
+  // Serial1.println("Reading Raw Data from Gyroscope and Accelerometer...");
+  // Serial1.println("Gyroscope (rad/s) | Accelerometer (g)");
 
   k = 0.95;
   while (az == 0) {
@@ -82,11 +82,11 @@ void getAngles(ANGLES &Angles) {
   //   }
   // }
 
-  // Serial.print("Acceleration Condn: ");
-  // Serial.println(abs(ax*ax + ay*ay + az*az - 1.02));
+  // Serial1.print("Acceleration Condn: ");
+  // Serial1.println(abs(ax*ax + ay*ay + az*az - 1.02));
 
-  // Serial.print("K: ");
-  // Serial.println(k);
+  // Serial1.print("K: ");
+  // Serial1.println(k);
 
   prevAngle = prevComplementary;
   currComplementary = k * (prevComplementary + gx * sampleTime) + (1 - k) * currAccel;
@@ -101,15 +101,15 @@ void getAngles(ANGLES &Angles) {
   Angles.Gyroscope = currGyro;
   Angles.Complementary = currComplementary;
 
-  // Serial.print("Accelerometer: ");
-  // Serial.print(Angles.Accelerometer);
-  // Serial.print(" | Gyroscope: ");
-  // Serial.print(Angles.Gyroscope);
-  // Serial.print(" | Complementary: ");
-  // Serial.println(Angles.Complementary);
+  // Serial1.print("Accelerometer: ");
+  // Serial1.print(Angles.Accelerometer);
+  // Serial1.print(" | Gyroscope: ");
+  // Serial1.print(Angles.Gyroscope);
+  // Serial1.print(" | Complementary: ");
+  // Serial1.println(Angles.Complementary);
 
-  // Serial.print("Initial Angle: ");
-  // Serial.println(initialAngle);
+  // Serial1.print("Initial Angle: ");
+  // Serial1.println(initialAngle);
 
   /* Assign Previous Angles */
   prevGyro = currGyro;

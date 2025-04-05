@@ -3,12 +3,8 @@
 
 #include "controller.h"
 
-#define ANGLE_TILT 1
-#define DIRECTION_COUNT 5
-
-// #define ANGLE_TILT 0.6
-#define ANGLE_TILT 0.75
-#define DIRECTION_COUNT 3
+#define ANGLE_TILT 0.6
+#define DEADZONE_PWM 0.055
 
 void changeDirection(const char* bleBuff);
 void moveForward(float dutyCycle);
