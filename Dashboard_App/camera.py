@@ -50,7 +50,7 @@ class CameraDisplay(tk.Frame):
             return
 
         self.camera.stop_recording()
-        # self.camera.stop()
+        self.camera.stop()
         self.filename = ""
 
     def take_snapshot(self):
