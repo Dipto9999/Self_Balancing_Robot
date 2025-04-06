@@ -1,6 +1,6 @@
 ../Core/Src/colorsensor.c:5:6:ColorSensor_Init	3
-../Core/Src/colorsensor.c:27:6:ColorSensor_EnableStatus	1
-../Core/Src/colorsensor.c:33:10:ColorSensor_Read16	3
-../Core/Src/colorsensor.c:51:6:ColorSensor_ReadAll	1
-../Core/Src/colorsensor.c:59:7:ColorSensor_CalculateColor	3
-../Core/Src/colorsensor.c:70:6:ColorSensor_Handle	1
+../Core/Src/colorsensor.c:29:6:ColorSensor_EnableStatus	1
+../Core/Src/colorsensor.c:35:10:ColorSensor_Read16	3
+../Core/Src/colorsensor.c:53:6:ColorSensor_ReadAll	1
+../Core/Src/colorsensor.c:61:7:ColorSensor_CalculateColor	3
+../Core/Src/colorsensor.c:72:6:ColorSensor_Handle	4

@@ -1,6 +1,6 @@
 ../Core/Src/colorsensor.c:5:6:ColorSensor_Init	40	static
-../Core/Src/colorsensor.c:27:6:ColorSensor_EnableStatus	16	static
-../Core/Src/colorsensor.c:33:10:ColorSensor_Read16	40	static
-../Core/Src/colorsensor.c:51:6:ColorSensor_ReadAll	16	static
-../Core/Src/colorsensor.c:59:7:ColorSensor_CalculateColor	24	static
-../Core/Src/colorsensor.c:70:6:ColorSensor_Handle	32	static
+../Core/Src/colorsensor.c:29:6:ColorSensor_EnableStatus	16	static
+../Core/Src/colorsensor.c:35:10:ColorSensor_Read16	40	static
+../Core/Src/colorsensor.c:53:6:ColorSensor_ReadAll	16	static
+../Core/Src/colorsensor.c:61:7:ColorSensor_CalculateColor	24	static
+../Core/Src/colorsensor.c:72:6:ColorSensor_Handle	32	static

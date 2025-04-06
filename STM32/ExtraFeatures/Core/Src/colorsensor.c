@@ -21,6 +21,8 @@ void ColorSensor_Init(colorsensor* sensor, I2C_HandleTypeDef* i2c_handle) {
         if (HAL_I2C_Master_Transmit(sensor->i2c, sensor->slave_address, init_data[i], 2, HAL_MAX_DELAY) != HAL_OK)
         	while(1);
     }
+
+    HAL_GPIO_WritePin(COLOR_SENSOR_STATUS_GPIO_Port, COLOR_SENSOR_STATUS_Pin, GPIO_PIN_SET);
 }
 
 
@@ -71,20 +73,20 @@ void ColorSensor_Handle(colorsensor* sensor)
 {
 	ColorSensor_ReadAll(sensor);
 	color detected_color = ColorSensor_CalculateColor(sensor);
-	/*
+
 	if (detected_color == RED)
 	{
-		HAL_GPIO_WritePin(DISTANCE_SENSOR_BACK_STATUS_GPIO_Port, DISTANCE_SENSOR_BACK_STATUS_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(COLOR_SENSOR_STATUS_GPIO_Port, COLOR_SENSOR_STATUS_Pin, GPIO_PIN_SET);
 		if (!Speaker.hasFault)
 			Speaker_Start(&Speaker, COLOR_SENSOR_ID);
 	}
 	else
 	{
-		HAL_GPIO_WritePin(DISTANCE_SENSOR_BACK_STATUS_GPIO_Port, DISTANCE_SENSOR_BACK_STATUS_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(COLOR_SENSOR_STATUS_GPIO_Port, COLOR_SENSOR_STATUS_Pin, GPIO_PIN_RESET);
 		if (Speaker.hasFault)
-		Speaker_Stop(&Speaker, COLOR_SENSOR_ID);
+			Speaker_Stop(&Speaker, COLOR_SENSOR_ID);
 	}
-	*/
+
 	//sprintf(Data, "%u %u %u %u\r\n", (uint8_t) detected_color, sensor->rgb_data[1], sensor->rgb_data[2], sensor->rgb_data[3]);
 	//HAL_UART_Transmit(&huart1, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
 	//HAL_Delay(100);

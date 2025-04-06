@@ -164,7 +164,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   DistanceSensor_Start(&Front);
-  //DistanceSensor_Start(&Back);
+  DistanceSensor_Start(&Back);
   while (1)
   {
 	  //ColorSensor_ReceiveTransmit(&Color, sendData, receiveData);
@@ -608,14 +608,14 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOB, SPI1_RST_Pin|DISTANCE_SENSOR_BACK_STATUS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(RFID_STATUS_GPIO_Port, RFID_STATUS_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, COLOR_SENSOR_STATUS_Pin|RFID_STATUS_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pin : SPI1_CS_Pin */
-  GPIO_InitStruct.Pin = SPI1_CS_Pin;
+  /*Configure GPIO pins : SPI1_CS_Pin COLOR_SENSOR_STATUS_Pin */
+  GPIO_InitStruct.Pin = SPI1_CS_Pin|COLOR_SENSOR_STATUS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(SPI1_CS_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : SPI1_RST_Pin DISTANCE_SENSOR_BACK_STATUS_Pin */
   GPIO_InitStruct.Pin = SPI1_RST_Pin|DISTANCE_SENSOR_BACK_STATUS_Pin;
