@@ -4,24 +4,35 @@ float startTime, currTime; // Time Variables for Control Loop
 int directionCount; // Direction Count for BLE Commands
 
 void changeDirection(const char* bleBuff) {
-    if (!strcmp(bleBuff, "^")) {
+
+    // Serial.print("Forward Alert: ");
+    // Serial.println(forwardAlert ? "True" : "False");
+    // Serial.print("Reverse Alert: ");
+    // Serial.println(reverseAlert ? "True" : "False");
+    // Serial.print("Red Alert: ");
+    // Serial.println(redAlert ? "True" : "False");
+
+    if (!strcmp(bleBuff, "^") && (!forwardAlert)) {
         setpointAngle = SETPOINT_0 - ANGLE_TILT;
-        bleDirection = (!forwardAlert) ? FORWARD : IDLE; // Drive
-    } else if (!strcmp(bleBuff, "v")) {
+        bleDirection = FORWARD; // Drive Forward
+    } else if (!strcmp(bleBuff, "v") && (!reverseAlert)) {
         setpointAngle = SETPOINT_0 + ANGLE_TILT;
-        bleDirection = (!reverseAlert) ? REVERSE : IDLE; // Reverse
+        bleDirection = REVERSE; // Drive Reverse
     } else if (!strcmp(bleBuff, "<")) {
         setpointAngle = SETPOINT_0;
         bleDirection = LEFT; // Turn Left
     } else if (!strcmp(bleBuff, ">")) {
         setpointAngle = SETPOINT_0;
         bleDirection = RIGHT; // Turn Right
-    } else if (!strcmp(bleBuff, "X")) {
+    } else {
         setpointAngle = SETPOINT_0;
         bleDirection = IDLE; // IDLE
     }
     startTime = millis(); // Reset Start Time
     directionCount = 0; // Reset Direction Count
+
+    // Serial.print("BLE Direction: ");
+    // Serial.println(bleDirection == FORWARD ? "FORWARD" : (bleDirection == REVERSE ? "REVERSE" : (bleDirection == LEFT ? "LEFT" : (bleDirection == RIGHT ? "RIGHT" : "IDLE"))));
 }
 
 float normalizePWM(float u_t, float adjustedPWM) {
