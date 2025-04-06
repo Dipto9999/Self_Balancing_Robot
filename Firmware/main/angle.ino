@@ -1,9 +1,7 @@
 #include "angle.h"
-// sus
 /* Constants and Variables */
 float k; // Complementary Filter Constant
 
-// const float ACCELEROMETER_OFFSET = -0.25;
 const float ACCELEROMETER_OFFSET = 0;
 
 const float STANDARD_ACCEL = 0.95;
@@ -67,27 +65,6 @@ void getAngles(ANGLES &Angles) {
 
   currGyro = prevGyro + gx * sampleTime;
 
-  // Prevent Robot from Unpredictable Acceleration
-  // accelCondition = abs(ax*ax + ay*ay + az*az - STANDARD_ACCEL);
-  // if (accelCondition > 0.2) {
-  //   driftingCondition = true;
-  //   k = 1;
-  // } else {
-  //   calibration_count++; // Increment Angle Counter
-  //   if (calibration_count > MAX_CALIBRATION) {
-  //     calibration_count = 0;
-  //     k = 0.1;
-  //   } else {
-  //     k = 0.9;
-  //   }
-  // }
-
-  // Serial.print("Acceleration Condn: ");
-  // Serial.println(abs(ax*ax + ay*ay + az*az - 1.02));
-
-  // Serial.print("K: ");
-  // Serial.println(k);
-
   prevAngle = prevComplementary;
   currComplementary = k * (prevComplementary + gx * sampleTime) + (1 - k) * currAccel;
 
@@ -100,16 +77,6 @@ void getAngles(ANGLES &Angles) {
   Angles.Accelerometer = currAccel;
   Angles.Gyroscope = currGyro;
   Angles.Complementary = currComplementary;
-
-  // Serial.print("Accelerometer: ");
-  // Serial.print(Angles.Accelerometer);
-  // Serial.print(" | Gyroscope: ");
-  // Serial.print(Angles.Gyroscope);
-  // Serial.print(" | Complementary: ");
-  // Serial.println(Angles.Complementary);
-
-  // Serial.print("Initial Angle: ");
-  // Serial.println(initialAngle);
 
   /* Assign Previous Angles */
   prevGyro = currGyro;
