@@ -34,6 +34,7 @@ void loop() {
     checkRFID(); // Check RFID Status
     checkForwardAlert();
     checkReverseAlert();
+    checkRedAlert();
   } else {
     botEnabled = true; // Default to Enabled if STM32 Not Connected
   }
