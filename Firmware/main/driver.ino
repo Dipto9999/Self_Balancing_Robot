@@ -1,13 +1,9 @@
 #include "driver.h"
 
 float startTime, currTime; // Time Variables for Control Loop
-
 int directionCount; // Direction Count for BLE Commands
 
 void changeDirection(const char* bleBuff) {
-    startTime = millis(); // Reset Start Time
-    directionCount = 0; // Reset Direction Count
-
     if (!strcmp(bleBuff, "^")) {
         setpointAngle = SETPOINT_0 - ANGLE_TILT;
         bleDirection = (!forwardAlert) ? FORWARD : IDLE; // Drive
@@ -24,6 +20,13 @@ void changeDirection(const char* bleBuff) {
         setpointAngle = SETPOINT_0;
         bleDirection = IDLE; // IDLE
     }
+    startTime = millis(); // Reset Start Time
+    directionCount = 0; // Reset Direction Count
+}
+
+float normalizePWM(float u_t, float adjustedPWM) {
+    float dutyCycle = (abs(u_t) - DEADZONE_PWM) / (VCC - DEADZONE_PWM) *  (1 + adjustedPWM); // Convert Control Signal to Duty Cycle
+    return (dutyCycle > 1) ? 1 : ((dutyCycle < 0) ? 0 : dutyCycle); // Clamp Duty Cycle to [0, 1]
 }
 
 void moveForward(float dutyCycle) {
@@ -46,11 +49,6 @@ void turnRight(float u_t, float scaleFactor) {
     moveSlowDecay(MotorB, CW, normalizePWM(u_t, scaleFactor));
 }
 
-float normalizePWM(float u_t, float adjustedPWM) {
-    float dutyCycle = (abs(u_t) - DEADZONE_PWM) / (VCC - DEADZONE_PWM) *  (1 + adjustedPWM); // Convert Control Signal to Duty Cycle
-    return (dutyCycle > 1) ? 1 : ((dutyCycle < 0) ? 0 : dutyCycle); // Clamp Duty Cycle to [0, 1]
-}
-
 void drive(float u_t, float errorAngle) {
     currDutyCycle = normalizePWM(u_t, 0);
 
@@ -62,7 +60,7 @@ void drive(float u_t, float errorAngle) {
 
     switch (bleDirection) {
         case LEFT:
-            if ((directionCount++ % 3 == 0) || (abs(errorAngle) > 0.8)) {
+            if ((directionCount++ % 3 == 0) || (abs(errorAngle) > MAX_ERR_ANGLE)) {
                 if (u_t > 0) moveForward(currDutyCycle);
                 else moveReverse(currDutyCycle);
             } else {
@@ -70,7 +68,7 @@ void drive(float u_t, float errorAngle) {
             }
         break;
         case RIGHT:
-            if ((directionCount++ % 3 == 0) || (abs(errorAngle) > 0.8)) {
+            if ((directionCount++ % 3 == 0) || (abs(errorAngle) > MAX_ERR_ANGLE)) {
                 if (u_t > 0) moveForward(currDutyCycle);
                 else moveReverse(currDutyCycle);
             } else {
@@ -82,4 +80,5 @@ void drive(float u_t, float errorAngle) {
             else moveReverse(currDutyCycle);
         break;
     }
+    return;
 }

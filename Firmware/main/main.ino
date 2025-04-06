@@ -19,7 +19,7 @@ void setup() {
 
   setupMotors();
 
-  Serial1.println("Setup Complete!");
+  Serial.println("Setup Complete!");
 }
 
 void loop() {
@@ -40,8 +40,16 @@ void loop() {
 
   if (!botEnabled) {
     moveForward(0); // Stop Motors
-    return;
+    return; // Exit Function
+  } else if (!isAuthenticated) {
+    moveForward(0); // Stop Motors
+    if (!pairPrompted) {
+      customCharacteristic.writeValue("Pair Device"); // Send Pairing Prompt
+      pairPrompted = true; // Set Pairing Prompt Flag
+    }
+    return; // Exit Function
   }
+
   getAngles(Angles);
   balanceRobot(bleDirection);
 
@@ -49,7 +57,7 @@ void loop() {
 
   // Send Data
   serialMsg = String(Angles.Accelerometer, 2) + " " +
-     String(Angles.Gyroscope, 2) + " " +
-     String(Angles.Complementary, 2);
+    String(Angles.Gyroscope, 2) + " " +
+    String(Angles.Complementary, 2);
   handleData('A', serialMsg);
 }

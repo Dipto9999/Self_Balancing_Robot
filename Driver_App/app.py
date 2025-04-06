@@ -8,6 +8,7 @@ class BLEManager:
     # Define UUIDs for BLE Service and Characteristic
     SERVICE_UUID = "00000000-5EC4-4083-81CD-A10B8D5CF6EC"
     CHARACTERISTIC_UUID = "00000001-5EC4-4083-81CD-A10B8D5CF6EC"
+    CODE = "0095" # Authentication Code
 
     def __init__(self):
         self.devices = []
@@ -45,6 +46,7 @@ class BLEManager:
         self.client = BleakClient(address)
         try:
             await self.client.connect()
+            await self.client.write_gatt_char(BLEManager.CHARACTERISTIC_UUID, BLEManager.CODE.encode("utf-8"))
             self.is_connected = self.client.is_connected
             return self.is_connected
         except BleakError:

@@ -9,11 +9,11 @@ bool botEnabled = false;
 void setupGPIO() {
     pinMode(PIN_STM32, INPUT_PULLUP);
     if (digitalRead(PIN_STM32) == LOW) {
-        Serial1.println("STM32 Not Connected!");
+        Serial.println("STM32 Not Connected!");
         stmConnected = false; // STM32 Connected
         return; // STM32 Not Connected
     } else {
-        Serial1.println("STM32 Connected!");
+        Serial.println("STM32 Connected!");
         stmConnected = true; // STM32 Connected
 
         pinMode(PIN_RFID_DISABLED, INPUT_PULLUP);

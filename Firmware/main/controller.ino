@@ -21,13 +21,9 @@ float currDutyCycle; // Current PWM Duty Cycle
 int bleDirection; // Current Direction
 
 void setupController() {
-    // Kp = 0.2; // Proportional Gain
-    // Ki = 6.5; // Integral Gain
-    // Kd = 0.08; // Derivative Gain
-
-    Kp = 0.7;
-    Ki = 11.25;
-    Kd = 0.055;
+    Kp = 0.7; // Proportional Gain
+    Ki = 11.25; // Integral Gain
+    Kd = 0.055; // Derivative Gain
 
     setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
     errorAngle = 0.0; // Error Value, e_t = r_t - y_t
@@ -46,7 +42,7 @@ void setupController() {
 void setupMotors() {
     setupPWM(); // Initialize PWM Pins
     setupController(); // Initialize PID Controller
-    Serial1.println("Motors Initialized!");
+    Serial.println("Motors Initialized!");
 }
 
 void balanceRobot(int bleDirection) {
@@ -56,9 +52,8 @@ void balanceRobot(int bleDirection) {
     errorDifference = (errorAngle - prevErrorAngle) / dt; // e_t - e_(t-1) / dt
     errorAccumulation += (errorAngle * dt);
 
-    if (digitalRead(DISABLE_INTEGRAL_BUTTON) == LOW) {
-        errorAccumulation = 0; // Reset Accumulated Error Value ∑e_t
-    }
+    // Reset Accumulated Error Value ∑e_t
+    if (digitalRead(DISABLE_INTEGRAL_BUTTON) == LOW) errorAccumulation = 0;
 
     // Calculate Control Signal : u_t = Kp * e_t + Ki * ∑e_t + Kd * (e_t - e_(t-1) / dt)
     u_t = (Kp * errorAngle) + (Ki * errorAccumulation) + (Kd * errorDifference);
