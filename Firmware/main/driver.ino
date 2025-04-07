@@ -4,14 +4,6 @@ float startTime, currTime; // Time Variables for Control Loop
 int directionCount; // Direction Count for BLE Commands
 
 void changeDirection(const char* bleBuff) {
-
-    // Serial.print("Forward Alert: ");
-    // Serial.println(forwardAlert ? "True" : "False");
-    // Serial.print("Reverse Alert: ");
-    // Serial.println(reverseAlert ? "True" : "False");
-    // Serial.print("Red Alert: ");
-    // Serial.println(redAlert ? "True" : "False");
-
     if (!strcmp(bleBuff, "^") && (!forwardAlert)) {
         setpointAngle = SETPOINT_0 - ANGLE_TILT;
         bleDirection = FORWARD; // Drive Forward
@@ -30,9 +22,6 @@ void changeDirection(const char* bleBuff) {
     }
     startTime = millis(); // Reset Start Time
     directionCount = 0; // Reset Direction Count
-
-    // Serial.print("BLE Direction: ");
-    // Serial.println(bleDirection == FORWARD ? "FORWARD" : (bleDirection == REVERSE ? "REVERSE" : (bleDirection == LEFT ? "LEFT" : (bleDirection == RIGHT ? "RIGHT" : "IDLE"))));
 }
 
 float normalizePWM(float u_t, float adjustedPWM) {
@@ -63,13 +52,31 @@ void turnRight(float u_t, float scaleFactor) {
 void drive(float u_t, float errorAngle) {
     currDutyCycle = normalizePWM(u_t, 0);
 
-    if (millis() - startTime >= 2000) {
+    if (millis() - startTime >= 1500) {
         startTime = currTime; // Reset Start Time
         setpointAngle = SETPOINT_0;
         bleDirection = IDLE; // Stop Robot
     }
 
+    if (redAlert) {
+        startTime = currTime; // Reset Start Time
+        setpointAngle = SETPOINT_0 + 1.5 * ANGLE_TILT;
+        bleDirection = REVERSE;
+    }
+
     switch (bleDirection) {
+        case FORWARD:
+            if (forwardAlert) setpointAngle = SETPOINT_0 + 2.0 * ANGLE_TILT;
+
+            if (u_t > 0) moveForward(currDutyCycle);
+            else moveReverse(currDutyCycle);
+        break;
+        case REVERSE:
+            if (reverseAlert) setpointAngle = SETPOINT_0 - 2.0 * ANGLE_TILT;
+
+            if (u_t > 0) moveForward(currDutyCycle);
+            else moveReverse(currDutyCycle);
+        break;
         case LEFT:
             if ((directionCount++ % 3 == 0) || (abs(errorAngle) > MAX_ERR_ANGLE)) {
                 if (u_t > 0) moveForward(currDutyCycle);
