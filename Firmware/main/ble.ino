@@ -5,53 +5,21 @@
 BLEService customService("00000000-5EC4-4083-81CD-A10B8D5CF6EC");
 BLECharacteristic customCharacteristic(
     "00000001-5EC4-4083-81CD-A10B8D5CF6EC",
-    BLERead | BLEWrite | BLENotify, BUFFER_SIZE, false
+    BLERead | BLEWrite | BLENotify, STD_BUFFSIZE, false
 );
 
-char buffBLE[BUFFER_SIZE];
-
-// void updateParamBLE(const char* bleBuff) {
-  // int parseIndex;
-  // String paramType, valueStr;
-
-  // Check for PID Parameter Update Command
-
-  // String cmd = String(bleBuff);
-  // cmd.trim(); // Remove Leading/Trailing Whitespace
-
-  // if (
-    // cmd.startsWith("k=") ||
-    // cmd.startsWith("set=") ||
-    // cmd.startsWith("Kp=") ||
-    // cmd.startsWith("Ki=") ||
-    // cmd.startsWith("Kd=")
-  // ) {
-      // parseIndex = cmd.indexOf('=');
-      // paramType = cmd.substring(0, parseIndex);
-      // valueStr = cmd.substring(parseIndex + 1);
-
-      // float newValue = valueStr.toFloat();
-
-      // if (paramType == "k") k = newValue;
-      // else if (paramType == "set") setpointAngle = newValue;
-      // else if (paramType == "Kp") Kp = newValue;
-      // else if (paramType == "Ki") Ki = newValue;
-      // else if (paramType == "Kd") Kd = newValue;
-      // else return; // Invalid Command
-
-      // customCharacteristic.writeValue(paramType.c_str());
-      // customCharacteristic.writeValue(valueStr.c_str());
-  // } else {
-    // return; // Invalid Command
-  // }
-// }
+char buffBLE[STD_BUFFSIZE];
+bool isAuthenticated = false;
+bool pairPrompted = true;
 
 void updateParamBLE(const char* bleBuff) {
-  char paramType[BUFFER_SIZE] = {0};
-  char valueStr[BUFFER_SIZE] = {0};
+  char paramType[STD_BUFFSIZE] = {0};
+  char valueStr[STD_BUFFSIZE] = {0};
   float newValue = 0.0f;
 
-  char cmd[BUFFER_SIZE] = {0};
+  char returnStr[STD_BUFFSIZE] = {0};
+
+  char cmd[STD_BUFFSIZE] = {0};
   strcpy(cmd, bleBuff); // Copy Command to Local Buffer
 
   int start = 0;
@@ -81,18 +49,17 @@ void updateParamBLE(const char* bleBuff) {
     else if (strcmp(paramType, "Kd") == 0) Kd = newValue;
     else return; // Invalid Command
 
-    customCharacteristic.writeValue(paramType);
-    customCharacteristic.writeValue(valueStr);
-  } else {
-    return; // Invalid Command
+    sprintf(returnStr, "NewVal: %s=%s", paramType, valueStr);
+    customCharacteristic.writeValue(returnStr);
   }
+  return; // Exit Function
 }
 
 void setupBLE() {
   pinMode(LED_BUILTIN, OUTPUT); // Init Built-in LED to Indicate Connection Status
 
   if (!BLE.begin()) {
-    Serial1.println("Starting BLE Failed!");
+    Serial.println("Starting BLE Failed!");
     while (1);
   }
 
@@ -104,23 +71,37 @@ void setupBLE() {
   customService.addCharacteristic(customCharacteristic);  // Add the Characteristic to the Service
   BLE.addService(customService); // Add the Service to the BLE Device
 
-  customCharacteristic.writeValue("BLE Rdy"); // Set Initial Value for the Characteristic
-
-  // ----- Callback Event Handlers ----- //
+  // Callback Event Handlers
   BLE.setEventHandler(BLEConnected, connectBLE);
   BLE.setEventHandler(BLEDisconnected, disconnectBLE);
   customCharacteristic.setEventHandler(BLEWritten, rxBLE);
 
   BLE.advertise(); // Advertising the BLE Device
+
   while (!BLE.connected()) BLE.poll(); // Wait for Connection
+  customCharacteristic.writeValue("Pair Device"); // Send Pairing Prompt
 }
 
 void connectBLE(BLEDevice central) {
   digitalWrite(LED_BUILTIN, HIGH);
+  pairPrompted = false; // Reset Pairing Prompt Flag
 }
 
 void disconnectBLE(BLEDevice central) {
   digitalWrite(LED_BUILTIN, LOW);
+  isAuthenticated = false; // Reset Authentication Status
+}
+
+void authenticateBLE() {
+  if (strcmp(buffBLE, CODE) == 0) {
+    isAuthenticated = true;
+    customCharacteristic.writeValue("Auth Success!");
+    isAuthenticated = true; // Set Authentication Status
+  } else {
+    customCharacteristic.writeValue("Auth Fail!");
+    BLE.disconnect(); // Disconnect if Authentication Fails
+  }
+
 }
 
 void rxBLE(BLEDevice central, BLECharacteristic characteristic) {
@@ -130,6 +111,11 @@ void rxBLE(BLEDevice central, BLECharacteristic characteristic) {
   memcpy(buffBLE, receivedData, length);
   buffBLE[length] = '\0'; // Null-Terminated
 
-  // updateParamBLE(buffBLE); // Update PID Parameters based on BLE Input
-  changeDirection(buffBLE); // Change Direction based on BLE Input
+  if (isAuthenticated) {
+    // updateParamBLE(buffBLE); // Update PID Parameters Based On BLE Input
+    changeDirection(buffBLE); // Change Direction Based On BLE Input
+  } else {
+    authenticateBLE(); // Authenticate Device
+  }
+  return; // Exit Function
 }

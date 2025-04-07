@@ -3,17 +3,17 @@
 String serialMsg = "";
 
 void setupSerial() {
-  Serial1.begin(115200);
+  Serial.begin(115200);
 }
 
 void handleData(char expectedByte, String txData) {
   // Send Data When Rx Byte Received
-  if (Serial1.available() > 0) {
+  if (Serial.available() > 0) {
     // Read Incoming Byte
-    int rxByte = Serial1.read();
+    int rxByte = Serial.read();
     // Receive Byte rxByte to Send Angle Data
     if (rxByte == expectedByte) {
-      Serial1.println(txData);
+      Serial.println(txData);
     }
   }
 }
@@ -21,9 +21,9 @@ void handleData(char expectedByte, String txData) {
 void updatePID() {
   int parseIndex;
   String paramType, valueStr;
-  if (Serial1.available() > 0) {
+  if (Serial.available() > 0) {
     // Check for PID Parameter Update Command
-    String command = Serial1.readStringUntil('\n');
+    String command = Serial.readStringUntil('\n');
     command.trim(); // Remove Leading/Trailing Whitespace
 
     if (
@@ -40,7 +40,7 @@ void updatePID() {
       float newValue = valueStr.toFloat();
 
       if (valueStr != "0" && newValue == 0) {
-        Serial1.println("Invalid Value!");
+        Serial.println("Invalid Value!");
         return;
       }
 
@@ -50,17 +50,17 @@ void updatePID() {
       else if (paramType == "Ki") Ki = newValue;
       else if (paramType == "Kd") Kd = newValue;
 
-      Serial1.print("\r\nk: ");
-      Serial1.print(k, 3);
-      Serial1.print(" Setpoint: ");
-      Serial1.println(setpointAngle, 3);
+      Serial.print("\r\nk: ");
+      Serial.print(k, 3);
+      Serial.print(" Setpoint: ");
+      Serial.println(setpointAngle, 3);
 
-      Serial1.print("Kp: ");
-      Serial1.print(Kp, 4);
-      Serial1.print(" Ki: ");
-      Serial1.print(Ki, 4);
-      Serial1.print(" Kd: ");
-      Serial1.print(Kd, 4);
+      Serial.print("Kp: ");
+      Serial.print(Kp, 4);
+      Serial.print(" Ki: ");
+      Serial.print(Ki, 4);
+      Serial.print(" Kd: ");
+      Serial.print(Kd, 4);
     }
   }
 }

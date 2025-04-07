@@ -10,6 +10,7 @@ class BLECommandApp:
     # Define UUIDs for BLE Service and Characteristic
     SERVICE_UUID = "00000000-5EC4-4083-81CD-A10B8D5CF6EC"
     CHARACTERISTIC_UUID = "00000001-5EC4-4083-81CD-A10B8D5CF6EC"
+    CODE = "0095" # Authentication Code
 
     def __init__(self, root):
         self.root = root
@@ -19,6 +20,7 @@ class BLECommandApp:
         self.connected = False
         self.loop = None
         self.task = None
+        self.cmd = None
 
         self.config()
 
@@ -107,11 +109,11 @@ class BLECommandApp:
             asyncio.run_coroutine_threadsafe(self.disconnect(), self.loop)
 
     def send_cmd(self):
-        cmd = self.cmd_entry.get().strip()
-        if (not cmd) or (not self.connected) or not (self.loop):
+        self.cmd = self.cmd_entry.get().strip()
+        if (not self.cmd) or (not self.connected) or not (self.loop):
             return
 
-        asyncio.run_coroutine_threadsafe(self.write(cmd), self.loop)
+        asyncio.run_coroutine_threadsafe(self.write(self.cmd), self.loop)
         self.cmd_entry.delete(0, tk.END)
 
     def display_data(self, sender, data):
@@ -120,7 +122,11 @@ class BLECommandApp:
         except Exception:
             text = str(data)
 
-        self.root.after(0, lambda: self.update_log(f"Received: {text}"))
+        if (self.cmd) and (text.strip() == self.cmd):
+            self.root.after(0, lambda: self.update_log(f"Sent!"))
+            self.cmd = None
+        else:
+            self.root.after(0, lambda: self.update_log(f"Received: {text}"))
 
     async def connect(self):
         self.root.after(0, lambda: self.update_log("Scanning for BLE-B17..."))
@@ -137,7 +143,7 @@ class BLECommandApp:
                 self.root.after(0, lambda: self.connect_btn.config(state = tk.NORMAL))
                 return
 
-            self.root.after(0, lambda: self.update_log(f"Connecting to {devices[0]['name']} @Address [{devices[0]['address']}]"))
+            self.root.after(0, lambda: self.update_log(f"Connecting to {devices[0]['name']} @Address [{devices[0]['address']}]..."))
 
             client = BleakClient(devices[0]['address'])
             await client.connect()
@@ -149,6 +155,8 @@ class BLECommandApp:
                 # Start notifications
                 await client.start_notify(BLECommandApp.CHARACTERISTIC_UUID, self.display_data)
 
+                # Authenticate Device
+                await self.write(BLECommandApp.CODE)
                 self.root.after(0, lambda: self.display_connection(devices[0]))
             else:
                 self.root.after(0, lambda: self.update_log("Connection Failed.", "error"))
@@ -164,6 +172,7 @@ class BLECommandApp:
         self.connect_btn.config(text = "Disconnect", state = tk.NORMAL)
         self.send_btn.config(state = tk.NORMAL)
         self.update_log("Connected!")
+        self.root.after(750, self.clear_log)
 
     def display_disconnection(self):
         self.status_label.config(text = "Disconnected", foreground = "red")
@@ -193,7 +202,8 @@ class BLECommandApp:
             self.root.after(0, lambda: self.update_log(f"Sending: {cmd}"))
             await self.client.write_gatt_char(BLECommandApp.CHARACTERISTIC_UUID, cmd.encode("utf-8"))
         except Exception as e:
-            self.root.after(0, lambda: self.update_log(f"Error Sending CMD: {str(e)}", "error"))
+            self.root.after(0, lambda err=e: self.update_log(f"Error Sending CMD: {str(err)}", "error"))
+            # self.toggle_conn()
 
     def on_close(self):
         if self.connected:

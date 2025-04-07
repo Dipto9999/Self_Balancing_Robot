@@ -1,9 +1,7 @@
 #include "angle.h"
 
-/* Constants and Variables */
 float k; // Complementary Filter Constant
 
-// const float ACCELEROMETER_OFFSET = -0.25;
 const float ACCELEROMETER_OFFSET = 0;
 
 const float STANDARD_ACCEL = 0.95;
@@ -28,13 +26,13 @@ float initialAngle;
 
 void setupIMU() {
   if (!IMU.begin()) {
-    // Serial1.println("Failed to Initialize IMU!");
+    // Serial.println("Failed to Initialize IMU!");
     while (1);
   }
 
-  // Serial1.println("IMU Initialized!");
-  // Serial1.println("Reading Raw Data from Gyroscope and Accelerometer...");
-  // Serial1.println("Gyroscope (rad/s) | Accelerometer (g)");
+  // Serial.println("IMU Initialized!");
+  // Serial.println("Reading Raw Data from Gyroscope and Accelerometer...");
+  // Serial.println("Gyroscope (rad/s) | Accelerometer (g)");
 
   k = 0.95;
   while (az == 0) {
@@ -67,27 +65,6 @@ void getAngles(ANGLES &Angles) {
 
   currGyro = prevGyro + gx * sampleTime;
 
-  // Prevent Robot from Unpredictable Acceleration
-  // accelCondition = abs(ax*ax + ay*ay + az*az - STANDARD_ACCEL);
-  // if (accelCondition > 0.2) {
-  //   driftingCondition = true;
-  //   k = 1;
-  // } else {
-  //   calibration_count++; // Increment Angle Counter
-  //   if (calibration_count > MAX_CALIBRATION) {
-  //     calibration_count = 0;
-  //     k = 0.1;
-  //   } else {
-  //     k = 0.9;
-  //   }
-  // }
-
-  // Serial1.print("Acceleration Condn: ");
-  // Serial1.println(abs(ax*ax + ay*ay + az*az - 1.02));
-
-  // Serial1.print("K: ");
-  // Serial1.println(k);
-
   prevAngle = prevComplementary;
   currComplementary = k * (prevComplementary + gx * sampleTime) + (1 - k) * currAccel;
 
@@ -100,16 +77,6 @@ void getAngles(ANGLES &Angles) {
   Angles.Accelerometer = currAccel;
   Angles.Gyroscope = currGyro;
   Angles.Complementary = currComplementary;
-
-  // Serial1.print("Accelerometer: ");
-  // Serial1.print(Angles.Accelerometer);
-  // Serial1.print(" | Gyroscope: ");
-  // Serial1.print(Angles.Gyroscope);
-  // Serial1.print(" | Complementary: ");
-  // Serial1.println(Angles.Complementary);
-
-  // Serial1.print("Initial Angle: ");
-  // Serial1.println(initialAngle);
 
   /* Assign Previous Angles */
   prevGyro = currGyro;
