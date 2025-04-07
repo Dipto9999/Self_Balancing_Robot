@@ -60,12 +60,14 @@ class StripChart:
 
         # DataFrame for Data Export
         self.start_time = None
-        self.data_df = pd.DataFrame({
-            'Time (PST)' : [],
-            'Accelerometer Angle (Deg)' : [],
-            'Gyroscope Angle (Deg)' : [],
-            'Complementary Angle (Deg)' : []
-        })
+        self.data_df = pd.DataFrame(
+            columns = [
+                'Time (PST)',
+                'Accelerometer Angle (Deg)',
+                'Gyroscope Angle (Deg)',
+                'Complementary Angle (Deg)'
+            ]
+        )
 
         self.ax.set_title('Real-Time Angle Strip-Chart')
         self.ax.grid(True)
@@ -169,11 +171,13 @@ class StripChart:
 
     def stop(self):
         """Set Connection to None and Stop Updating."""
-        self.conn = None
+        if self.conn is not None:
+            self.conn.close()
+            self.conn = None
 
-        fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
-        self.save_logs(fig_name)
-        self.save_fig(fig_name)
+            fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
+            self.save_logs(fig_name)
+            self.save_fig(fig_name)
 
     def rx_angle(self):
         """Read Angle Data from Serial Connection."""
@@ -214,15 +218,24 @@ class StripChart:
             self.complementary_data.append(complementary_angle)
 
             self.start_time = dt.datetime.now(pytz.timezone('US/Pacific')) if self.start_time is None else self.start_time
-            self.data_df = pd.concat([
-                self.data_df,
-                pd.DataFrame([{
-                    'Time (PST)': self.start_time + dt.timedelta(seconds = new_sample),
+
+            if self.data_df.empty:
+                self.data_df = pd.DataFrame({
+                    'Time (PST)': self.start_time,
                     'Accelerometer Angle (Deg)': accelerometer_angle,
                     'Gyroscope Angle (Deg)': gyroscope_angle,
                     'Complementary Angle (Deg)': complementary_angle
-                }])], ignore_index = True
-            )
+                }, index = [0])
+            else:
+                self.data_df = pd.concat([
+                    self.data_df,
+                    pd.DataFrame([{
+                        'Time (PST)': self.start_time + dt.timedelta(seconds = new_sample),
+                        'Accelerometer Angle (Deg)': accelerometer_angle,
+                        'Gyroscope Angle (Deg)': gyroscope_angle,
+                        'Complementary Angle (Deg)': complementary_angle
+                    }])], ignore_index = True
+                )
 
         except serial.SerialException:
             self.conn.reconnect()
@@ -246,8 +259,9 @@ class StripChart:
         """Save Data to CSV File."""
         file_path = os.path.join(self.logbook_dir, f"{file_name}.csv")
 
-        self.data_df['Time (PST)'] = self.data_df['Time (PST)'].dt.strftime('%Y-%m-%d %H:%M:%S')
-        self.data_df.to_csv(file_path, index = False)
+        csv_df = self.data_df.copy()
+        csv_df['Time (PST)'] = self.data_df['Time (PST)'].dt.strftime('%Y-%m-%d %H:%M:%S')
+        csv_df.to_csv(file_path, index = False)
 
         print(f"Data Exported to {file_path}\n\nData Preview:\n")
         display(self.data_df.head(2))
@@ -332,7 +346,7 @@ class StripchartApp(tk.Tk):
 
         self.stripchart = StripChart(self.stripchart_frame)
         self.save_button = tk.Button(
-            self.stripchart_frame, text = "Save", command = self.stripchart.stop, bg = '#6e9eeb',
+            self.stripchart_frame, text = "Save", command = self.save_data, bg = '#6e9eeb',
         )
 
         self.stripchart.canvas_widget.grid(row = 0, column = 0)
@@ -363,15 +377,23 @@ class StripchartApp(tk.Tk):
 
             self.stripchart.start(self.conn) # Start StripChart
             self.stripchart.canvas_widget.grid(row = 0, column = 0)
+            self.open_button.config(state = tk.DISABLED)
         except serial.SerialException as serial_error:
             print("Serial Connection Error:", str(serial_error))
             self.conn = None
+            self.open_button.config(state = tk.NORMAL)
+
+    def save_data(self):
+        if self.stripchart.data_df.empty:
+            print("No Data Available")
+            return
+
+        self.stripchart.stop()
+        self.open_button.config(state = tk.NORMAL)
 
     def on_close(self):
         """Close Serial Connection on Application Exit."""
-        if self.stripchart.conn is not None:
-            self.stripchart.conn.close()
-            self.stripchart.stop()
+        self.stripchart.stop() # Stop StripChart
 
         # Exit Application
         self.destroy()

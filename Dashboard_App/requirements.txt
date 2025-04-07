@@ -1,3 +1,4 @@
+boto3==1.37.28
 distlib==0.3.9
 docutils==0.21.2
 pillow==11.1.0

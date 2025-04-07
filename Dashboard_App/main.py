@@ -2,6 +2,7 @@ import logging
 
 from app import DashboardApp
 from convert_videos import VideoConverter
+from bucket_upload import S3Uploader
 
 if __name__ == "__main__":
     logging.getLogger("matplotlib").setLevel(logging.WARNING)
@@ -9,4 +10,12 @@ if __name__ == "__main__":
     logging.getLogger("libcamera").setLevel(logging.WARNING)
 
     DashboardApp().mainloop()
-    VideoConverter().convert_videos()
+
+    vidConverter = VideoConverter()
+    vidConverter.convert_videos()
+
+    file_uploader = S3Uploader()
+    file_uploader.upload_files(file_uploader.figures_dir)
+    file_uploader.upload_files(file_uploader.logbook_dir)
+    file_uploader.upload_files(file_uploader.video_dir)
+    file_uploader.upload_files(file_uploader.snapshot_dir)

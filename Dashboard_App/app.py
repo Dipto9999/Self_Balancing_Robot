@@ -122,7 +122,7 @@ class Dashboard:
 
         self.stripchart = StripChart(self.stripchart_frame)
         self.save_button = tk.Button(
-            self.stripchart_frame, text = "Save", command = self.stripchart.stop, bg = '#6e9eeb',
+            self.stripchart_frame, text = "Save", command = self.save_data, bg = '#6e9eeb',
         )
 
         self.stripchart.canvas_widget.grid(row = 0, column = 0)
@@ -176,18 +176,22 @@ class Dashboard:
 
                 self.stripchart.start(self.conn) # Start StripChart
                 self.stripchart.canvas_widget.grid(row = 0, column = 0)
+                self.open_button.config(state = tk.DISABLED)
             except serial.SerialException as serial_error:
                 print("Serial Connection Error:", str(serial_error))
                 self.conn = None
+                self.open_button.config(state = tk.NORMAL)
+
+    def save_data(self):
+        if self.stripchart.data_df.empty:
+            print("No Data Available")
+            return
+
+        self.stripchart.stop()
+        self.open_button.config(state = tk.NORMAL)
 
     def cleanup(self):
-        if self.stripchart.conn and self.stripchart.conn.isOpen():
-            self.stripchart.stop() # Stop StripChart
-
-            fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
-            self.stripchart.save_logs(fig_name)
-            self.stripchart.save_fig(fig_name)
-
+        self.stripchart.stop() # Stop StripChart
         self.cam_feed.stop() # Close Camera
 
 class DashboardApp(tk.Tk):
