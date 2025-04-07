@@ -33,7 +33,7 @@ class BLEManager:
         scanned = await BleakScanner.discover()
 
         self.devices = [
-            {"name" : device.name, "address" : device.address} for device in scanned if device.name and ("BLE-B17" in device.name)
+            {"name" : device.name, "address" : device.address} for device in scanned if device.name and ("WALL-E" in device.name)
         ] # Filter BLE Devices
         return self.devices
 

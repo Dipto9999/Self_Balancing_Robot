@@ -64,8 +64,8 @@ void setupBLE() {
   }
 
   // Set Local Name and Device Name
-  BLE.setLocalName("BLE-B17");
-  BLE.setDeviceName("BLE-B17");
+  BLE.setLocalName("WALL-E");
+  BLE.setDeviceName("WALL-E");
 
   BLE.setAdvertisedService(customService);
   customService.addCharacteristic(customCharacteristic);  // Add the Characteristic to the Service

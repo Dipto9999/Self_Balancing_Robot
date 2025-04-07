@@ -14,7 +14,7 @@ class BLECommandApp:
 
     def __init__(self, root):
         self.root = root
-        self.root.title("BLE-B17 Command App")
+        self.root.title("WALL-E Command App")
 
         self.client = None
         self.connected = False
@@ -34,7 +34,7 @@ class BLECommandApp:
 
         self.connect_btn = ttk.Button(
             self.conn_frame,
-            text = "Connect to BLE-B17",
+            text = "Connect to WALL-E",
             command = self.toggle_conn
         )
         self.status_frame = ttk.Frame(self.conn_frame)
@@ -129,17 +129,17 @@ class BLECommandApp:
             self.root.after(0, lambda: self.update_log(f"Received: {text}"))
 
     async def connect(self):
-        self.root.after(0, lambda: self.update_log("Scanning for BLE-B17..."))
+        self.root.after(0, lambda: self.update_log("Scanning for WALL-E..."))
 
         try:
             scanned = await BleakScanner.discover()
 
             devices = [
-                {"name" : device.name, "address" : device.address} for device in scanned if device.name and ("BLE-B17" in device.name)
+                {"name" : device.name, "address" : device.address} for device in scanned if device.name and ("WALL-E" in device.name)
             ] # Filter BLE Devices
 
             if len(devices) == 0:
-                self.root.after(0, lambda: self.update_log("No BLE-B17 Device Found.", "error"))
+                self.root.after(0, lambda: self.update_log("No WALL-E Device Found.", "error"))
                 self.root.after(0, lambda: self.connect_btn.config(state = tk.NORMAL))
                 return
 
@@ -177,7 +177,7 @@ class BLECommandApp:
     def display_disconnection(self):
         self.status_label.config(text = "Disconnected", foreground = "red")
         self.deviceinfo_label.config(text = "No Device Connected")
-        self.connect_btn.config(text = "Connect to BLE-B17", state=tk.NORMAL)
+        self.connect_btn.config(text = "Connect to WALL-E", state=tk.NORMAL)
         self.send_btn.config(state = tk.DISABLED)
 
     async def disconnect(self):
