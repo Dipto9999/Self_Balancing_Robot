@@ -38,6 +38,7 @@ typedef struct
     uint16_t rgb_data[4];  // Store Red, Green, Blue values
 
     bool enabled;
+    uint32_t count;
 } colorsensor;
 
 void ColorSensor_Init(colorsensor* sensor, I2C_HandleTypeDef* i2c_handle);

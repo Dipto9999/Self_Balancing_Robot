@@ -8,6 +8,7 @@ void ColorSensor_Init(colorsensor* sensor, I2C_HandleTypeDef* i2c_handle) {
 
     memset(sensor->rgb_data, 0, sizeof(sensor->rgb_data));  // Clear RGB data
     sensor->enabled = true;
+    sensor->count = 0;
 
     // Define initialization sequence
     uint8_t init_data[][2] = {
@@ -74,15 +75,38 @@ void ColorSensor_Handle(colorsensor* sensor)
 	ColorSensor_ReadAll(sensor);
 	color detected_color = ColorSensor_CalculateColor(sensor);
 
-	if (detected_color == RED)
+
+	/*
+	if (sensor->count > 2)
 	{
 		HAL_GPIO_WritePin(COLOR_SENSOR_STATUS_GPIO_Port, COLOR_SENSOR_STATUS_Pin, GPIO_PIN_SET);
 		if (!Speaker.hasFault)
 			Speaker_Start(&Speaker, COLOR_SENSOR_ID);
 	}
+
+
+	else if (detected_color == RED)
+	{
+		sensor->count++;
+	}
 	else
 	{
 		HAL_GPIO_WritePin(COLOR_SENSOR_STATUS_GPIO_Port, COLOR_SENSOR_STATUS_Pin, GPIO_PIN_RESET);
+		//if (Speaker.hasFault)
+		Speaker_Stop(&Speaker, COLOR_SENSOR_ID);
+		sensor->count = 0;
+	}
+	*/
+
+	if (detected_color == RED)
+	{
+		HAL_GPIO_WritePin(COLOR_SENSOR_STATUS_GPIO_Port, COLOR_SENSOR_STATUS_Pin, GPIO_PIN_RESET);
+		if (!Speaker.hasFault)
+			Speaker_Start(&Speaker, COLOR_SENSOR_ID);
+	}
+	else
+	{
+		HAL_GPIO_WritePin(COLOR_SENSOR_STATUS_GPIO_Port, COLOR_SENSOR_STATUS_Pin, GPIO_PIN_SET);
 		if (Speaker.hasFault)
 			Speaker_Stop(&Speaker, COLOR_SENSOR_ID);
 	}

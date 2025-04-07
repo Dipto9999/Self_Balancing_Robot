@@ -2,7 +2,7 @@
 
 #define TIM_PERIOD 65535
 #define MAX_DISTANCE 813
-#define MIN_DISTANCE 20
+#define MIN_DISTANCE 30
 
 extern speaker Speaker;
 
