@@ -5,16 +5,14 @@
 #include "angle.h"
 #include "gpio.h"
 
-// #define SETPOINT_0 0.625
-#define SETPOINT_0 -0.625
 #define DISABLE_INTEGRAL_BUTTON 10
-#define MAX_ERROR_ACCUMULATION 5
 
 enum DirRobot {REVERSE, FORWARD, LEFT, RIGHT, IDLE};
 
 extern const int VCC;
 
 /* PID Controller Variables */
+extern float SETPOINT_0; // Setpoint for PID Controller
 extern float setpointAngle; // Reference Value, r_t (Angle = 180°)
 extern float measuredAngle; // Output Value, y_t (Angle)
 

@@ -3,6 +3,7 @@
 const int VCC = 10.4; // 10.4 V
 
 /* PID Controller Variables */
+float SETPOINT_0; // Setpoint for PID Controller
 float setpointAngle; // Reference Value, r_t (Angle = 180°)
 float measuredAngle; // Output Value, y_t (Angle)
 
@@ -25,6 +26,7 @@ void setupController() {
     Ki = 11.25; // Integral Gain
     Kd = 0.055; // Derivative Gain
 
+    SETPOINT_0 = 0.35;
     setpointAngle = SETPOINT_0; // Reference Value, r_t (Angle = 180°)
     errorAngle = 0.0; // Error Value, e_t = r_t - y_t
     prevErrorAngle = 0.0; // Previous Error Value, e_(t-1)

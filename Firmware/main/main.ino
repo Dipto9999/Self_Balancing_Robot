@@ -45,7 +45,7 @@ void loop() {
   } else if (!isAuthenticated) {
     moveForward(0); // Stop Motors
     if (!pairPrompted) {
-      customCharacteristic.writeValue("Pair Device"); // Send Pairing Prompt
+      customCharacteristic.writeValue("Enter Code:"); // Send Pairing Prompt
       pairPrompted = true; // Set Pairing Prompt Flag
     }
     return; // Exit Function

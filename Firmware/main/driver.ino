@@ -60,19 +60,19 @@ void drive(float u_t, float errorAngle) {
 
     if (redAlert) {
         startTime = currTime; // Reset Start Time
-        setpointAngle = SETPOINT_0 + 1.5 * ANGLE_TILT;
+        setpointAngle = SETPOINT_0 + ANGLE_TILT;
         bleDirection = REVERSE;
     }
 
     switch (bleDirection) {
         case FORWARD:
-            if (forwardAlert) setpointAngle = SETPOINT_0 + 2.0 * ANGLE_TILT;
+            if (forwardAlert) setpointAngle = SETPOINT_0 + 0.5 * ANGLE_TILT;
 
             if (u_t > 0) moveForward(currDutyCycle);
             else moveReverse(currDutyCycle);
         break;
         case REVERSE:
-            if (reverseAlert) setpointAngle = SETPOINT_0 - 2.0 * ANGLE_TILT;
+            if (reverseAlert) setpointAngle = SETPOINT_0 - ANGLE_TILT;
 
             if (u_t > 0) moveForward(currDutyCycle);
             else moveReverse(currDutyCycle);

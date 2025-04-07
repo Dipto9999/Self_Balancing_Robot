@@ -43,7 +43,7 @@ void updateParamBLE(const char* bleBuff) {
     newValue = atof(valueStr); // Convert Value String to Float
 
     if (strcmp(paramType, "k") == 0) k = newValue;
-    else if (strcmp(paramType, "set") == 0) setpointAngle = newValue;
+    else if (strcmp(paramType, "set") == 0) SETPOINT_0 = newValue;
     else if (strcmp(paramType, "Kp") == 0) Kp = newValue;
     else if (strcmp(paramType, "Ki") == 0) Ki = newValue;
     else if (strcmp(paramType, "Kd") == 0) Kd = newValue;
@@ -79,7 +79,7 @@ void setupBLE() {
   BLE.advertise(); // Advertising the BLE Device
 
   while (!BLE.connected()) BLE.poll(); // Wait for Connection
-  customCharacteristic.writeValue("Pair Device"); // Send Pairing Prompt
+  customCharacteristic.writeValue("Enter Code:"); // Send Pairing Prompt
 }
 
 void connectBLE(BLEDevice central) {
