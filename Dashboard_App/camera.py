@@ -1,24 +1,21 @@
 import os
 import datetime as dt
 
-from kivy.app import App
-from kivy.uix.image import Image
-from kivy.clock import Clock
-from kivy.graphics.texture import Texture
-
+import tkinter as tk
+from PIL import ImageTk
 from PIL import Image as PILImage
 
 from picamera2 import Picamera2
 from picamera2.encoders import H264Encoder
 from libcamera import Transform
 
-class CameraDisplay(Image):
-    SAMPLE_RATE = 1.0 / 25.0 # 25 FPS. Increase for Higher Update Rate (CPU permitting)
-    def __init__(self, **kwargs):
-        super().__init__(size_hint = (1, 1), allow_stretch = True, **kwargs)
+class CameraDisplay(tk.Frame):
+    SAMPLE_RATE = 1.0 / 50.0 # Update Delay ~20 FPS (1000ms/20 ≈ 50ms)
+    def __init__(self, parent, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
 
         self.filename = ""
-        self.camera = Picamera2()
+        self.camera = Picamera2() # Init Camera
 
         self.snapshot_dir: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Snapshots")
         self.video_dir: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Videos")
@@ -34,8 +31,10 @@ class CameraDisplay(Image):
                 # "size": (1920, 1080), # Full HD
                 "format": "RGB888"
             },
-            transform = Transform(hflip = True, vflip = True) # For Kivy Display
+            transform = Transform(hflip = False, vflip = False) # For Tkinter Display
         )
+        self.image_label = tk.Label(self)
+        self.image_label.pack()
 
     def start_recording(self):
         self.camera.configure(self.config)
@@ -71,9 +70,8 @@ class CameraDisplay(Image):
         snapshot_name = f"Snapshot_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg"
         snapshot_path = os.path.join(self.snapshot_dir, snapshot_name)
 
-        image = PILImage.fromarray(frame) # Convert to PIL Image
-        image = image.transpose(PILImage.FLIP_TOP_BOTTOM) # Flip Image Vertically
-        # image = image.transpose(PILImage.FLIP_LEFT_RIGHT) # Flip Image Horizontally
+        # Convert to PIL Image
+        image = PILImage.fromarray(frame)
         image.save(snapshot_path) # Save Image
         print(f"Snapshot Saved to {snapshot_path}")
 
@@ -85,19 +83,74 @@ class CameraDisplay(Image):
             return
 
         frame = self.camera.capture_array()
-        if frame is None or frame.size == 0:
-            return
+        if (frame is not None) and (frame.size != 0):
+            frame = frame[..., ::-1] # BGR -> RGB
 
-        # Swap Color Channels (BGR -> RGB)
-        frame = frame[..., ::-1]
-
-        height, width, _ = frame.shape
-        texture = Texture.create(size = (width, height), colorfmt = 'rgb')
-        texture.blit_buffer(frame.tobytes(), colorfmt = 'rgb', bufferfmt = 'ubyte')
-
-        self.texture = texture
+            # Convert the PIL Image to an ImageTk.PhotoImage
+            self.image_label.current = ImageTk.PhotoImage(
+                image = PILImage.fromarray(frame) # Convert Numpy Array to PIL.Image
+            )
+            self.image_label.configure(image = self.image_label.current)
 
     def stop(self):
-        """Close Camera on Exit."""
-        self.stop_recording()
         self.camera.close()
+
+class CameraApp(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("PiCamera Live Stream")
+
+        self.camera_frame = tk.Frame(self, bg = '#141654')
+
+        self.button_frame = tk.Frame(self.camera_frame, bg = '#787882')
+
+        self.record_button = tk.Button(
+            self.button_frame,
+            text = "Stop", bg = "red", width = 15,
+            command = self.toggle_record
+        )
+        self.snapshot_button = tk.Button(
+            self.button_frame,
+            text = "Snapshot", bg = "white", width = 15,
+            command = lambda: self.take_snapshot()
+        )
+
+        self.cam_feed = CameraDisplay(self.camera_frame) # Camera Feed
+
+        self.cam_feed.pack(fill = tk.BOTH, expand = True)
+
+        self.record_button.pack(side = tk.LEFT, padx = 5, pady = 5)
+        self.snapshot_button.pack(side = tk.RIGHT, padx = 5, pady = 5)
+        self.button_frame.pack(side = tk.BOTTOM, fill = tk.X)
+
+        self.camera_frame.pack(side = tk.TOP, fill = tk.X)
+
+        self.cam_feed.start_recording()
+        self.update()
+        self.protocol("WM_DELETE_WINDOW", self.close)
+
+    def toggle_record(self):
+        # pass
+        if self.cam_feed.filename != "": # Recording
+            self.cam_feed.stop_recording()
+            self.record_button.config(text = "Start", bg = "green")
+        else: # Not Recording
+            self.cam_feed.start_recording()
+            self.record_button.config(text = "Stop", bg = "red")
+
+    def take_snapshot(self):
+        self.snapshot_button.config(bg = "green")
+        self.cam_feed.take_snapshot()
+
+        self.after(2000, lambda: self.snapshot_button.config(bg = "white"))
+
+    def update(self):
+        self.cam_feed.update()
+        self.after(int(CameraDisplay.SAMPLE_RATE * 10E3), self.update)
+
+    def close(self):
+        self.cam_feed.stop()
+        self.destroy()
+
+if __name__ == "__main__":
+    CameraApp().mainloop()

@@ -1,28 +1,18 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include <mbed.h>
-
 #include "pwm.h"
 #include "angle.h"
 #include "gpio.h"
 
-extern mbed::Ticker balanceTicker;
+#define DISABLE_INTEGRAL_BUTTON 10
 
-enum DirRobot {REVERSE, FORWARD, LEFT, RIGHT, PARK};
-
-struct ConfigPWM {
-    float RPM_25;
-    float RPM_50;
-    float RPM_75;
-    float RPM_100;
-};
-
-extern ConfigPWM ConfigMotor;
+enum DirRobot {REVERSE, FORWARD, LEFT, RIGHT, IDLE};
 
 extern const int VCC;
 
 /* PID Controller Variables */
+extern float SETPOINT_0; // Setpoint for PID Controller
 extern float setpointAngle; // Reference Value, r_t (Angle = 180°)
 extern float measuredAngle; // Output Value, y_t (Angle)
 
@@ -41,15 +31,10 @@ extern float currDutyCycle;
 extern int bleDirection;
 
 /* Function Prototypes */
-void balanceRobotISR();
 
-void setupMotors();
 void setupController();
+void setupMotors();
 
-void changeDirection(const char* bleBuff);
-void balanceRobot(int direction);
-
-void turnLeft();
-void turnRight();
+void balanceRobot(int bleDirection);
 
 #endif

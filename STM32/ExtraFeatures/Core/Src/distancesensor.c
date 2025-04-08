@@ -23,6 +23,8 @@ void DistanceSensor_Init(distancesensor* sensor, TIM_HandleTypeDef* timer, featu
 
 	HAL_GPIO_WritePin(sensor->statusGPIOPort, sensor->statusGPIOPin, GPIO_PIN_SET);
 
+	HAL_GPIO_WritePin(sensor->statusGPIOPort, sensor->statusGPIOPin, GPIO_PIN_SET);
+
 
 }
 

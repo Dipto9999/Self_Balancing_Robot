@@ -12,6 +12,7 @@ const statusLabel = document.getElementById('statusLabel');
 /* Movement Buttons */
 const driveButton = document.getElementById('driveButton');
 const downButton = document.getElementById('downButton');
+const stopButton = document.getElementById('stopButton');
 const leftButton = document.getElementById('leftButton');
 const rightButton = document.getElementById('rightButton');
 
@@ -83,6 +84,7 @@ connectButton.addEventListener('click', () => {
             // Enable Movement Buttons
             driveButton.disabled = false;
             downButton.disabled = false;
+            stopButton.disabled = false;
             leftButton.disabled = false;
             rightButton.disabled = false;
         } else {
@@ -111,6 +113,7 @@ disconnectButton.addEventListener('click', () => {
         // Disable Movement Buttons
         driveButton.disabled = true;
         downButton.disabled = true;
+        stopButton.disabled = true;
         leftButton.disabled = true;
         rightButton.disabled = true;
     })
@@ -145,5 +148,6 @@ function sendCommand(cmd) {
 /* Bind Movement Commands */
 driveButton.addEventListener('click', () => sendCommand('^'));
 downButton.addEventListener('click', () => sendCommand('v'));
+stopButton.addEventListener('click', () => sendCommand('X'));
 leftButton.addEventListener('click', () => sendCommand('<'));
 rightButton.addEventListener('click', () => sendCommand('>'));

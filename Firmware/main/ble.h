@@ -5,17 +5,23 @@
 #include <ArduinoBLE.h>
 #include "serial.h"
 
-#define BUFFER_SIZE 20
+#define STD_BUFFSIZE 20
+#define CODE "0095"
 
 extern BLEService customService;
 extern BLECharacteristic customCharacteristic;
-extern BLEDevice central;
 
-extern char buffBLE[BUFFER_SIZE];
+extern char buffBLE[STD_BUFFSIZE];
+extern bool isAuthenticated;
+extern bool pairPrompted;
 
 /* Function Prototypes */
 extern void setupBLE();
 
-extern bool rxBLE();
+extern void connectBLE(BLEDevice central);
+extern void disconnectBLE(BLEDevice central);
+
+extern void authenticateBLE();
+extern void rxBLE(BLEDevice central, BLECharacteristic characteristic);
 
 #endif

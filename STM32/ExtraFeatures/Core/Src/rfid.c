@@ -92,6 +92,8 @@ void RFID_SecurityLogic(rfid* sensor)
 				Speaker_Beep(&Speaker, 150, 50, 4);
 				sensor->initialSuccessfulCardTap = true;
 				sensor->initialFailedCardTap = false;
+
+
 	    	}
 	    	//HAL_Delay(HAL_MAX_DELAY);
 
