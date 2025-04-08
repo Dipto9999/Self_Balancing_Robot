@@ -45,7 +45,7 @@ void updatePID() {
       }
 
       if (paramType == "k") k = newValue;
-      else if (paramType == "set") setpointAngle = newValue;
+      else if (paramType == "set") SETPOINT_0 = newValue;
       else if (paramType == "Kp") Kp = newValue;
       else if (paramType == "Ki") Ki = newValue;
       else if (paramType == "Kd") Kd = newValue;

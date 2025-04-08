@@ -60,7 +60,7 @@ void drive(float u_t, float errorAngle) {
 
     if (redAlert) {
         startTime = currTime; // Reset Start Time
-        setpointAngle = SETPOINT_0 + ANGLE_TILT;
+        setpointAngle = SETPOINT_0 + 1.5 * ANGLE_TILT;
         bleDirection = REVERSE;
     }
 
@@ -82,7 +82,7 @@ void drive(float u_t, float errorAngle) {
                 if (u_t > 0) moveForward(currDutyCycle);
                 else moveReverse(currDutyCycle);
             } else {
-                turnLeft(currDutyCycle, 0.5);
+                turnLeft(currDutyCycle, 0.6);
             }
         break;
         case RIGHT:

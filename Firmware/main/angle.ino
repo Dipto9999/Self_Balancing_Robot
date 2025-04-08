@@ -30,10 +30,6 @@ void setupIMU() {
     while (1);
   }
 
-  // Serial.println("IMU Initialized!");
-  // Serial.println("Reading Raw Data from Gyroscope and Accelerometer...");
-  // Serial.println("Gyroscope (rad/s) | Accelerometer (g)");
-
   k = 0.95;
   while (az == 0) {
     if (IMU.accelerationAvailable()) {

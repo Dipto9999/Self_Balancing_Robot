@@ -117,5 +117,5 @@ void rxBLE(BLEDevice central, BLECharacteristic characteristic) {
   } else {
     authenticateBLE(); // Authenticate Device
   }
-  return; // Exit Function
+  return;
 }
