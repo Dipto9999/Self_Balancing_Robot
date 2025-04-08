@@ -13,15 +13,15 @@ typedef struct
 	uint16_t IC_Value2;
 	uint32_t timeDifference;
 
-	uint8_t countAtMaxDistance;
+	uint8_t countAtMinDistance;
 
 	feature_id ID;
 
 	GPIO_TypeDef* icGPIOPort;
-	uint8_t icGPIOPin;
+	uint16_t icGPIOPin;
 
 	GPIO_TypeDef* statusGPIOPort;
-	uint8_t statusGPIOPin;
+	uint16_t statusGPIOPin;
 } distancesensor;
 
 

@@ -34,8 +34,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_tim_ex.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart_ex.h \
- ../Core/Inc/distancesensor.h ../Core/Inc/main.h ../Core/Inc/speaker.h \
- ../Core/Inc/speaker.h ../Core/Inc/colorsensor.h ../Core/Inc/rfid.h
+ ../Core/Inc/distancesensor.h ../Core/Inc/main.h ../Core/Inc/speaker.h
 ../Core/Inc/main.h:
 ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal.h:
 ../Core/Inc/stm32g0xx_hal_conf.h:
@@ -75,6 +74,3 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/distancesensor.h:
 ../Core/Inc/main.h:
 ../Core/Inc/speaker.h:
-../Core/Inc/speaker.h:
-../Core/Inc/colorsensor.h:
-../Core/Inc/rfid.h:

@@ -69,6 +69,8 @@ void Error_Handler(void);
 #define SPI1_CS_GPIO_Port GPIOA
 #define SPI1_RST_Pin GPIO_PIN_0
 #define SPI1_RST_GPIO_Port GPIOB
+#define COLOR_SENSOR_STATUS_Pin GPIO_PIN_11
+#define COLOR_SENSOR_STATUS_GPIO_Port GPIOA
 #define RFID_STATUS_Pin GPIO_PIN_12
 #define RFID_STATUS_GPIO_Port GPIOA
 #define DISTANCE_SENSOR_FRONT_STATUS_Pin GPIO_PIN_15
@@ -86,7 +88,6 @@ typedef enum
 	DISTANCE_SENSOR_FRONT_ID,
 	DISTANCE_SENSOR_BACK_ID,
 	COLOR_SENSOR_ID,
-	RFID_ID
 
 } feature_id;
 /* USER CODE END Private defines */

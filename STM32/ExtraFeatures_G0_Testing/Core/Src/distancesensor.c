@@ -4,23 +4,14 @@
 #define MAX_DISTANCE 813
 #define MIN_DISTANCE 10
 
-extern speaker Speaker;
+//extern speaker Speaker;
 
-void DistanceSensor_Init(distancesensor* sensor, TIM_HandleTypeDef* timer, feature_id ID, GPIO_TypeDef* icGPIOPort, uint8_t icGPIOPin, GPIO_TypeDef* statusGPIOPort, uint8_t statusGPIOPin)
+void DistanceSensor_Init(distancesensor* sensor, TIM_HandleTypeDef* timer)
 {
 	sensor->timer = timer;
 
 	sensor->timeDifference = 0;
 	sensor->countAtMaxDistance = 0;
-
-	sensor->ID = ID;
-
-	sensor->icGPIOPort = icGPIOPort;
-	sensor->icGPIOPin = icGPIOPin;
-
-	sensor->statusGPIOPort = statusGPIOPort;
-	sensor->statusGPIOPin = statusGPIOPin;
-
 
 }
 
@@ -74,9 +65,9 @@ void DistanceSensor_Handle(distancesensor* sensor)
 	float distance = DistanceSensor_GetDistance(sensor);
 	if (sensor->countAtMaxDistance > 5)
 	{
-		HAL_GPIO_WritePin(sensor->statusGPIOPort, sensor->statusGPIOPin, GPIO_PIN_SET);
+		//HAL_GPIO_WritePin(sensor->statusGPIOPort, sensor->statusGPIOPin, GPIO_PIN_SET);
 
-		if (!Speaker.isActive) Speaker_Start(&Speaker, sensor->ID);
+		//if (!Speaker.isActive) Speaker_Start(&Speaker, sensor->ID);
 	}
 	else if (distance < MIN_DISTANCE)
 	{
@@ -85,9 +76,9 @@ void DistanceSensor_Handle(distancesensor* sensor)
 	else
 	{
 		sensor->countAtMaxDistance = 0;
-		HAL_GPIO_WritePin(sensor->statusGPIOPort, sensor->statusGPIOPin, GPIO_PIN_RESET);
+		//HAL_GPIO_WritePin(sensor->statusGPIOPort, sensor->statusGPIOPin, GPIO_PIN_RESET);
 
-		if (Speaker.isActive) Speaker_Stop(&Speaker, sensor->ID);
+		//if (Speaker.isActive) Speaker_Stop(&Speaker, sensor->ID);
 
 	}
 }

@@ -25,7 +25,7 @@ typedef struct
 } distancesensor;
 
 
-void DistanceSensor_Init(distancesensor* sensor, TIM_HandleTypeDef* timer, feature_id ID, GPIO_TypeDef* icGPIOPort, uint8_t icGPIOPin, GPIO_TypeDef* statusGPIOPort, uint8_t statusGPIOPin);
+void DistanceSensor_Init(distancesensor* sensor, TIM_HandleTypeDef* timer);
 void DistanceSensor_Start(distancesensor* sensor);
 void DistanceSensor_Stop(distancesensor* sensor);
 void DistanceSensor_InputCaptureInterrupt(distancesensor* sensor);

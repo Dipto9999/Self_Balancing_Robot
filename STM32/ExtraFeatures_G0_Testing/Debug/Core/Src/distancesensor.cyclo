@@ -1,6 +1,6 @@
 ../Core/Src/distancesensor.c:9:6:DistanceSensor_Init	1
-../Core/Src/distancesensor.c:27:6:DistanceSensor_Start	1
-../Core/Src/distancesensor.c:33:6:DistanceSensor_Stop	1
-../Core/Src/distancesensor.c:39:6:DistanceSensor_InputCaptureInterrupt	3
-../Core/Src/distancesensor.c:66:7:DistanceSensor_GetDistance	1
-../Core/Src/distancesensor.c:72:6:DistanceSensor_Handle	5
+../Core/Src/distancesensor.c:18:6:DistanceSensor_Start	1
+../Core/Src/distancesensor.c:24:6:DistanceSensor_Stop	1
+../Core/Src/distancesensor.c:30:6:DistanceSensor_InputCaptureInterrupt	3
+../Core/Src/distancesensor.c:57:7:DistanceSensor_GetDistance	1
+../Core/Src/distancesensor.c:63:6:DistanceSensor_Handle	3

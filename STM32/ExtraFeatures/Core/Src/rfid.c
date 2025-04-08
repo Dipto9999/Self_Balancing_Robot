@@ -1,5 +1,7 @@
 #include "rfid.h"
 
+#include "speaker.h"
+
 #define SERIALNUM_1_IDLE 32
 
 #define SERIALNUM_0_CORRECT_CARD 170
@@ -20,6 +22,8 @@ void RFID_Init(rfid* sensor) {
     sensor->botEnabled = false;
     sensor->initialSuccessfulCardTap = true;
     sensor->initialFailedCardTap = true;
+
+    HAL_GPIO_WritePin(RFID_STATUS_GPIO_Port, RFID_STATUS_Pin, GPIO_PIN_SET);
 }
 
 rfid_card_status RFID_ValidateCard(rfid* sensor)
@@ -74,7 +78,6 @@ void RFID_SecurityLogic(rfid* sensor)
 	    		sensor->initialSuccessfulCardTap = false;
 	    		sensor->initialFailedCardTap = true;
 	    		sensor->botEnabled = !sensor->botEnabled;
-
 	    		HAL_GPIO_WritePin(RFID_STATUS_GPIO_Port, RFID_STATUS_Pin, (GPIO_PinState) !sensor->botEnabled);
 	    	}
 	        break;
