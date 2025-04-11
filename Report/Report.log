@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.1.31)  11 APR 2025 01:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.1.31)  11 APR 2025 10:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -185,11 +185,74 @@ Package: array 2023/10/16 v2.5g Tabular extension package (FMi)
 \TX@delta=\dimen161
 \TX@cols=\count276
 \TX@ftn=\toks20
+) (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
+Package: amsmath 2023/05/13 v2.17o AMS math features
+\@mathmargin=\skip53
+
+For additional information on amsmath, use the `?' option.
+(C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks21
+\ex@=\dimen162
+)) (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen163
+) (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count277
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count278
+\leftroot@=\count279
+LaTeX Info: Redefining \overline on input line 399.
+LaTeX Info: Redefining \colon on input line 410.
+\classnum@=\count280
+\DOTSCASE@=\count281
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box53
+\strutbox@=\box54
+LaTeX Info: Redefining \big on input line 722.
+LaTeX Info: Redefining \Big on input line 723.
+LaTeX Info: Redefining \bigg on input line 724.
+LaTeX Info: Redefining \Bigg on input line 725.
+\big@size=\dimen164
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count282
+LaTeX Info: Redefining \bmod on input line 905.
+LaTeX Info: Redefining \pmod on input line 910.
+LaTeX Info: Redefining \smash on input line 940.
+LaTeX Info: Redefining \relbar on input line 970.
+LaTeX Info: Redefining \Relbar on input line 971.
+\c@MaxMatrixCols=\count283
+\dotsspace@=\muskip17
+\c@parentequation=\count284
+\dspbrk@lvl=\count285
+\tag@help=\toks22
+\row@=\count286
+\column@=\count287
+\maxfields@=\count288
+\andhelp@=\toks23
+\eqnshift@=\dimen165
+\alignsep@=\dimen166
+\tagshift@=\dimen167
+\tagwidth@=\dimen168
+\totwidth@=\dimen169
+\lineht@=\dimen170
+\@envbody=\toks24
+\multlinegap=\skip54
+\multlinetaggap=\skip55
+\mathdisplay@stack=\toks25
+LaTeX Info: Redefining \[ on input line 2953.
+LaTeX Info: Redefining \] on input line 2954.
 ) (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amssymb.sty
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
  (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amsfonts.sty
 Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
-\@emptytoks=\toks21
 \symAMSa=\mathgroup4
 \symAMSb=\mathgroup5
 LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
@@ -197,29 +260,29 @@ LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 )) (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count277
-\float@exts=\toks22
-\float@box=\box53
-\@float@everytoks=\toks23
-\@floatcapt=\box54
+\c@float@type=\count289
+\float@exts=\toks26
+\float@box=\box55
+\@float@everytoks=\toks27
+\@floatcapt=\box56
 ) (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.sty
-\lst@mode=\count278
-\lst@gtempboxa=\box55
-\lst@token=\toks24
-\lst@length=\count279
-\lst@currlwidth=\dimen162
-\lst@column=\count280
-\lst@pos=\count281
-\lst@lostspace=\dimen163
-\lst@width=\dimen164
-\lst@newlines=\count282
-\lst@lineno=\count283
-\lst@maxwidth=\dimen165
+\lst@mode=\count290
+\lst@gtempboxa=\box57
+\lst@token=\toks28
+\lst@length=\count291
+\lst@currlwidth=\dimen171
+\lst@column=\count292
+\lst@pos=\count293
+\lst@lostspace=\dimen172
+\lst@width=\dimen173
+\lst@newlines=\count294
+\lst@lineno=\count295
+\lst@maxwidth=\dimen174
  (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
-\c@lstnumber=\count284
-\lst@skipnumbers=\count285
-\lst@framebox=\box56
+\c@lstnumber=\count296
+\lst@skipnumbers=\count297
+\lst@framebox=\box58
 ) (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.cfg
 File: listings.cfg 2023/02/27 1.9 listings configuration
 ))
@@ -240,31 +303,276 @@ Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1370.
 Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1371.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1372.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1373.
-) (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
+) (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\biblatex.sty
+Package: biblatex 2023/03/05 v3.19 programmable bibliographies (PK/MW)
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/logreq\logreq.sty
+Package: logreq 2010/08/04 v1.0 xml request logger
+\lrq@indent=\count298
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/logreq\logreq.def
+File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
+)) (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/base\ifthen.sty
+Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
+)
+\c@tabx@nest=\count299
+\c@listtotal=\count300
+\c@listcount=\count301
+\c@liststart=\count302
+\c@liststop=\count303
+\c@citecount=\count304
+\c@citetotal=\count305
+\c@multicitecount=\count306
+\c@multicitetotal=\count307
+\c@instcount=\count308
+\c@maxnames=\count309
+\c@minnames=\count310
+\c@maxitems=\count311
+\c@minitems=\count312
+\c@citecounter=\count313
+\c@maxcitecounter=\count314
+\c@savedcitecounter=\count315
+\c@uniquelist=\count316
+\c@uniquename=\count317
+\c@refsection=\count318
+\c@refsegment=\count319
+\c@maxextratitle=\count320
+\c@maxextratitleyear=\count321
+\c@maxextraname=\count322
+\c@maxextradate=\count323
+\c@maxextraalpha=\count324
+\c@abbrvpenalty=\count325
+\c@highnamepenalty=\count326
+\c@lownamepenalty=\count327
+\c@maxparens=\count328
+\c@parenlevel=\count329
+\blx@tempcnta=\count330
+\blx@tempcntb=\count331
+\blx@tempcntc=\count332
+\c@blx@maxsection=\count333
+\blx@maxsegment@0=\count334
+\blx@notetype=\count335
+\blx@parenlevel@text=\count336
+\blx@parenlevel@foot=\count337
+\blx@sectionciteorder@0=\count338
+\blx@sectionciteorderinternal@0=\count339
+\blx@entrysetcounter=\count340
+\blx@biblioinstance=\count341
+\labelnumberwidth=\skip56
+\labelalphawidth=\skip57
+\biblabelsep=\skip58
+\bibitemsep=\skip59
+\bibnamesep=\skip60
+\bibinitsep=\skip61
+\bibparsep=\skip62
+\bibhang=\skip63
+\blx@bcfin=\read2
+\blx@bcfout=\write3
+\blx@langwohyphens=\language79
+\c@mincomprange=\count342
+\c@maxcomprange=\count343
+\c@mincompwidth=\count344
+Package biblatex Info: Trying to load biblatex default data model...
+Package biblatex Info: ... file 'blx-dm.def' found.
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-dm.def
+File: blx-dm.def 2023/03/05 v3.19 biblatex localization (PK/MW)
+)
+Package biblatex Info: Trying to load biblatex style data model...
+Package biblatex Info: ... file 'ieee.dbx' not found.
+Package biblatex Info: Trying to load biblatex custom data model...
+Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
+\c@afterword=\count345
+\c@savedafterword=\count346
+\c@annotator=\count347
+\c@savedannotator=\count348
+\c@author=\count349
+\c@savedauthor=\count350
+\c@bookauthor=\count351
+\c@savedbookauthor=\count352
+\c@commentator=\count353
+\c@savedcommentator=\count354
+\c@editor=\count355
+\c@savededitor=\count356
+\c@editora=\count357
+\c@savededitora=\count358
+\c@editorb=\count359
+\c@savededitorb=\count360
+\c@editorc=\count361
+\c@savededitorc=\count362
+\c@foreword=\count363
+\c@savedforeword=\count364
+\c@holder=\count365
+\c@savedholder=\count366
+\c@introduction=\count367
+\c@savedintroduction=\count368
+\c@namea=\count369
+\c@savednamea=\count370
+\c@nameb=\count371
+\c@savednameb=\count372
+\c@namec=\count373
+\c@savednamec=\count374
+\c@translator=\count375
+\c@savedtranslator=\count376
+\c@shortauthor=\count377
+\c@savedshortauthor=\count378
+\c@shorteditor=\count379
+\c@savedshorteditor=\count380
+\c@labelname=\count381
+\c@savedlabelname=\count382
+\c@institution=\count383
+\c@savedinstitution=\count384
+\c@lista=\count385
+\c@savedlista=\count386
+\c@listb=\count387
+\c@savedlistb=\count388
+\c@listc=\count389
+\c@savedlistc=\count390
+\c@listd=\count391
+\c@savedlistd=\count392
+\c@liste=\count393
+\c@savedliste=\count394
+\c@listf=\count395
+\c@savedlistf=\count396
+\c@location=\count397
+\c@savedlocation=\count398
+\c@organization=\count399
+\c@savedorganization=\count400
+\c@origlocation=\count401
+\c@savedoriglocation=\count402
+\c@origpublisher=\count403
+\c@savedorigpublisher=\count404
+\c@publisher=\count405
+\c@savedpublisher=\count406
+\c@language=\count407
+\c@savedlanguage=\count408
+\c@origlanguage=\count409
+\c@savedoriglanguage=\count410
+\c@pageref=\count411
+\c@savedpageref=\count412
+\shorthandwidth=\skip64
+\shortjournalwidth=\skip65
+\shortserieswidth=\skip66
+\shorttitlewidth=\skip67
+\shortauthorwidth=\skip68
+\shorteditorwidth=\skip69
+\locallabelnumberwidth=\skip70
+\locallabelalphawidth=\skip71
+\localshorthandwidth=\skip72
+\localshortjournalwidth=\skip73
+\localshortserieswidth=\skip74
+\localshorttitlewidth=\skip75
+\localshortauthorwidth=\skip76
+\localshorteditorwidth=\skip77
+Package biblatex Info: Trying to load compatibility code...
+Package biblatex Info: ... file 'blx-compat.def' found.
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-compat.def
+File: blx-compat.def 2023/03/05 v3.19 biblatex compatibility (PK/MW)
+)
+Package biblatex Info: Trying to load generic definitions...
+Package biblatex Info: ... file 'biblatex.def' found.
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\biblatex.def
+File: biblatex.def 2023/03/05 v3.19 biblatex compatibility (PK/MW)
+\c@textcitecount=\count413
+\c@textcitetotal=\count414
+\c@textcitemaxnames=\count415
+\c@biburlbigbreakpenalty=\count416
+\c@biburlbreakpenalty=\count417
+\c@biburlnumpenalty=\count418
+\c@biburlucpenalty=\count419
+\c@biburllcpenalty=\count420
+\biburlbigskip=\muskip18
+\biburlnumskip=\muskip19
+\biburlucskip=\muskip20
+\biburllcskip=\muskip21
+\c@smartand=\count421
+)
+Package biblatex Info: Trying to load bibliography style 'ieee'...
+Package biblatex Info: ... file 'ieee.bbx' found.
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/biblatex-ieee\ieee.bbx
+File: ieee.bbx 2025-03-14 v1.4e biblatex bibliography style
+Package biblatex Info: Trying to load bibliography style 'numeric-comp'...
+Package biblatex Info: ... file 'numeric-comp.bbx' found.
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/bbx\numeric-comp.bbx
+File: numeric-comp.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
+Package biblatex Info: Trying to load bibliography style 'numeric'...
+Package biblatex Info: ... file 'numeric.bbx' found.
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/bbx\numeric.bbx
+File: numeric.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
+Package biblatex Info: Trying to load bibliography style 'standard'...
+Package biblatex Info: ... file 'standard.bbx' found.
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/bbx\standard.bbx
+File: standard.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
+\c@bbx:relatedcount=\count422
+\c@bbx:relatedtotal=\count423
+)))
+
+Package biblatex Warning: Macro 'volume+number' undefined.
+(biblatex)                Using \newbibmacro.
+
+)
+Package biblatex Info: Trying to load citation style 'ieee'...
+Package biblatex Info: ... file 'ieee.cbx' found.
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/biblatex-ieee\ieee.cbx
+File: ieee.cbx 2025-03-14 v1.4e biblatex citation style
+Package biblatex Info: Trying to load citation style 'numeric-verb'...
+Package biblatex Info: ... file 'numeric-verb.cbx' found.
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/cbx\numeric-verb.cbx
+File: numeric-verb.cbx 2023/03/05 v3.19 biblatex citation style (PK/MW)
+Package biblatex Info: Redefining '\cite'.
+Package biblatex Info: Redefining '\parencite'.
+Package biblatex Info: Redefining '\footcite'.
+Package biblatex Info: Redefining '\footcitetext'.
+Package biblatex Info: Redefining '\smartcite'.
+Package biblatex Info: Redefining '\textcite'.
+Package biblatex Info: Redefining '\supercite'.
+Package biblatex Info: Redefining '\parencites'.
+Package biblatex Info: Redefining '\smartcites'.
+Package biblatex Info: Redefining '\textcites'.
+))
+Package biblatex Info: Trying to load configuration file...
+Package biblatex Info: ... file 'biblatex.cfg' found.
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\biblatex.cfg
+File: biblatex.cfg 
+)
+Package biblatex Info: Input encoding 'utf8' detected.
+Package biblatex Info: Document encoding is UTF8 ....
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\expl3.sty
+Package: expl3 2024-01-22 L3 programming layer (loader) 
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count286
-\l__pdf_internal_box=\box57
-) (Report.aux)
+\l__color_backend_stack_int=\count424
+\l__pdf_internal_box=\box59
+))
+Package biblatex Info: ... and expl3
+(biblatex)             2024-01-22 L3 programming layer (loader) 
+(biblatex)             is new enough (at least 2020/04/06),
+(biblatex)             setting 'casechanger=expl3'.
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-case-expl3.sty (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/xparse\xparse.sty
+Package: xparse 2023-10-10 L3 Experimental document command parser
+)
+Package: blx-case-expl3 2023/03/05 v3.19 expl3 case changing code for biblatex
+))
+\@quotelevel=\count425
+\@quotereset=\count426
+ (Report.aux)
 \openout1 = `Report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 46.
+LaTeX Font Info:    ... okay on input line 46.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -302,34 +610,49 @@ LaTeX Font Info:    ... okay on input line 41.
 
 (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count287
-\scratchdimen=\dimen166
-\scratchbox=\box58
-\nofMPsegments=\count288
-\nofMParguments=\count289
-\everyMPshowfont=\toks25
-\MPscratchCnt=\count290
-\MPscratchDim=\dimen167
-\MPnumerator=\count291
-\makeMPintoPDFobject=\count292
-\everyMPtoPDFconversion=\toks26
+\scratchcounter=\count427
+\scratchdimen=\dimen175
+\scratchbox=\box60
+\nofMPsegments=\count428
+\nofMParguments=\count429
+\everyMPshowfont=\toks29
+\MPscratchCnt=\count430
+\MPscratchDim=\dimen176
+\MPnumerator=\count431
+\makeMPintoPDFobject=\count432
+\everyMPtoPDFconversion=\toks30
 ) (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package hyperref Info: Link coloring OFF on input line 41.
+Package hyperref Info: Link coloring OFF on input line 46.
  (Report.out) (Report.out)
-\@outlinefile=\write3
-\openout3 = `Report.out'.
+\@outlinefile=\write4
+\openout4 = `Report.out'.
 
-\c@lstlisting=\count293
-LaTeX Font Info:    Trying to load font information for U+msa on input line 45.
+\c@lstlisting=\count433
+Package biblatex Info: Trying to load language 'english'...
+Package biblatex Info: ... file 'english.lbx' found.
+ (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/lbx\english.lbx
+File: english.lbx 2023/03/05 v3.19 biblatex localization (PK/MW)
+)
+Package biblatex Info: Input encoding 'utf8' detected.
+Package biblatex Info: Automatic encoding selection.
+(biblatex)             Assuming data encoding 'utf8'.
+\openout3 = `Report.bcf'.
+
+Package biblatex Info: Trying to load bibliographic data...
+Package biblatex Info: ... file 'Report.bbl' found.
+ (Report.bbl)
+Package biblatex Info: Reference section=0 on input line 46.
+Package biblatex Info: Reference segment=0 on input line 46.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 50.
  (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 45.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 50.
  (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
@@ -339,137 +662,89 @@ LaTeX Warning: No \author given.
 [1
 
 {C:/Users/munta/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] (Report.toc)
-\tf@toc=\write4
-\openout4 = `Report.toc'.
+\tf@toc=\write5
+\openout5 = `Report.toc'.
 
- [1]
-<Figures/Functional_Diagram.png, id=238, 1245.65375pt x 864.22874pt>
+ [1] [2]
+<Figures/Functional_Diagram.png, id=272, 1245.65375pt x 864.22874pt>
 File: Figures/Functional_Diagram.png Graphic file (type png)
 <use Figures/Functional_Diagram.png>
-Package pdftex.def Info: Figures/Functional_Diagram.png  used on input line 109.
+Package pdftex.def Info: Figures/Functional_Diagram.png  used on input line 114.
 (pdftex.def)             Requested size: 498.66258pt x 345.97548pt.
- [2
+ [3
 pdfTeX warning (ext4): destination with the same identifier (name{table.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.113 
+l.118 
       ]
-Underfull \hbox (badness 10000) in paragraph at lines 115--118
+Underfull \hbox (badness 10000) in paragraph at lines 120--123
 
  []
 
-<Figures/Architecture_Diagram.png, id=247, 635.37375pt x 703.62875pt>
+<Figures/Architecture_Diagram.png, id=281, 635.37375pt x 703.62875pt>
 File: Figures/Architecture_Diagram.png Graphic file (type png)
 <use Figures/Architecture_Diagram.png>
-Package pdftex.def Info: Figures/Architecture_Diagram.png  used on input line 124.
+Package pdftex.def Info: Figures/Architecture_Diagram.png  used on input line 129.
 (pdftex.def)             Requested size: 349.06227pt x 386.56755pt.
-[3
+[4
 pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.128 
+l.133 
        <./Figures/Functional_Diagram.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 146--147
-
- []
-
-[4
+<Figures/r3step.png, id=288, 1171.37625pt x 878.28125pt>
+File: Figures/r3step.png Graphic file (type png)
+<use Figures/r3step.png>
+Package pdftex.def Info: Figures/r3step.png  used on input line 155.
+(pdftex.def)             Requested size: 349.06227pt x 261.7174pt.
+ [5
 pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.148 W
-       rite here a small section on how the robot mass was calculated, torqu... <./Figures/Architecture_Diagram.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 150--151
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 161--162
-
- []
-
-<Figures/arduino.jpg, id=260, 264.99pt x 216.81pt>
-File: Figures/arduino.jpg Graphic file (type jpg)
-<use Figures/arduino.jpg>
-Package pdftex.def Info: Figures/arduino.jpg  used on input line 169.
-(pdftex.def)             Requested size: 299.20059pt x 244.8171pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 175--180
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 181--183
-
- []
-
-<Figures/imu.png, id=261, 652.4375pt x 367.3725pt>
-File: Figures/imu.png Graphic file (type png)
-<use Figures/imu.png>
-Package pdftex.def Info: Figures/imu.png  used on input line 199.
-(pdftex.def)             Requested size: 299.20059pt x 168.47766pt.
-[5
+l.158 A
+       s shown in the figure, increasing the height of the third layer resul... <./Figures/Architecture_Diagram.png>]
+<Figures/3rdlayer.png, id=295, 1044.90375pt x 425.59pt>
+File: Figures/3rdlayer.png Graphic file (type png)
+<use Figures/3rdlayer.png>
+Package pdftex.def Info: Figures/3rdlayer.png  used on input line 163.
+(pdftex.def)             Requested size: 498.66258pt x 203.10545pt.
+<Figures/standDis.png, id=296, 611.28375pt x 445.665pt>
+File: Figures/standDis.png Graphic file (type png)
+<use Figures/standDis.png>
+Package pdftex.def Info: Figures/standDis.png  used on input line 184.
+(pdftex.def)             Requested size: 249.33128pt x 181.77858pt.
+ [6
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.203 
-       <./Figures/arduino.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 211--213
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 227--229
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 230--231
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 263--265
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 266--268
-
- []
-
-<Figures/Control_Loop_Diagram.png, id=270, 663.47874pt x 367.3725pt>
-File: Figures/Control_Loop_Diagram.png Graphic file (type png)
-<use Figures/Control_Loop_Diagram.png>
-Package pdftex.def Info: Figures/Control_Loop_Diagram.png  used on input line 274.
-(pdftex.def)             Requested size: 373.99693pt x 207.08374pt.
-[6
+l.186 \end{figure}
+                  
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.277 \end{figure}
-                   <./Figures/imu.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 280--282
+l.186 \end{figure}
+                   <./Figures/r3step.png> <./Figures/3rdlayer.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 200--202
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 290--292
+Underfull \hbox (badness 10000) in paragraph at lines 203--207
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 293--295
+Underfull \hbox (badness 10000) in paragraph at lines 208--212
 
  []
 
+<Figures/plantModelSimplification.png, id=305, 1611.01875pt x 508.90125pt>
+File: Figures/plantModelSimplification.png Graphic file (type png)
+<use Figures/plantModelSimplification.png>
+Package pdftex.def Info: Figures/plantModelSimplification.png  used on input line 222.
+(pdftex.def)             Requested size: 498.66258pt x 157.51703pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 300--302
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 307--309
+Underfull \hbox (badness 10000) in paragraph at lines 213--224
 
  []
 
@@ -477,223 +752,387 @@ Underfull \hbox (badness 10000) in paragraph at lines 307--309
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.313     \item I
-                 f error angle $>$ allowable threshold (i.e. 0.8 degrees): b... <./Figures/Control_Loop_Diagram.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 324--327
+l.225 
+       <./Figures/standDis.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 226--228
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 328--330
+Underfull \hbox (badness 10000) in paragraph at lines 231--235
 
  []
 
-<Figures/Unauthorized_Connection.jpg, id=295, 793.46437pt x 285.31593pt>
-File: Figures/Unauthorized_Connection.jpg Graphic file (type jpg)
-<use Figures/Unauthorized_Connection.jpg>
-Package pdftex.def Info: Figures/Unauthorized_Connection.jpg  used on input line 334.
-(pdftex.def)             Requested size: 249.33128pt x 89.65295pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 340--341
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 350--353
-
- []
-
-<Figures/Robot_Driver_App.jpg, id=297, 1115.16624pt x 2055.68pt>
-File: Figures/Robot_Driver_App.jpg Graphic file (type jpg)
-<use Figures/Robot_Driver_App.jpg>
-Package pdftex.def Info: Figures/Robot_Driver_App.jpg  used on input line 360.
-(pdftex.def)             Requested size: 124.66563pt x 229.79546pt.
 [8
 pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.364 
-       <./Figures/Unauthorized_Connection.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 366--368
+l.265 \end{align*}
+                   <./Figures/plantModelSimplification.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 278--280
 
  []
 
-<Figures/stm32.jpg, id=305, 642.4pt x 642.4pt>
-File: Figures/stm32.jpg Graphic file (type jpg)
-<use Figures/stm32.jpg>
-Package pdftex.def Info: Figures/stm32.jpg  used on input line 379.
-(pdftex.def)             Requested size: 249.33128pt x 249.32932pt.
-[9
+
+Underfull \hbox (badness 10000) in paragraph at lines 292--297
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 322--332
+
+ []
+
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 333--336
+
+ []
+
+<Figures/simModel.png, id=334, 509.905pt x 141.52875pt>
+File: Figures/simModel.png Graphic file (type png)
+<use Figures/simModel.png>
+Package pdftex.def Info: Figures/simModel.png  used on input line 342.
+(pdftex.def)             Requested size: 498.66258pt x 138.41432pt.
+<Figures/step25.png, id=335, 894.34125pt x 397.485pt>
+File: Figures/step25.png Graphic file (type png)
+<use Figures/step25.png>
+Package pdftex.def Info: Figures/step25.png  used on input line 349.
+(pdftex.def)             Requested size: 498.66258pt x 221.63179pt.
+<Figures/step50.png, id=336, 895.345pt x 395.4775pt>
+File: Figures/step50.png Graphic file (type png)
+<use Figures/step50.png>
+Package pdftex.def Info: Figures/step50.png  used on input line 353.
+(pdftex.def)             Requested size: 498.66258pt x 220.26501pt.
+[10
 pdfTeX warning (ext4): destination with the same identifier (name{figure.7}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.385 
-      
+l.356 W
+       e can see that for both cases the system is stable, with different de...
 pdfTeX warning (ext4): destination with the same identifier (name{figure.8}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.385 
-       <./Figures/Robot_Driver_App.jpg> <./Figures/stm32.jpg>]
-<Figures/stm32_pinout_in.png, id=318, 384.6872pt x 394.47375pt>
-File: Figures/stm32_pinout_in.png Graphic file (type png)
-<use Figures/stm32_pinout_in.png>
-Package pdftex.def Info: Figures/stm32_pinout_in.png  used on input line 395.
-(pdftex.def)             Requested size: 264.98834pt x 271.72972pt.
+l.356 W
+       e can see that for both cases the system is stable, with different de... <./Figures/simModel.png> <./Figures/step25.png>]
+<Figures/arduino.jpg, id=345, 264.99pt x 216.81pt>
+File: Figures/arduino.jpg Graphic file (type jpg)
+<use Figures/arduino.jpg>
+Package pdftex.def Info: Figures/arduino.jpg  used on input line 363.
+(pdftex.def)             Requested size: 299.20059pt x 244.8171pt.
 
-Overfull \hbox (40.5917pt too wide) in paragraph at lines 395--396
- [][] 
+Underfull \hbox (badness 10000) in paragraph at lines 369--374
+
  []
 
-<Figures/stm32_pinout_out.png, id=319, 429.85594pt x 381.67593pt>
-File: Figures/stm32_pinout_out.png Graphic file (type png)
-<use Figures/stm32_pinout_out.png>
-Package pdftex.def Info: Figures/stm32_pinout_out.png  used on input line 401.
-(pdftex.def)             Requested size: 239.35995pt x 212.53151pt.
-<Figures/distancesensor.png, id=320, 602.25pt x 359.84438pt>
-File: Figures/distancesensor.png Graphic file (type png)
-<use Figures/distancesensor.png>
-Package pdftex.def Info: Figures/distancesensor.png  used on input line 416.
-(pdftex.def)             Requested size: 299.20059pt x 178.77966pt.
-[10
+
+Underfull \hbox (badness 10000) in paragraph at lines 375--377
+
+ []
+
+[11
 pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.420 
-      
+l.380 \subsubsection
+                    {Arduino IDE}
 pdfTeX warning (ext4): destination with the same identifier (name{figure.10}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.420 
-       <./Figures/stm32_pinout_in.png> <./Figures/stm32_pinout_out.png>]
-<Figures/colorsensor.jpg, id=331, 446.1468pt x 361.35pt>
-File: Figures/colorsensor.jpg Graphic file (type jpg)
-<use Figures/colorsensor.jpg>
-Package pdftex.def Info: Figures/colorsensor.jpg  used on input line 439.
-(pdftex.def)             Requested size: 299.20059pt x 242.34033pt.
- [11
+l.380 \subsubsection
+                    {Arduino IDE} <./Figures/step50.png> <./Figures/arduino.jpg>]
+<Figures/imu.png, id=353, 652.4375pt x 367.3725pt>
+File: Figures/imu.png Graphic file (type png)
+<use Figures/imu.png>
+Package pdftex.def Info: Figures/imu.png  used on input line 393.
+(pdftex.def)             Requested size: 299.20059pt x 168.47766pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 405--407
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 421--423
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 424--425
+
+ []
+
+[12
 pdfTeX warning (ext4): destination with the same identifier (name{figure.11}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.445 
-       <./Figures/distancesensor.png>]
-<Figures/rfidsensor.png, id=339, 301.125pt x 301.125pt>
-File: Figures/rfidsensor.png Graphic file (type png)
-<use Figures/rfidsensor.png>
-Package pdftex.def Info: Figures/rfidsensor.png  used on input line 461.
-(pdftex.def)             Requested size: 299.20059pt x 299.2266pt.
- [12
+l.437     \item $
+                 \theta_{g,n}$ is the current gyroscope angle, <./Figures/imu.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 457--459
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 460--462
+
+ []
+
+<Figures/Control_Loop_Diagram.png, id=366, 663.47874pt x 367.3725pt>
+File: Figures/Control_Loop_Diagram.png Graphic file (type png)
+<use Figures/Control_Loop_Diagram.png>
+Package pdftex.def Info: Figures/Control_Loop_Diagram.png  used on input line 468.
+(pdftex.def)             Requested size: 373.99693pt x 207.08374pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 474--476
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 484--486
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 487--489
+
+ []
+
+[13
 pdfTeX warning (ext4): destination with the same identifier (name{figure.12}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.467 
-       <./Figures/colorsensor.jpg>]
-<Figures/speaker.png, id=349, 287.0725pt x 291.0875pt>
-File: Figures/speaker.png Graphic file (type png)
-<use Figures/speaker.png>
-Package pdftex.def Info: Figures/speaker.png  used on input line 478.
-(pdftex.def)             Requested size: 299.20059pt x 303.39453pt.
- [13
+l.491 \subsubsection
+                    {Forward/Backward Movement} <./Figures/Control_Loop_Diagram.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 494--496
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 501--503
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 518--521
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 522--524
+
+ []
+
+<Figures/Unauthorized_Connection.jpg, id=378, 793.46437pt x 285.31593pt>
+File: Figures/Unauthorized_Connection.jpg Graphic file (type jpg)
+<use Figures/Unauthorized_Connection.jpg>
+Package pdftex.def Info: Figures/Unauthorized_Connection.jpg  used on input line 528.
+(pdftex.def)             Requested size: 249.33128pt x 89.65295pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 534--535
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 544--547
+
+ []
+
+[14
 pdfTeX warning (ext4): destination with the same identifier (name{figure.13}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.484 
-       <./Figures/rfidsensor.png>]
-<Figures/PiZero_2.jpg, id=358, 1284.8pt x 1284.8pt>
-File: Figures/PiZero_2.jpg Graphic file (type jpg)
-<use Figures/PiZero_2.jpg>
-Package pdftex.def Info: Figures/PiZero_2.jpg  used on input line 512.
-(pdftex.def)             Requested size: 149.6003pt x 149.58191pt.
- [14
+l.551 
+       <./Figures/Unauthorized_Connection.jpg>]
+<Figures/Robot_Driver_App.jpg, id=385, 1115.16624pt x 2055.68pt>
+File: Figures/Robot_Driver_App.jpg Graphic file (type jpg)
+<use Figures/Robot_Driver_App.jpg>
+Package pdftex.def Info: Figures/Robot_Driver_App.jpg  used on input line 554.
+(pdftex.def)             Requested size: 124.66563pt x 229.79546pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 560--562
+
+ []
+
+<Figures/stm32.jpg, id=387, 642.4pt x 642.4pt>
+File: Figures/stm32.jpg Graphic file (type jpg)
+<use Figures/stm32.jpg>
+Package pdftex.def Info: Figures/stm32.jpg  used on input line 573.
+(pdftex.def)             Requested size: 249.33128pt x 249.32932pt.
+[15
 pdfTeX warning (ext4): destination with the same identifier (name{figure.14}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.516 
-       <./Figures/speaker.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 520--523
+l.577 
+       <./Figures/Robot_Driver_App.jpg>]
+<Figures/stm32_pinout_in.png, id=400, 384.6872pt x 394.47375pt>
+File: Figures/stm32_pinout_in.png Graphic file (type png)
+<use Figures/stm32_pinout_in.png>
+Package pdftex.def Info: Figures/stm32_pinout_in.png  used on input line 589.
+(pdftex.def)             Requested size: 264.98834pt x 271.72972pt.
 
+Overfull \hbox (40.5917pt too wide) in paragraph at lines 589--590
+ [][] 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 524--526
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 527--530
-
- []
-
-<Figures/PiCamera_App.jpg, id=365, 633.11531pt x 529.98pt>
-File: Figures/PiCamera_App.jpg Graphic file (type jpg)
-<use Figures/PiCamera_App.jpg>
-Package pdftex.def Info: Figures/PiCamera_App.jpg  used on input line 534.
-(pdftex.def)             Requested size: 249.33128pt x 208.71306pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 553--556
-
- []
-
-<Figures/S3Bucket_Files.jpg, id=367, 1353.55687pt x 612.03656pt>
-File: Figures/S3Bucket_Files.jpg Graphic file (type jpg)
-<use Figures/S3Bucket_Files.jpg>
-Package pdftex.def Info: Figures/S3Bucket_Files.jpg  used on input line 560.
-(pdftex.def)             Requested size: 498.66258pt x 225.47873pt.
-[15
+<Figures/stm32_pinout_out.png, id=401, 429.85594pt x 381.67593pt>
+File: Figures/stm32_pinout_out.png Graphic file (type png)
+<use Figures/stm32_pinout_out.png>
+Package pdftex.def Info: Figures/stm32_pinout_out.png  used on input line 595.
+(pdftex.def)             Requested size: 239.35995pt x 212.53151pt.
+[16
 pdfTeX warning (ext4): destination with the same identifier (name{figure.15}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.563 \end{figure}
-                  
+l.600 
+       <./Figures/stm32.jpg>]
+<Figures/distancesensor.png, id=408, 602.25pt x 359.84438pt>
+File: Figures/distancesensor.png Graphic file (type png)
+<use Figures/distancesensor.png>
+Package pdftex.def Info: Figures/distancesensor.png  used on input line 610.
+(pdftex.def)             Requested size: 299.20059pt x 178.77966pt.
+ [17
 pdfTeX warning (ext4): destination with the same identifier (name{figure.16}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.563 \end{figure}
-                   <./Figures/PiZero_2.jpg> <./Figures/PiCamera_App.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 573--574
-
- []
-
-[16
+l.617 \
+       
 pdfTeX warning (ext4): destination with the same identifier (name{figure.17}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.590 \subsection
+l.617 \
+       
+pdfTeX warning (ext4): destination with the same identifier (name{figure.18}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.617 \
+        <./Figures/stm32_pinout_in.png> <./Figures/stm32_pinout_out.png> <./Figures/distancesensor.png>]
+<Figures/colorsensor.jpg, id=419, 446.1468pt x 361.35pt>
+File: Figures/colorsensor.jpg Graphic file (type jpg)
+<use Figures/colorsensor.jpg>
+Package pdftex.def Info: Figures/colorsensor.jpg  used on input line 633.
+(pdftex.def)             Requested size: 299.20059pt x 242.34033pt.
+ [18
+pdfTeX warning (ext4): destination with the same identifier (name{figure.19}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.649 
+       <./Figures/colorsensor.jpg>]
+<Figures/rfidsensor.png, id=429, 301.125pt x 301.125pt>
+File: Figures/rfidsensor.png Graphic file (type png)
+<use Figures/rfidsensor.png>
+Package pdftex.def Info: Figures/rfidsensor.png  used on input line 655.
+(pdftex.def)             Requested size: 299.20059pt x 299.2266pt.
+<Figures/speaker.png, id=432, 287.0725pt x 291.0875pt>
+File: Figures/speaker.png Graphic file (type png)
+<use Figures/speaker.png>
+Package pdftex.def Info: Figures/speaker.png  used on input line 672.
+(pdftex.def)             Requested size: 299.20059pt x 303.39453pt.
+ [19
+pdfTeX warning (ext4): destination with the same identifier (name{figure.20}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.678 
+       <./Figures/rfidsensor.png>]
+<Figures/PiZero_2.jpg, id=441, 1284.8pt x 1284.8pt>
+File: Figures/PiZero_2.jpg Graphic file (type jpg)
+<use Figures/PiZero_2.jpg>
+Package pdftex.def Info: Figures/PiZero_2.jpg  used on input line 706.
+(pdftex.def)             Requested size: 149.6003pt x 149.58191pt.
+ [20
+pdfTeX warning (ext4): destination with the same identifier (name{figure.21}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.710 
+       <./Figures/speaker.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 714--717
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 718--720
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 721--724
+
+ []
+
+<Figures/PiCamera_App.jpg, id=448, 633.11531pt x 529.98pt>
+File: Figures/PiCamera_App.jpg Graphic file (type jpg)
+<use Figures/PiCamera_App.jpg>
+Package pdftex.def Info: Figures/PiCamera_App.jpg  used on input line 728.
+(pdftex.def)             Requested size: 249.33128pt x 208.71306pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 747--750
+
+ []
+
+<Figures/S3Bucket_Files.jpg, id=450, 1353.55687pt x 612.03656pt>
+File: Figures/S3Bucket_Files.jpg Graphic file (type jpg)
+<use Figures/S3Bucket_Files.jpg>
+Package pdftex.def Info: Figures/S3Bucket_Files.jpg  used on input line 754.
+(pdftex.def)             Requested size: 498.66258pt x 225.47873pt.
+[21
+pdfTeX warning (ext4): destination with the same identifier (name{figure.22}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.757 \end{figure}
+                  
+pdfTeX warning (ext4): destination with the same identifier (name{figure.23}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.757 \end{figure}
+                   <./Figures/PiZero_2.jpg> <./Figures/PiCamera_App.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 767--768
+
+ []
+
+[22
+pdfTeX warning (ext4): destination with the same identifier (name{figure.24}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.784 \subsection
                  {Appendix: Technical Calculations and Simulations} <./Figures/S3Bucket_Files.jpg>]
-Underfull \hbox (badness 1014) in paragraph at lines 617--617
+Underfull \hbox (badness 1014) in paragraph at lines 811--811
 []\OT1/cmr/m/n/10 high noise vari-ance (es-pe-cially with
  []
 
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 649.
-[17
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 843.
+[23
 pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.662   currAccel 
-                  = (currAccel - 90) + ACCELEROMETER_OFFSET;] [18] [19] [20] [21] [22] [23] [24]
-Overfull \hbox (21.14848pt too wide) in paragraph at lines 1157--1158
+l.856   currAccel 
+                  = (currAccel - 90) + ACCELEROMETER_OFFSET;] [24] [25] [26] [27] [28] [29] [30]
+Overfull \hbox (21.14848pt too wide) in paragraph at lines 1351--1352
 [][][][][][][][][][][][][][][][][][][][][][][][][][]  
  []
 
-[25] [26] [27] (Report.aux)
+[31] [32] [33] (Report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
 Package rerunfilecheck Info: File `Report.out' has not changed.
-(rerunfilecheck)             Checksum: 8AE36B1A09E8681FA75AD95678160C3F;7666.
+(rerunfilecheck)             Checksum: 0FA564CFC28D0650E7DCC2E25D4D2E20;8700.
+Package logreq Info: Writing requests to 'Report.run.xml'.
+\openout1 = `Report.run.xml'.
+
  ) 
 Here is how much of TeX's memory you used:
- 12577 strings out of 474542
- 192220 string characters out of 5744446
- 2135978 words of memory out of 5000000
- 33955 multiletter control sequences out of 15000+600000
+ 20655 strings out of 474542
+ 351374 string characters out of 5744446
+ 2136978 words of memory out of 5000000
+ 41927 multiletter control sequences out of 15000+600000
  567555 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,79p,738b,1975s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\munta\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt8.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on Report.pdf (28 pages, 3514757 bytes).
+ 75i,11n,81p,1217b,1995s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+pdfTeX warning (dest): name{cite.0@suspaper} has been referenced but does not exist, replaced by a fixed one
+
+ <C:\Users\munta\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt8.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb>
+Output written on Report.pdf (34 pages, 3792412 bytes).
 PDF statistics:
- 1266 PDF objects out of 1440 (max. 8388607)
- 719 named destinations out of 1000 (max. 500000)
- 438 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1362 PDF objects out of 1440 (max. 8388607)
+ 744 named destinations out of 1000 (max. 500000)
+ 521 words of extra memory for PDF output out of 10000 (max. 10000000)
 

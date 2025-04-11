@@ -3,10 +3,12 @@
 \usepackage{graphicx} % Required for inserting images
 \usepackage{hyperref}
 \usepackage{tabularx}
+\usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{float}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage[backend=biber,style=ieee,]{biblatex}
 
 \lstset{
   basicstyle=\ttfamily\footnotesize,
@@ -22,6 +24,9 @@
   captionpos=b,
   literate={_}{\_}1  % <-- add this line
 }
+
+\addbibresource{ref.bib}
+
 
 \setlength{\parindent}{0pt}
 
@@ -132,35 +137,224 @@ High level functional diagram/architecture of the overall system.
 Detailed description and schematics for key subsystems \\
 Include electrical, mechanical, structural, or process-related subsystems as appropriate
 
-
-\subsection{Mechanical Design}
-
-\textbf{still unsure of what to write in this section, possibly how the motors/sensors were mounted, materials we used,etc.}
-
 \subsection{Structural Design}
 
-\textbf{Explain why the third layer is higher rather than lower. Explain why no weight was added anywhere else. A part of this section should also include why the sensors and modules were mounted the way they were done}
+\subsubsection{Design Decisions}
+Since the transfer function of the robot was derived under the assumption that
+the center of mass of the pendulum is perfectly centered, the structural design
+follows the principle of evenly distributing mass to ensure that the center of
+mass is as close as possible to the rotor axis.
 
+Another design decision we made was to mount the third layer as high as
+possible. This choice addresses the fact that the plant is a nonlinear and
+inherently unstable system, which can only be effectively controlled within a
+region where it can be approximated as linear. To evaluate the impact of the
+third layer's height on system behavior, we simulated the plant's step response
+at different mounting heights:
+\begin{figure}[H]
+    \centerline{\includegraphics[width=0.7\linewidth]{Figures/r3step.png}}
+    \caption{Step Response of the Plant with Different Height of the Third Layer}
+\end{figure}
+As shown in the figure, increasing the height of the third layer results in a
+step response that more closely resembles that of a linear system, making it
+easier to control.
+
+\begin{figure}[H]
+    \centerline{\includegraphics[width=\linewidth]{Figures/3rdlayer.png}}
+    \caption{Design of the Third Layer}
+\end{figure}
+
+\subsubsection{Third Layer Design}
+On the third layer, we need to mount the Raspberry Pi, color sensor, RFID
+reader, and camera. The four mounting holes on the left side are for securing
+the Raspberry Pi, while the four holes on the right are for the RFID reader.
+These holes are positioned to ensure that both components are centered relative
+to the third layer once mounted.
+
+At the bottom, two mounting holes are used to attach the L-stand for the color
+sensor. Since we only have one color sensor, its placement causes a deviation in
+the center of mass. To compensate for this imbalance, the camera is zip-tied at
+the center, allowing its position to be adjusted to help realign the center of
+mass. Although not shown in the figure, Two distance sensors are also mounted on
+the second layer symmetrically.
+
+\subsubsection{L-stand Design}
+The design of the L-stand is shown below:
+\begin{figure}[H]
+    \centerline{\includegraphics[width=0.5\linewidth]{Figures/standDis.png}}
+    \caption{Design of the L-stand for Mounting the Distance Sensor}
+\end{figure}
+
+The L-stand includes four columns to provide clearance for the distance sensor,
+as there are components located on the back of the PCB. Ribs are added beneath
+each column to address potential issues during 3D printing. Since overhangs can
+lead to poor print quality or failed prints, the ribs provide structural support
+under the columns, eliminating overhangs and making the printing process more
+reliable and efficient.
+
+The L-stand for the color sensor follows the same design principles with
+different dimension, thus is not shown here.
 \subsection{PID Modeling and Simulation}
+\subsubsection{Measuring Robot Parameters}
 
-\textbf{Measuring Robot Parameters} \\
+With the corrected transfer function, we need to find the values of the
+parameters in order to get the transfer function. \\
 
-Write here a small section on how the robot mass was calculated, torque from motors, etc.
+We start with the motor constants. For $K_t$, from the datasheet we know
+that the stall current is 5.5 A and the torque at 12 V is 85 kg$\cdot$mm, or
+0.83N$\cdot$m, we can then get the value of $K_t$ by dividing the torque by the
+stall current, which is 0.1516. \\
 
-\textbf{Transfer Function} \\
+For $K_e$, from the datasheet we know that the free run speed of the rotor
+without the gearbox is 1047.19 rad/s, we can then get the value of $K_e$ by
+dividing the load voltage 12 V by the free run speed of the rotor, which is
+0.01146. \\
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=0.6\textwidth]{Figures/pid_control_diagram.png} % Adjust width as needed
-%     \caption{PID Control Diagram}
-%     \label{fig:pid_control_diagram}
-% \end{figure}
+To obtain the moment of inertia of the pendulum $J_p$, we need to simplify the
+plant model. The robot consists of four rods and three layers. Assuming the
+center of mass is perfectly centered, the four rods can be approximated as a
+single equivalent rod located at the center of the three layers. Similarly, the
+three layers can be modeled as three point masses, which are further simplified
+into a single point mass located at their collective center of mass. The
+resulting simplified model consists of a single rod rotating about one end and a
+point mass positioned at the center of mass of the three layers. \\
+\begin{figure}[H]
+    \centerline{\includegraphics[width=\linewidth]{Figures/plantModelSimplification.png}}
+    \caption{Simplification of the Plant Model}
+\end{figure}
 
-The exact transfer function used (reference the PhD study). There should be an image showing the exact control diagram here too
+All of the other parameters can either be measured directly, or are negligible
+and have minimal impact on the overall transfer function. \\
 
-\textbf{MATLAB PID Simulation} \\
+\subsubsection{Transfer Function}
 
-Just the matlab stuff and have a code listing in the appendix
+Considering the difficulty of deriving the transfer function from first
+principles, and given the abundance of studies on the same topic, we chose to
+reference a published paper for guidance \cite{suspaper}. However, upon
+reviewing the paper, we identified errors in part of the derivation: \\
+
+Assuming the correctness of
+\begin{align}
+K_t \frac{V_s - K_e \dot{\theta}_m}{R_a} &= J_m \ddot{\theta}_m + \tau_w + b \dot{\theta}_m \\
+\tau_w &= J_w \ddot{\theta}_w - F_{pH} r_w + m_w \ddot{\theta}_w r_w^2 \\
+F_{pH} &= m_p (r_w \ddot{\theta}_w + l_g \ddot{\theta}_p) \\
+F_{pH} l_g &= J_p \ddot{\theta}_p \\
+\theta_m &= \frac{\theta_w}{G_r}
+\end{align}
+Substitute (3) into (4) gives:
+\begin{align*}
+m_p (r_w \ddot{\theta}_w + l_g \ddot{\theta}_p) l_g &= J_p \ddot{\theta}_p \\
+m_p l_g r_w \ddot{\theta}_w + m_p l_g^2 \ddot{\theta}_p &= J_p \ddot{\theta}_p \\
+m_p l_g r_w \ddot{\theta}_w &= (J_p - m_p l_g^2) \ddot{\theta}_p \\
+\ddot{\theta}_w &= \frac{J_p - m_p l_g^2}{m_p l_g r_w} \ddot{\theta}_p \\
+\theta_w &= \frac{J_p - m_p l_g^2}{m_p l_g r_w} \theta_p
+\end{align*}
+So Eq. 4 in the paper is incorrect. The \(\tau_w\) in denominator should be \(r_w\). The signs are also wrong.
+Substitute (3) into (2) gives:
+\begin{align*}
+\tau_w &= J_w \ddot{\theta}_w - m_p (r_w \ddot{\theta}_w + l_g \ddot{\theta}_p) r_w + m_w \ddot{\theta}_w r_w^2 \\
+&= (J_w + (m_w - m_p) r_w^2) \ddot{\theta}_w - m_p l_g r_w \ddot{\theta}_p
+\end{align*}
+Substitute the above and (5) into (1) and expand the first fraction:
+\[
+\frac{K_t}{R_a} V_s - \frac{K_t}{R_a} \frac{K_e}{G_r} \dot{\theta}_w - \frac{b}{G_r} \dot{\theta}_w - (J_w + (m_w - m_p) r_w^2) \ddot{\theta}_w + m_p l_g r_w \ddot{\theta}_p = \frac{J_m}{G_r} \ddot{\theta}_w
+\]
+Move the angle terms to RHS and flip both sides:
+\begin{align*}
+\left( \frac{K_t}{R_a} \frac{K_e}{G_r} + \frac{b}{G_r} \right) \dot{\theta}_w + \left[ \frac{J_m}{G_r} + J_w + (m_w - m_p) r_w^2 \right] \ddot{\theta}_w - m_p l_g r_w \ddot{\theta}_p &= \frac{K_t}{R_a} V_s
+\end{align*}
+Substitute the expression of \(\theta_w\) in terms of \(\theta_p\):
+\begin{align*}
+(J_p - m_p l_g^2) \left( \frac{K_t}{R_a} \frac{K_e}{G_r} + \frac{b}{G_r} \right) \dot{\theta}_p + \left[ (J_p - m_p l_g^2) \left[ \frac{J_m}{G_r} + J_w + (m_w - m_p) r_w^2 \right] + (m_p l_g r_w)^2 \right] \ddot{\theta}_p \\= \frac{K_t}{R_a} (m_p l_g r_w) V_s
+\end{align*}
+Laplace transform:
+\begin{multline*}
+\theta_p(s) \left[ (J_p - m_p l_g^2) \left( \frac{K_t}{R_a} \frac{K_e}{G_r} + \frac{b}{G_r} \right) s + \left[ (J_p - m_p l_g^2) \left[ \frac{J_m}{G_r} + J_w + (m_w - m_p) r_w^2 \right] + (m_p l_g r_w)^2 \right] s^2 \right]
+\\= \frac{K_t}{R_a} (m_p l_g r_w) V_s(s)
+\end{multline*}
+Hence the final transfer function:
+\[
+\frac{\theta_p}{V_s}(s) = \frac{\frac{K_t}{R_a} (m_p l_g r_w)}{\left[ (J_p - m_p l_g^2) \left[ \frac{J_m}{G_r} + J_w + (m_w - m_p) r_w^2 \right] + (m_p l_g r_w)^2 \right] s^2 + (J_p - m_p l_g^2) \left( \frac{K_t}{R_a} \frac{K_e}{G_r} + \frac{b}{G_r} \right) s}
+\]
+The definition of the parameters can be found in the paper. \\
+
+Plug in the parameters we acquired, the resulting open loop transfer function is:
+\[
+\frac{\theta_p}{V_s}(s) = \frac{977.5}{s^2+0.3439s}
+\]
+Notice that the moment of inertia of the wheel and the rotor ($J_m \& J_r$) and
+friction $b$ are approximated to zero, This is because their magnitudes are
+negligible compared to other parameters in the system, thus they have
+minimal impact on the overall transfer function.
+
+\subsubsection{PID Parameter Calculation}
+
+From the previously derived transfer function, we observe that the two open-loop
+poles are located at 0 and -0.3439, indicating that the system is unstable. To
+stabilize the system, a feedback control loop must be introduced to shift the
+poles of the closed-loop transfer function to stable locations. To determine the
+PID parameters, we can apply the pole placement method: \\
+
+Assuming that we want the resulting poles to be placed at $P_A$ and $P_B$, the
+denominator of the resulting transfer function is:
+\[
+(s-P_A)(s-P_B)
+\]
+This can be written explicitly as:
+\[
+s^2 - (P_A + P_B)s + P_AP_B
+\]
+With a PD controller, the characteristic equation is:
+\[
+s^2 + (K \cdot K_d - (P_1 + P_2))s + P_1P_2 + KK_p
+\]
+Where $P_1$ and $P_2$ are poles of the open loop transfer function, $K$ is the
+DC gain of the transfer function, which is 977.5.
+
+We can relate the above two equations and the following equations can be obtained:
+\begin{align*}
+    P_AP_B &=  P_1P_2 + KK_p\\
+    -(P_A + P_B) &= KK_d - (P_1 + P_2)
+\end{align*}
+The resulting PD gains will make the close loop transfer function be critically
+damped and stable.
+
+To determine the desired pole locations, we first need to select an appropriate
+time constant $N$. By measuring the runtime of the main control loop, we found
+the worst-case execution frequency to be 25 Hz. According to the Nyquist
+theorem, the sampling rate must be at least twice the highest frequency
+component to accurately capture the system dynamics. Therefore, the maximum
+allowable control bandwidth is 12.5 Hz, corresponding to a minimum time constant
+of approximately 0.08. To ensure stability and responsiveness while staying
+within this limit, we chose a time constant of 1/4 seconds, which places the
+desired pole at $-8\pi$ and the resulting $K_p$ and $K_d$ are 0.6462 and 0.0511,
+respectively. \\
+
+The I term is added after to address the drifting issue we encountered during
+the testing. The value of $K_i$ was found by trial and error, and the final
+value of $K_i$ is 11.5. \\
+
+\subsubsection{Simulink Simulation}
+
+Simulink is used to validate the design of the PID controller. The model is
+shown below:
+\begin{figure}[H]
+    \centerline{\includegraphics[width=\linewidth]{Figures/simModel.png}}
+    \caption{Simulink Model for the Bot}
+\end{figure}
+The step responses of the system under filter coefficient N = 50 and N = 25 were
+simulated to evaluate the performance of the robot under best- and worst-case
+scenarios:
+\begin{figure}[H]
+    \centerline{\includegraphics[width=\linewidth]{Figures/step25.png}}
+    \caption{Step Response of the System with N = 25}
+\end{figure}
+\begin{figure}[H]
+    \centerline{\includegraphics[width=\linewidth]{Figures/step50.png}}
+    \caption{Step Response of the System with N = 50}
+\end{figure}
+We can see that for both cases the system is stable, with different degree of
+overshoot. This implies that the design of the PID controller is effective.
 
 \subsection{Arduino Nano 33 BLE Sense Rev2}
 
