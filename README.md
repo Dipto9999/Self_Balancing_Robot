@@ -21,7 +21,7 @@
 We designed an autonomously balancing two-wheel robot, with wireless movement control. This was also designed with access security and environmental detection features, with camera footage.
 
 <p align="center">
-    <img src="Figures/WALL-E.jpg" width="100%" height="100%" title="WALL-E Picture">
+    <img src="Report/Figures/WALL-E.jpg" width="100%" height="100%" title="WALL-E Picture">
 </p>
 
 ### Components
@@ -30,20 +30,18 @@ This project was developed with two **DC** motors and **DRV8833 H-Bridge** motor
 
 <!-- ToDo : Describe Sensors Used -->
 
-## Project Proposal
-
-For the initial documentation of project requirements, we designed the following functionality and system architecture.
+We designed the following diagrams to describe system behavior and architecture.
 
 ### Functional Diagram
 
 <p align="center">
-    <img src = "Figures/Functional_Diagram.png" title="Functional Diagram">
+    <img src = "Report/Figures/Functional_Diagram.png" title="Functional Diagram">
 </p>
 
 ### Architecture Diagram
 
 <p align="center">
-    <img src = "Figures/Architecture_Diagram.png" title="Architecture Diagram">
+    <img src = "Report/Figures/Architecture_Diagram.png" title="Architecture Diagram">
 </p>
 
 <!-- ToDo : Describe General Functionality -->
