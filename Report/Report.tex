@@ -62,8 +62,7 @@
 • Background context and any relevant history
 
 \section{Requirements, Specifications and Constraints}
-• It's helpful to list these in a table or enumerated, (e.g. R1, R2, etc.) so this can be treated as of checklist of
-requirements that must be tested as detailed in the Verification and Validation section.
+
 \subsection{Functional Requirements}
 
 Table~\ref{tab:functional_requirements} lists the functional requirements of the self-balancing robot. These are prioritized by category,
@@ -90,7 +89,7 @@ providing useful information to the user.
         \hline
         FR6 & The robot must be able to recover when disturbed & Core \\
         \hline
-        FR7 & The only power source on the robot is 8 $\times$ 1.2V batteries & Core \\
+        FR7 & The robot is powered solely by a pack of 8 $\times$ 1.2V rechargeable batteries. & Core \\
         \hline
         FR8 & The distance sensor must detect obstacles and stop when it gets too close to an object & Additional Feature \\
         \hline
@@ -108,7 +107,7 @@ providing useful information to the user.
 \end{table}
 
 \subsection{Performance Requirements}
-Metrics for performance such as speed, efficiency, capacity, etc.
+Table \ref{tab:performance_requirements} outlines the performance requirements for the self-balancing robot, providing specific quantitative targets to assess the system's effectiveness. These requirements closely align with the functional requirements, but with the addition of measurable criteria—such as recovery angle, speed and transmission speed. By translating functional goals into performance metrics, we ensured that the robot’s behavior could be consistently validated against clearly defined benchmarks. This approach helped guide both the design process and iterative improvements throughout development.
 
 \begin{table}[H]
     \centering
@@ -124,6 +123,8 @@ Metrics for performance such as speed, efficiency, capacity, etc.
         PR3 & The Bluetooth latency for control commands must be less than 100 ms. & Core \\
         \hline
         PR4 & The robot must be able to maintain a Bluetooth connection within a range of at least 5 meters. & Core \\
+        \hline
+        PR5 & The robot must be to move forward, backward, left (45$^\circ$) and right (45$^\circ$) within 5 seconds & Core \\
         \hline
         PR6 & The obstacle detection system must stop the robot within 1 cm of an obstacle detected between 2–30 cm. & Additional Feature \\
         \hline
@@ -170,8 +171,6 @@ For the custom construction of our self-balancing robot, we were limited to usin
 
 \subsubsection{Environmental}
 The performance of a self-balancing robot can be significantly affected by environmental constraints such as battery levels, electromagnetic interference (EMI), temperature, and terrain conditions. Low battery voltage can reduce motor torque and sensor accuracy, leading to instability. EMI from nearby motors or power electronics can disrupt IMU readings and communication systems, making balance control less reliable. Temperature extremes can alter sensor calibration and battery efficiency, while uneven or slippery terrain can interfere with traction and cause the robot to lose balance. These factors must be carefully considered to ensure reliable operation in real-world environments.
-
-(financial, temporal, material, environmental, standards and regulations to follow, etc.)
 
 \section{Conceptual Design}
 
@@ -222,6 +221,9 @@ the center of mass of the pendulum is perfectly centered, the structural design
 follows the principle of evenly distributing mass to ensure that the center of
 mass is as close as possible to the rotor axis.
 
+\
+
+
 Another design decision we made was to mount the third layer as high as
 possible. This choice addresses the fact that the plant is a nonlinear and
 inherently unstable system, which can only be effectively controlled within a
@@ -254,7 +256,7 @@ At the bottom, two mounting holes are used to attach the L-stand for the color
 sensor. Since we only have one color sensor, its placement causes a deviation in
 the center of mass. To compensate for this imbalance, the camera is zip-tied at
 the center, allowing its position to be adjusted to help realign the center of
-mass. Although not shown in the figure, Two distance sensors are also mounted on
+mass. Although not shown in the figure, two distance sensors are also mounted on
 the second layer symmetrically.
 
 \subsubsection{L-stand Design}
@@ -271,8 +273,11 @@ lead to poor print quality or failed prints, the ribs provide structural support
 under the columns, eliminating overhangs and making the printing process more
 reliable and efficient.
 
+\
+
 The L-stand for the color sensor follows the same design principles with
 different dimension, thus is not shown here.
+
 \subsection{PID Modeling and Simulation}
 \subsubsection{Measuring Robot Parameters}
 
@@ -390,6 +395,8 @@ s^2 + (K \cdot K_d - (P_1 + P_2))s + P_1P_2 + KK_p
 Where $P_1$ and $P_2$ are poles of the open loop transfer function, $K$ is the
 DC gain of the transfer function, which is 977.5.
 
+\
+
 We can relate the above two equations and the following equations can be obtained:
 \begin{align*}
     P_AP_B &=  P_1P_2 + KK_p\\
@@ -397,6 +404,8 @@ We can relate the above two equations and the following equations can be obtaine
 \end{align*}
 The resulting PD gains will make the close loop transfer function be critically
 damped and stable.
+
+\
 
 To determine the desired pole locations, we first need to select an appropriate
 time constant $N$. By measuring the runtime of the main control loop, we found
@@ -407,11 +416,13 @@ allowable control bandwidth is 12.5 Hz, corresponding to a minimum time constant
 of approximately 0.08. To ensure stability and responsiveness while staying
 within this limit, we chose a time constant of 1/4 seconds, which places the
 desired pole at $-8\pi$ and the resulting $K_p$ and $K_d$ are 0.6462 and 0.0511,
-respectively. \\
+respectively.
+
+\
 
 The I term is added after to address the drifting issue we encountered during
 the testing. The value of $K_i$ was found by trial and error, and the final
-value of $K_i$ is 11.5. \\
+value of $K_i$ is 11.5.
 
 \subsubsection{Simulink Simulation}
 
@@ -439,7 +450,7 @@ overshoot. This implies that the design of the PID controller is effective.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{Figures/arduino.jpg} % Adjust width as needed
+    \includegraphics[width=0.3\textwidth]{Figures/arduino.jpg} % Adjust width as needed
     \caption{Arduino Nano 33 BLE Sense Rev2}
     \label{fig:arduino}
 \end{figure}
@@ -673,7 +684,7 @@ The code snippet for this exact implementation is demonstrated in Listing \ref{l
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{Figures/stm32.jpg} % Adjust width as needed
+    \includegraphics[width=0.3\textwidth]{Figures/stm32.jpg} % Adjust width as needed
     \caption{STM32L051K8T6 Microcontroller}
     \label{fig:stm32}
 \end{figure}
@@ -706,7 +717,7 @@ To streamline the firmware development process for the STM32, we utilized the ST
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{Figures/distancesensor.png} % Adjust width as needed
+    \includegraphics[width=0.3\textwidth]{Figures/distancesensor.png} % Adjust width as needed
     \caption{HC-SR04 Ultrasonic Ranging Module}
     \label{fig:distancesensor}
 \end{figure}
@@ -725,7 +736,7 @@ A code sample for the firmware implementation of input capture interrupt are sho
 \label{sec:colorsensor}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{Figures/colorsensor.jpg} % Adjust width as needed
+    \includegraphics[width=0.3\textwidth]{Figures/colorsensor.jpg} % Adjust width as needed
     \caption{TCS34725 Light-to-Digital Sensor}
     \label{fig:colorsensor}
 
@@ -743,7 +754,7 @@ The \texttt{ColorSensor\_Handle} function is called within the main control loop
 \label{sec:rfidsensor}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{Figures/rfidsensor.png} % Adjust width as needed
+    \includegraphics[width=0.3\textwidth]{Figures/rfidsensor.png} % Adjust width as needed
     \caption{RC522 Contactless Reader IC}
     \label{fig:rfidsensor}
 
@@ -760,11 +771,9 @@ In the case where the correct RFID tag would be scanned, a basic GPIO pin would 
 \label{sec:speaker}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\textwidth]{Figures/speaker.png} % Adjust width as needed
+    \includegraphics[width=0.2\textwidth]{Figures/speaker.png} % Adjust width as needed
     \caption{CEM-1302 Speaker/Buzzer}
     \label{fig:speaker}
-
-
 \end{figure}
 
 
@@ -867,7 +876,7 @@ wirelessly access it the \textbf{Raspberry Pi Connect} software.
 
 \begin{figure}[H]
     \centering
-    \fbox{\includegraphics[width=0.75\textwidth]{Figures/Stripchart_k06.jpg}}
+    \fbox{\includegraphics[width=0.6\textwidth]{Figures/Stripchart_k06.jpg}}
     \caption{Angle Measurements (k = 0.6)}
     \label{fig:stripchart_k06}
 \end{figure}
