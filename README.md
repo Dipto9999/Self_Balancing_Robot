@@ -21,7 +21,7 @@
 
 ## Overview
 
-<img align = "right" src="Report/Figures/WALL-E.jpg" width = 300 height = 150>
+<img align = "right" src="Report/Figures/WALL-E.jpg" width = 400 height = 200>
 
 We designed **WALL-E**, an autonomously balancing two-wheel robot driven wirelessly via bluetooth.
 
