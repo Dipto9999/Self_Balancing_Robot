@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber Report"] 0 "Report.bcf" "Report.bbl" "Report" 1744603886.71844 -1
-  "Report.bcf" 1744603886 106656 2b48141bec4334937f507f44fe09fa7a "pdflatex"
+["biber Report"] 1744604391.36922 "Report.bcf" "Report.bbl" "Report" 1744604470.52873 0
+  "Report.bcf" 1744604470 107008 965b254708afd83c38e6f60829e3643b "pdflatex"
   "ref.bib" 1744392630 517 51892aa5fe95170e70e670077dd93898 ""
   (generated)
   "Report.bbl"
   "Report.blg"
   (rewritten before read)
-["pdflatex"] 1744603884.14297 "c:/Muntakim_Files/School/Engineering_Bachelors/2024/ELEC_391/Github_Repository/Report/Report.tex" "Report.pdf" "Report" 1744603886.71934 0
+["pdflatex"] 1744604468.06966 "c:/Muntakim_Files/School/Engineering_Bachelors/2024/ELEC_391/Github_Repository/Report/Report.tex" "Report.pdf" "Report" 1744604470.52927 0
   "C:/Users/munta/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1744392653 1050267 d4f6887258cf83cef40cd2d569ca442d ""
   "C:/Users/munta/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1708044569 11548 2c9ee6d384129f23992eeada6c1e7d0f ""
   "C:/Users/munta/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1706737176 24210787 ec82fd334ad3edce9198fa3fba838d8c ""
@@ -22,6 +22,7 @@
   "C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmbx10.tfm" 1136765053 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmbx12.tfm" 1136765053 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmbxti10.tfm" 1136765053 1532 9162035f4e7176612125649e348e2195 ""
+  "C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmcsc10.tfm" 1136765053 1300 63a6111ee6274895728663cf4b4e7e81 ""
   "C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmex10.tfm" 1136765053 992 662f679a0b3d2d53c1b94050fdaa3f50 ""
   "C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmmi12.tfm" 1136765053 1524 4414a8315f39513458b80dfc63bff03a ""
   "C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmmi6.tfm" 1136765053 1512 f21f83efb36853c0b70002322c1ab3ad ""
@@ -39,6 +40,7 @@
   "C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb" 1247596666 34811 78b52f49e893bcba91bd7581cdc144c0 ""
   "C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1247596666 32080 340ef9bf63678554ee606688e7b5339d ""
   "C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbxti10.pfb" 1247596667 36554 b67dc2cfa451409e100b3fcf5f506509 ""
+  "C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmcsc10.pfb" 1247596667 32001 6aeea3afe875097b1eb0da29acd61e28 ""
   "C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb" 1247596667 30251 6afa5cb1d0204815a708a080681d4674 ""
   "C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1247596667 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb" 1247596667 37912 07513ec114ac737ab54cea0152f4424b ""
@@ -155,18 +157,18 @@
   "Figures/simModel.png" 1744601104 23852 fa03ab7be2ed8a487303bf9f56a8960b ""
   "Figures/speaker.png" 1744601110 32744 9cc44f2079f3e88e77f9e588b110efeb ""
   "Figures/standDis.png" 1744601115 42287 837c398b705737c8216d5cde4b11cece ""
-  "Figures/step25.png" 1744601120 71840 03584418444c8d7462eb92f62e5cca52 ""
-  "Figures/step50.png" 1744601126 69273 74860978d6a82ffd48797c6d267dd70c ""
+  "Figures/step25.png" 1744604461 71862 82a17388e92504a42e39077ebfe6fa49 ""
+  "Figures/step50.png" 1744604467 73263 510d917dd99cea3c2a63e06cdfde67f6 ""
   "Figures/stm32.jpg" 1744601143 32349 510ead895d69f7c54c2a64bfbff7637b ""
   "Figures/stm32_pinout_in.png" 1744601131 62288 2197632521a456037d4c3a5ae28bc136 ""
   "Figures/stm32_pinout_out.png" 1744601137 26879 3ac32ba439b3ca8aa92069bfec07b216 ""
-  "Report.aux" 1744603886 17496 4fa975d6d4cdd66b2203ef442c8c8266 "pdflatex"
-  "Report.bbl" 1744392747 2305 727308015e67d350a6a40c3204129794 "biber Report"
-  "Report.out" 1744603886 9080 5fa9f8a8a244bd8bea1a041180bd95ca "pdflatex"
-  "Report.run.xml" 1744603886 2409 e3ee8db8b6379c10fdefa02cdc7ac8f0 "pdflatex"
-  "Report.tex" 1744603880 87887 894a68570f1df71d2f3a3350eb06ac50 ""
-  "Report.toc" 1744603886 4949 d8a7d0e76bafb5de564c293c0d2027eb "pdflatex"
-  "c:/Muntakim_Files/School/Engineering_Bachelors/2024/ELEC_391/Github_Repository/Report/Report.tex" 1744603880 87887 894a68570f1df71d2f3a3350eb06ac50 ""
+  "Report.aux" 1744604470 17564 4f211f88c6f490620369b09757ecc551 "pdflatex"
+  "Report.bbl" 1744604399 2305 727308015e67d350a6a40c3204129794 "biber Report"
+  "Report.out" 1744604470 9080 5fa9f8a8a244bd8bea1a041180bd95ca "pdflatex"
+  "Report.run.xml" 1744604470 2409 e3ee8db8b6379c10fdefa02cdc7ac8f0 "pdflatex"
+  "Report.tex" 1744604391 92176 5865843ac6e42bd069f70d90108e219f ""
+  "Report.toc" 1744604470 4949 8fc8eb7c6e684d5a010199f88d357774 "pdflatex"
+  "c:/Muntakim_Files/School/Engineering_Bachelors/2024/ELEC_391/Github_Repository/Report/Report.tex" 1744604391 92176 5865843ac6e42bd069f70d90108e219f ""
   (generated)
   "Report.aux"
   "Report.bcf"
