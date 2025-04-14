@@ -32,8 +32,8 @@
 \contentsline {subsection}{\numberline {4.6}Bluetooth Control}{15}{subsection.4.6}%
 \contentsline {subsubsection}{\numberline {4.6.1}Robot Driver App}{16}{subsubsection.4.6.1}%
 \contentsline {subsection}{\numberline {4.7}STM32L051K8T6 Microcontroller}{16}{subsection.4.7}%
-\contentsline {subsubsection}{\numberline {4.7.1}Distance Sensing Subsystem}{17}{subsubsection.4.7.1}%
-\contentsline {subsubsection}{\numberline {4.7.2}Color Sensing Subsystem}{18}{subsubsection.4.7.2}%
+\contentsline {subsubsection}{\numberline {4.7.1}Distance Sensing}{17}{subsubsection.4.7.1}%
+\contentsline {subsubsection}{\numberline {4.7.2}Color Sensing}{18}{subsubsection.4.7.2}%
 \contentsline {subsubsection}{\numberline {4.7.3}RFID Security System}{18}{subsubsection.4.7.3}%
 \contentsline {subsubsection}{\numberline {4.7.4}CEM-1302 Speaker/Buzzer}{19}{subsubsection.4.7.4}%
 \contentsline {subsection}{\numberline {4.8}Raspberry Pi Zero 2 W}{19}{subsection.4.8}%

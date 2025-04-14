@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber Report"] 1744605177.96984 "Report.bcf" "Report.bbl" "Report" 1744605185.20398 0
-  "Report.bcf" 1744605184 107008 965b254708afd83c38e6f60829e3643b "pdflatex"
+["biber Report"] 1744605177.96984 "Report.bcf" "Report.bbl" "Report" 1744605239.71363 0
+  "Report.bcf" 1744605239 107008 965b254708afd83c38e6f60829e3643b "pdflatex"
   "ref.bib" 1744392630 517 51892aa5fe95170e70e670077dd93898 ""
   (generated)
   "Report.bbl"
   "Report.blg"
   (rewritten before read)
-["pdflatex"] 1744605182.48417 "c:/Muntakim_Files/School/Engineering_Bachelors/2024/ELEC_391/Github_Repository/Report/Report.tex" "Report.pdf" "Report" 1744605185.20458 0
+["pdflatex"] 1744605236.60055 "c:/Muntakim_Files/School/Engineering_Bachelors/2024/ELEC_391/Github_Repository/Report/Report.tex" "Report.pdf" "Report" 1744605239.71431 0
   "C:/Users/munta/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1744392653 1050267 d4f6887258cf83cef40cd2d569ca442d ""
   "C:/Users/munta/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1708044569 11548 2c9ee6d384129f23992eeada6c1e7d0f ""
   "C:/Users/munta/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1706737176 24210787 ec82fd334ad3edce9198fa3fba838d8c ""
@@ -162,13 +162,13 @@
   "Figures/stm32.jpg" 1744601143 32349 510ead895d69f7c54c2a64bfbff7637b ""
   "Figures/stm32_pinout_in.png" 1744601131 62288 2197632521a456037d4c3a5ae28bc136 ""
   "Figures/stm32_pinout_out.png" 1744601137 26879 3ac32ba439b3ca8aa92069bfec07b216 ""
-  "Report.aux" 1744605184 17564 4f211f88c6f490620369b09757ecc551 "pdflatex"
+  "Report.aux" 1744605239 17524 db7afa91d6b21953f8369ca450698cad "pdflatex"
   "Report.bbl" 1744605179 2305 727308015e67d350a6a40c3204129794 "biber Report"
-  "Report.out" 1744605184 9080 5fa9f8a8a244bd8bea1a041180bd95ca "pdflatex"
-  "Report.run.xml" 1744605184 2409 e3ee8db8b6379c10fdefa02cdc7ac8f0 "pdflatex"
-  "Report.tex" 1744605174 92229 f1d76f5941d56565934061176fd1455a ""
-  "Report.toc" 1744605184 4949 8fc8eb7c6e684d5a010199f88d357774 "pdflatex"
-  "c:/Muntakim_Files/School/Engineering_Bachelors/2024/ELEC_391/Github_Repository/Report/Report.tex" 1744605174 92229 f1d76f5941d56565934061176fd1455a ""
+  "Report.out" 1744605239 8974 3683a175c4260caf4f8760a61fa13b70 "pdflatex"
+  "Report.run.xml" 1744605239 2409 e3ee8db8b6379c10fdefa02cdc7ac8f0 "pdflatex"
+  "Report.tex" 1744605233 92209 fb443ca7e4f6e7d905bb9f4468a2d5b6 ""
+  "Report.toc" 1744605239 4929 3e0c08b8dc815d4a2f1871597d95383f "pdflatex"
+  "c:/Muntakim_Files/School/Engineering_Bachelors/2024/ELEC_391/Github_Repository/Report/Report.tex" 1744605233 92209 fb443ca7e4f6e7d905bb9f4468a2d5b6 ""
   (generated)
   "Report.aux"
   "Report.bcf"

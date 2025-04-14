@@ -734,7 +734,7 @@ To streamline the firmware development process for the STM32, we utilized the ST
 
 
 
-\subsubsection{Distance Sensing Subsystem}
+\subsubsection{Distance Sensing}
 \label{sec:distancesensor}
 
 \begin{figure}[H]
@@ -754,7 +754,7 @@ We decided to use timers and interrupt service routines to measure the time of t
 
 A code sample for the firmware implementation of input capture interrupt are shown in Listing \ref{lst:stm32_distancesensor_code} in the Appendix. More information about input capture mode and its implementation can be found on this site, \href{https://community.st.com/t5/stm32-mcus/how-to-use-the-input-capture-feature/ta-p/704161}{here}. If the module sensed a distance smaller than 30cm, a basic GPIO pin would be set low to communicate to the Arduino of this status.
 
-\subsubsection{Color Sensing Subsystem}
+\subsubsection{Color Sensing}
 \label{sec:colorsensor}
 \begin{figure}[H]
     \centering
