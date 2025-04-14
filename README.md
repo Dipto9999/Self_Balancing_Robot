@@ -23,7 +23,7 @@
 
 <img align = "right" src="Report/Figures/WALL-E.jpg" width = 400 height = 200>
 
-We designed **WALL-E**, an autonomously balancing two-wheel robot driven wirelessly via bluetooth.
+We designed **WALL-E**, an autonomously balancing two-wheel robot driven wirelessly via Bluetooth.
 
 ### Features
 
@@ -106,7 +106,7 @@ WALL-E prioritizes safe navigation and secure access.
 ### Robot Driver App
 
 - **Flask** web application hosted via **ngrok** for mobile access
-- Uses **GET**/**POST** requests to update server with **UI** updates and perform bluetooth operations.
+- Uses **GET**/**POST** requests to update server with **UI** updates and perform Bluetooth operations.
 - Handles **BLE** pairing authentication in backend (i.e. without affecting user experience).
 
 <p align="center">
