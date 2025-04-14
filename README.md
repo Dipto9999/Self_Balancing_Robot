@@ -1,8 +1,9 @@
-# Self Balancing Robot (WALL-E)
+# WALL-E (Self Balancing Robot)
 
 ## Contents
 
 * [Overview](#overview)
+  * [Features](#features)
   * [Components](#components)
 * [System Design](#system-design)
   * [Functional Diagram](#functional-diagram)
@@ -20,33 +21,36 @@
 
 ## Overview
 
-We designed an autonomously balancing two-wheel robot with wireless BLE control. Our robot prioritizes safety and security, featuring environmental detection (obstacles, color recognition) and RFID authentication, in addition to a live camera feed.
+<img align = "right" src="Report/Figures/WALL-E.jpg" width = 300 height = 150>
 
-<p align="center">
-  <img src="Report/Figures/WALL-E.jpg" width="100%" height="100%" title="WALL-E Picture">
-</p>
+We designed **WALL-E**, an autonomously balancing two-wheel robot driven wirelessly via bluetooth.
+
+### Features
+
+WALL-E prioritizes safe navigation and secure access.
+
+- Detects the nearby environment (i.e.obstacles, color recognition)
+- Prevents unauthorized control with **RFID** authentication and BLE pairing code.
+- Generates live camera feed and uploads to **AWS S3** cloud storage.
 
 ### Components
 
 - **Microcontrollers**:
   - Arduino Nano 33 BLE Sense Rev2 (Balancing & BLE)
   - STM32L051K8T6 (Environmental Sensors, Auth)
-  - Raspberry Pi Zero 2 W (Camera Feed, AWS Upload)
+  - Raspberry Pi Zero 2 W (Camera Feed)
 
 - **Sensors and Modules**:
-  - IMU (BMI270/BMM150)
-  - Ultrasonic Distance Sensor (HC-SR04)
-  - Color Sensor (TCS34725)
-  - RFID Module (RC522)
-  - Buzzer (CEM-1302)
-  - 5MP Camera (Freenove FNK0056)
+  - BMM150 IMU
+  - HC-SR04 Ultrasonic Distance Sensor
+  - TCS34725 Color Sensor
+  - RC522 RFID Module
+  - CEM-1302 Buzzer
+  - Freenove 5MP Camera
 
 - **Actuation**:
   - DRV8833 Motor Drivers
-  - DC Motors (Pololu 37D)
-
-- **Power**:
-  - 8×1.2V Rechargeable NiMH Battery Pack
+  - Pololu 37D DC Motors
 
 ---
 
@@ -68,37 +72,70 @@ We designed an autonomously balancing two-wheel robot with wireless BLE control.
 
 ## Robot Firmware
 
-### [Arduino](Arduino_Firmware)
+### Arduino
 
-- Maintains balance using PID controller tuned via BLE.
-- Sensor fusion using a complementary filter combining accelerometer and gyroscope data.
-- PID loop runs in the main program loop for maximum timing control.
-- Motor control with PWM slow decay via DRV8833.
-- Prioritizes balance over movement; directional movement is achieved by injecting temporary angle offsets.
+- Autonomously balances robot with closed-loop control system (i.e. PID controller).
+- Uses complementary filter to measure angular input from accelerometer and gyroscope sensors.
+- Drives motors by generating PWM (slow decay) output to DRV8833 chip.
+- Uses statemachine to prioritize balancing / movement functionality.
+    - Injects noise (i.e. angular offset, PWM signals) to induce movement along axis / turning.
 
-### [STM32](STM32_Firmware)
+<p align="center">
+  <i>
+    Source Code in <a href="/Arduino_Firmware">Arduino_Firmware</a> directory.
+  </i>
+</p>
 
-- Handles auxiliary features to reduce load on Arduino.
-- **Distance Sensing**: Triggers GPIO signal to Arduino on proximity.
-- **Color Detection**: Triggers alert when red is detected.
-- **RFID Authentication**: Verifies UID and signals Arduino on success.
-- **Buzzer**: Alerts on successful scans, errors, or warnings via PWM tone generation.
+### STM32
 
----
+- Handles auxiliary features to reduce computational load on Arduino.
+    - **Distance Sensing**: Toggles GPIO signal-low when object detected within 30cm.
+    - **Color Detection**: Toggles GPIO signal-low when red is detected. WALL-E avoids red-lights at all costs.
+    - **RFID Authentication**: Verifies UID and signals Arduino on success.
+    - **Buzzer**: Alerts user on successful auth, errors, or warnings via PWM tone generation.
+
+<p align="center">
+  <i>
+    Source Code in <a href="/STM32_Firmware">STM32_Firmware</a> directory.
+  </i>
+</p>
 
 ## User Software
 
-### [Driver App](Driver_App)
 
-- Flask-based BLE controller hosted via **ngrok** for mobile access.
-- Provides UI buttons for movement: FORWARD, BACKWARD, LEFT, RIGHT.
-- Handles pairing authentication invisibly to end user.
+### Robot Driver App
 
-### [Dashboard App](Dashboard_App)
+- **Flask** web application hosted via **ngrok** for mobile access
+- Uses **GET**/**POST** requests to update server with **UI** updates and perform bluetooth operations.
+- Handles **BLE** pairing authentication in backend (i.e. without affecting user experience).
 
-- Python GUI with live camera stream (Tkinter).
-- Snapshot and recording functionality with automatic upload to AWS S3.
-- Camera runs at ~20 FPS with reduced resolution for performance on Pi Zero 2 W.
+<p align="center">
+    <img src = "Report/Figures/Robot_Driver_App.jpg" width = "20%" height = "20%" title = "Robot Driver App on iPhone 14">
+</p>
+
+
+<p align="center">
+  <i>
+    Source Code in <a href="/Driver_App">Driver_App</a> directory.
+  </i>
+</p>
+
+
+### Dashboard App
+
+- **Python** application with live camera stream on **Tkinter GUI**.
+    - Camera runs at ~20 FPS with reduced resolution for performance on Pi Zero 2 W.
+- Snapshot and recording functionality with automatic upload to **AWS S3** bucket.
+
+<p align="center">
+    <img src = "Report/Figures/PiCamera_App.jpg" width = "50%" height = "50%" title = "PiCamera Application">
+</p>
+
+<p align="center">
+  <i>
+    Source Code in <a href="/Dashboard_App">Dashboard_App</a> directory.
+  </i>
+</p>
 
 ---
 
@@ -107,15 +144,18 @@ We designed an autonomously balancing two-wheel robot with wireless BLE control.
 Watch our final robot demonstration here:
 📽️ [YouTube Demo](https://youtu.be/UMmxqQl_EAc?si=lTu5z8PBC82dAWoi)
 
----
+## Report
+
+Read our final project report here:
+📝 [Project Report](/Report/ELEC391_B17_ProjectReport.pdf)
 
 ## Credit
 
-This project was developed for **ELEC 391 - Design Studio** at **The University of British Columbia**.
+This was completed as part of the **ELEC 391 - Design Studio** project course in **The University of British Columbia Electrical and Computer Engineering** undergraduate program.
 
 **Team B-17**
 - Muntakim Rahman
 - Tomaz Zlindra
 - Xianyao Li
 
-Special thanks to **Dr. Joseph Yan** for tremendous course support.
+Special thanks to **Dr. Joseph Yan** for tremendous support and guidance.
