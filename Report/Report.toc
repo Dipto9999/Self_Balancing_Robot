@@ -1,7 +1,7 @@
 \contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
 \contentsline {section}{\numberline {2}Requirements, Specifications and Constraints}{3}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Functional Requirements}{3}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Performance Requirements}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.2}Performance Requirements}{4}{subsection.2.2}%
 \contentsline {subsection}{\numberline {2.3}Constraints}{4}{subsection.2.3}%
 \contentsline {subsubsection}{\numberline {2.3.1}Financial}{4}{subsubsection.2.3.1}%
 \contentsline {subsubsection}{\numberline {2.3.2}Temporal}{4}{subsubsection.2.3.2}%
@@ -46,10 +46,10 @@
 \contentsline {subsection}{\numberline {5.2}Validation}{25}{subsection.5.2}%
 \contentsline {section}{\numberline {6}Conclusions and Future Work}{25}{section.6}%
 \contentsline {section}{\numberline {7}References}{25}{section.7}%
-\contentsline {section}{\numberline {8}Appendices}{25}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Appendix: Budget}{25}{subsection.8.1}%
+\contentsline {section}{\numberline {8}Appendices}{26}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Appendix: Budget}{26}{subsection.8.1}%
 \contentsline {subsection}{\numberline {8.2}Appendix: Technical Calculations and Simulations}{26}{subsection.8.2}%
 \contentsline {subsection}{\numberline {8.3}Appendix: Drawings, Schematics, and Blueprints}{26}{subsection.8.3}%
 \contentsline {subsection}{\numberline {8.4}Appendix: Datasheets / Product Specifications}{26}{subsection.8.4}%
-\contentsline {subsection}{\numberline {8.5}Appendix: Prototypes}{26}{subsection.8.5}%
-\contentsline {subsection}{\numberline {8.6}Appendix: Sample Code}{26}{subsection.8.6}%
+\contentsline {subsection}{\numberline {8.5}Appendix: Prototypes}{27}{subsection.8.5}%
+\contentsline {subsection}{\numberline {8.6}Appendix: Sample Code}{27}{subsection.8.6}%

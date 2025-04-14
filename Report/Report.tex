@@ -34,7 +34,7 @@
 \title{
     \Huge \textbf{Self-Balancing Robot}
 
-    \vspace{100px}
+    \vspace{100pt}
 
     \large Course: ELEC 391 201 2024W2 \\[1em]
     \large Authors: Team B-17 (Tomaz Zlindra, Muntakim Rahman, Xianyao Li) \\[1em]
@@ -48,7 +48,6 @@
 
 \pagenumbering{gobble} % Suppress page numbering for the title page
 \maketitle
-
 \newpage % Start numbering after title page
 \pagenumbering{arabic} % Restart numbering at 1
 
@@ -58,8 +57,28 @@
 
 \section{Introduction}
 
-• Description of the engineering problem or challenge
-• Background context and any relevant history
+One of the engineering challenge we need to deal with is unlike the LTI system
+we focused on in ELEC 221 / 341, the bot is a non-linear, time-variant system,
+moreover, since the inverted pendulum have a tendency to tip over, this system
+is also unstable, that means most of the PID tuning techniques are not
+applicable to the system. For example, the Ziegler-Nichols method is a fast and
+effective tuning technique, but it cannot be applied to the system since the
+method requires a stable system. the non-linearity of the system also implies 
+that the system can only be controlled in a region where the response of the
+system can be approximated as a linear system, and the time-variance of the
+system implies that the system is unobservable since we cannot determine the 
+internal state of the system based on its output measurements. These factors
+bring extra challenge for controlling the system, and we need to come up with
+an effective control scheme that can deal with those issues.\\
+
+Furthermore, there are also enginnering problems we need to solve with the PID 
+controller. For example, the D-term amplifies higher frequency measurement or
+process noise, which can cause large amounts of change in the output. Another
+problem with the PID controller is the integral windup, when a large change in
+setpoint occurs, the I-term will accumulates a significant error during windup,
+causing overshoot and degraded stability and potentially makes the system 
+ubstable. These engineering problems need to be solved by having modification to
+the algorithm, so that it can be addressed.
 
 \section{Requirements, Specifications and Constraints}
 • It's helpful to list these in a table or enumerated, (e.g. R1, R2, etc.) so this can be treated as of checklist of
@@ -910,11 +929,11 @@ wirelessly access it the \textbf{Raspberry Pi Connect} software.
         \hline
         \textbf{Parameter} & \textbf{Behavior When Increased} & \textbf{Behavior When Decreased} \\
         \hline
-        $K_p$ & --- & --- \\
+        $K_p$ & Undershoot & Overshoot, Tipping over when $K_p$ is too high \\
         \hline
-        $K_i$ & --- & --- \\
+        $K_i$ & Drifting, undershoot & Degraded stability, oscillates near the reference angle \\
         \hline
-        $K_d$ & --- & --- \\
+        $K_d$ & Drifting, overshoot & Oscillates near the reference angle \\
         \hline
         $k$ & Faster, Smooth Response. Accumulates Drift. & Increases Noise Influence, Experiences Jitter. No Drift. \\
         \hline
@@ -925,16 +944,50 @@ wirelessly access it the \textbf{Raspberry Pi Connect} software.
     \label{tab:parameter_behavior}
 \end{table}
 
-\subsection{Validation}: Testing methods and results to demonstrate that the product actually will meet the high-level goals.
+\subsection{Validation}
+To evaluate the balancing performance, we placed the robot on the lab floor and
+allowed it to balance without external assistance for one minute. A ruler was
+placed on the ground to measure any drift over time. During testing, the robot
+was able to maintain balance for over five minutes and remained relatively
+stationary, drifting less than five centimeters. These results indicate that the
+system meets the balancing requirement.\\
+
+To test angle management, we applied a force to the top of the pendulum to tilt
+the robot approximately 15 degrees and observed whether it could recover without
+tipping over. The robot successfully recovered from tilts of up to 20 degrees
+without oscillation. However, when the tilt angle exceeded 20 degrees, it was
+unable to recover from the disturbance. These results indicate that the system
+meets the angle management requirement within the expected operating range.\\
 
 \section{Conclusions and Future Work}
-Summary of the outcomes achieved/learned
-Recommendations for next steps or further improvements
+The implementation of the PID controller is effective, allowing the robot to
+balance with reasonable resistance to external disturbances. However, one
+improvement would be to utilize the encoder and implement an additional,
+cascaded PID controller. This could help reduce oscillations and improve the
+robot's ability to remain stationary. It may also enhance the angle
+management — since the current system requires a relatively high I-term to
+maintain balance, it has a degraded stability under significant external
+disturbances. By introducing a cascaded PID controller, the I term in the main
+controller could be reduced, leading to improved stability and better angle
+management.\\
 
+In terms of structural design, we raised the third layer to increase the
+linearity of the system's step response within its controllable region. While
+this improves linearity, it also narrows the linear region and makes the robot
+more prone to external disturbances. One possible improvement is to replace the
+current motors with ones that have less mechanical slack, which would provide a
+more responsive system. This would allow us to lower the third layer, enhancing
+angle management while maintaining linear behavior.\\
+
+Additionally, although the distance sensors are mounted using L-stands, we did
+not cut the mounting holes on the second layer. Instead, the stands were
+taped in place, which led to noticeable shakiness during testing. This affected
+the stability and observability of the system. If more time were available,
+cutting proper mounting holes in the second layer would help makes the sensors
+more secure and improve the overall system performance.
 
 \section{References}
-Cite any academic papers, industry standards, or prior work consulted in the project. Use consistent reference
-formatting (e.g. https://pitt.libguides.com/citationhelp/ieee )
+\printbibliography[heading=none]
 
 
 \section{Appendices}
