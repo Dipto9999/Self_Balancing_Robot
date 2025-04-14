@@ -29,7 +29,7 @@ We designed **WALL-E**, an autonomously balancing two-wheel robot driven wireles
 
 WALL-E prioritizes safe navigation and secure access.
 
-- Detects the nearby environment (i.e.obstacles, color recognition)
+- Detects the nearby environment (i.e. obstacles, color recognition)
 - Prevents unauthorized control with **RFID** authentication and BLE pairing code.
 - Generates live camera feed and uploads to **AWS S3** cloud storage.
 
