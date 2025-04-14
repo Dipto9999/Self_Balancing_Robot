@@ -758,11 +758,10 @@ A code sample for the firmware implementation of input capture interrupt are sho
 \label{sec:colorsensor}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.3\textwidth]{Figures/colorsensor.jpg} % Adjust width as needed
+    \setlength{\fboxsep}{0pt}%
+    \fbox{\includegraphics[width=0.3\textwidth]{Figures/colorsensor.jpg}} % Adjust width as needed
     \caption{TCS34725 Light-to-Digital Sensor}
     \label{fig:colorsensor}
-
-
 \end{figure}
 
 We decided to integrate the \textbf{TCS34725} Color Sensor Module, responsible for detecting the color composition of a surface by measuring the intensity of red, green, blue, and clear light. It communicates via an I$^2$C interface, and was implemented on the \emph{STM32L051} microcontroller. The STM32 HAL libraries simplify I\textsuperscript{2}C communication, as demonstrated in Listing~\ref{lst:stm32_colorsensor_code}.
