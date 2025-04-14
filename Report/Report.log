@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.1.31)  13 APR 2025 21:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.1.31)  13 APR 2025 23:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -555,24 +555,24 @@ Package: blx-case-expl3 2023/03/05 v3.19 expl3 case changing code for biblatex
  (Report.aux)
 \openout1 = `Report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -627,7 +627,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package hyperref Info: Link coloring OFF on input line 48.
+Package hyperref Info: Link coloring OFF on input line 47.
  (Report.out) (Report.out)
 \@outlinefile=\write4
 \openout4 = `Report.out'.
@@ -646,13 +646,13 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'Report.bbl' found.
  (Report.bbl)
-Package biblatex Info: Reference section=0 on input line 48.
-Package biblatex Info: Reference segment=0 on input line 48.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 52.
+Package biblatex Info: Reference section=0 on input line 47.
+Package biblatex Info: Reference segment=0 on input line 47.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 51.
  (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 52.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 51.
  (C:\Users\munta\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
@@ -666,90 +666,99 @@ LaTeX Warning: No \author given.
 \openout5 = `Report.toc'.
 
  [2]
-Underfull \hbox (badness 10000) in paragraph at lines 62--75
+Underfull \hbox (badness 10000) in paragraph at lines 62--65
 
  []
 
+<Figures/WALL-E.jpg, id=331, 3954.775pt x 2224.31pt>
+File: Figures/WALL-E.jpg Graphic file (type jpg)
+<use Figures/WALL-E.jpg>
+Package pdftex.def Info: Figures/WALL-E.jpg  used on input line 69.
+(pdftex.def)             Requested size: 249.33128pt x 140.20694pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 76--84
+Underfull \hbox (badness 10000) in paragraph at lines 83--85
 
  []
 
 [3
-pdfTeX warning (ext4): destination with the same identifier (name{table.1}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.133 
-      ] [4
-pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.193 
-      ]
-<Figures/Functional_Diagram.png, id=314, 1245.65375pt x 864.22874pt>
-File: Figures/Functional_Diagram.png Graphic file (type png)
-<use Figures/Functional_Diagram.png>
-Package pdftex.def Info: Figures/Functional_Diagram.png  used on input line 203.
-(pdftex.def)             Requested size: 498.66258pt x 345.97548pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 209--212
-
- []
-
-[5
 pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.214 \subsection
-                 {Architecture Diagram} <./Figures/Functional_Diagram.png>]
-<Figures/Architecture_Diagram.png, id=323, 753.81625pt x 502.87875pt>
-File: Figures/Architecture_Diagram.png Graphic file (type png)
-<use Figures/Architecture_Diagram.png>
-Package pdftex.def Info: Figures/Architecture_Diagram.png  used on input line 218.
-(pdftex.def)             Requested size: 349.06227pt x 232.8617pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 224--226
+l.125 
+      
+pdfTeX warning (ext4): destination with the same identifier (name{table.1}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.125 
+       <./Figures/WALL-E.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 166--169
 
  []
 
-<Figures/r3step.png, id=325, 1171.37625pt x 878.28125pt>
-File: Figures/r3step.png Graphic file (type png)
-<use Figures/r3step.png>
-Package pdftex.def Info: Figures/r3step.png  used on input line 257.
-(pdftex.def)             Requested size: 324.12762pt x 243.02235pt.
+[4
+pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.192 A
+       lthough most deadlines were met, a few, particularly the robot balanc...]
+<Figures/Functional_Diagram.png, id=352, 1245.65375pt x 864.22874pt>
+File: Figures/Functional_Diagram.png Graphic file (type png)
+<use Figures/Functional_Diagram.png>
+Package pdftex.def Info: Figures/Functional_Diagram.png  used on input line 207.
+(pdftex.def)             Requested size: 498.66258pt x 345.97548pt.
+ [5]
+Underfull \hbox (badness 10000) in paragraph at lines 213--216
+
+ []
+
+<Figures/Architecture_Diagram.png, id=359, 753.81625pt x 502.87875pt>
+File: Figures/Architecture_Diagram.png Graphic file (type png)
+<use Figures/Architecture_Diagram.png>
+Package pdftex.def Info: Figures/Architecture_Diagram.png  used on input line 222.
+(pdftex.def)             Requested size: 349.06227pt x 232.8617pt.
 [6
 pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.260 
-       <./Figures/Architecture_Diagram.png>]
-<Figures/3rdlayer.png, id=335, 1044.90375pt x 425.59pt>
-File: Figures/3rdlayer.png Graphic file (type png)
-<use Figures/3rdlayer.png>
-Package pdftex.def Info: Figures/3rdlayer.png  used on input line 266.
-(pdftex.def)             Requested size: 498.66258pt x 203.10545pt.
-<Figures/standDis.png, id=336, 611.28375pt x 445.665pt>
-File: Figures/standDis.png Graphic file (type png)
-<use Figures/standDis.png>
-Package pdftex.def Info: Figures/standDis.png  used on input line 287.
-(pdftex.def)             Requested size: 249.33128pt x 181.77858pt.
- [7
-pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.289 \end{figure}
-                  
-pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.289 \end{figure}
-                   <./Figures/r3step.png> <./Figures/3rdlayer.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 306--308
+l.226 
+       <./Figures/Functional_Diagram.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 228--230
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 309--313
+<Figures/r3step.png, id=368, 1171.37625pt x 878.28125pt>
+File: Figures/r3step.png Graphic file (type png)
+<use Figures/r3step.png>
+Package pdftex.def Info: Figures/r3step.png  used on input line 261.
+(pdftex.def)             Requested size: 324.12762pt x 243.02235pt.
+[7
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.264 
+       <./Figures/Architecture_Diagram.png>]
+<Figures/3rdlayer.png, id=376, 1044.90375pt x 425.59pt>
+File: Figures/3rdlayer.png Graphic file (type png)
+<use Figures/3rdlayer.png>
+Package pdftex.def Info: Figures/3rdlayer.png  used on input line 270.
+(pdftex.def)             Requested size: 498.66258pt x 203.10545pt.
+<Figures/standDis.png, id=377, 611.28375pt x 445.665pt>
+File: Figures/standDis.png Graphic file (type png)
+<use Figures/standDis.png>
+Package pdftex.def Info: Figures/standDis.png  used on input line 292.
+(pdftex.def)             Requested size: 249.33128pt x 181.77858pt.
+ [8
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.294 \end{figure}
+                  
+pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.294 \end{figure}
+                   <./Figures/r3step.png> <./Figures/3rdlayer.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 311--313
 
  []
 
@@ -758,28 +767,18 @@ Underfull \hbox (badness 10000) in paragraph at lines 314--318
 
  []
 
-<Figures/plantModelSimplification.png, id=344, 1611.01875pt x 508.90125pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 319--323
+
+ []
+
+<Figures/plantModelSimplification.png, id=385, 1611.01875pt x 508.90125pt>
 File: Figures/plantModelSimplification.png Graphic file (type png)
 <use Figures/plantModelSimplification.png>
-Package pdftex.def Info: Figures/plantModelSimplification.png  used on input line 328.
+Package pdftex.def Info: Figures/plantModelSimplification.png  used on input line 333.
 (pdftex.def)             Requested size: 498.66258pt x 157.51703pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 319--330
-
- []
-
-[8
-pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.331 
-       <./Figures/standDis.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 332--334
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 337--341
+Underfull \hbox (badness 10000) in paragraph at lines 324--335
 
  []
 
@@ -787,459 +786,542 @@ Underfull \hbox (badness 10000) in paragraph at lines 337--341
 pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.371 \end{align*}
-                   <./Figures/plantModelSimplification.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 384--386
+l.336 
+       <./Figures/standDis.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 337--339
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 398--403
+Underfull \hbox (badness 10000) in paragraph at lines 342--346
 
  []
 
-[10]
-<Figures/simModel.png, id=372, 509.905pt x 141.52875pt>
-File: Figures/simModel.png Graphic file (type png)
-<use Figures/simModel.png>
-Package pdftex.def Info: Figures/simModel.png  used on input line 454.
-(pdftex.def)             Requested size: 498.66258pt x 138.41432pt.
-<Figures/step25.png, id=373, 893.3375pt x 395.4775pt>
-File: Figures/step25.png Graphic file (type png)
-<use Figures/step25.png>
-Package pdftex.def Info: Figures/step25.png  used on input line 461.
-(pdftex.def)             Requested size: 498.66258pt x 220.75984pt.
-<Figures/step50.png, id=374, 896.34875pt x 398.48875pt>
-File: Figures/step50.png Graphic file (type png)
-<use Figures/step50.png>
-Package pdftex.def Info: Figures/step50.png  used on input line 465.
-(pdftex.def)             Requested size: 498.66258pt x 221.68678pt.
- [11
+[10
 pdfTeX warning (ext4): destination with the same identifier (name{figure.7}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.468 W
-       e can see that for both cases the system is stable, with different de...
+l.376 \end{align*}
+                   <./Figures/plantModelSimplification.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 389--391
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 403--408
+
+ []
+
+[11]
+<Figures/simModel.png, id=413, 509.905pt x 141.52875pt>
+File: Figures/simModel.png Graphic file (type png)
+<use Figures/simModel.png>
+Package pdftex.def Info: Figures/simModel.png  used on input line 459.
+(pdftex.def)             Requested size: 498.66258pt x 138.41432pt.
+<Figures/step25.png, id=414, 893.3375pt x 395.4775pt>
+File: Figures/step25.png Graphic file (type png)
+<use Figures/step25.png>
+Package pdftex.def Info: Figures/step25.png  used on input line 466.
+(pdftex.def)             Requested size: 498.66258pt x 220.75984pt.
+<Figures/step50.png, id=415, 896.34875pt x 398.48875pt>
+File: Figures/step50.png Graphic file (type png)
+<use Figures/step50.png>
+Package pdftex.def Info: Figures/step50.png  used on input line 470.
+(pdftex.def)             Requested size: 498.66258pt x 221.68678pt.
+ [12
 pdfTeX warning (ext4): destination with the same identifier (name{figure.8}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.468 W
-       e can see that for both cases the system is stable, with different de... <./Figures/simModel.png> <./Figures/step25.png>]
-<Figures/arduino.jpg, id=383, 264.99pt x 216.81pt>
-File: Figures/arduino.jpg Graphic file (type jpg)
-<use Figures/arduino.jpg>
-Package pdftex.def Info: Figures/arduino.jpg  used on input line 475.
-(pdftex.def)             Requested size: 149.6003pt x 122.40193pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 481--486
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 487--489
-
- []
-
-<Figures/imu.png, id=384, 652.4375pt x 367.3725pt>
-File: Figures/imu.png Graphic file (type png)
-<use Figures/imu.png>
-Package pdftex.def Info: Figures/imu.png  used on input line 504.
-(pdftex.def)             Requested size: 299.20059pt x 168.47766pt.
-[12
+l.473 W
+       e can see that for both cases the system is stable, with different de...
 pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.508 
-      
+l.473 W
+       e can see that for both cases the system is stable, with different de... <./Figures/simModel.png> <./Figures/step25.png>]
+<Figures/arduino.jpg, id=425, 264.99pt x 216.81pt>
+File: Figures/arduino.jpg Graphic file (type jpg)
+<use Figures/arduino.jpg>
+Package pdftex.def Info: Figures/arduino.jpg  used on input line 480.
+(pdftex.def)             Requested size: 149.6003pt x 122.40193pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 486--491
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 492--494
+
+ []
+
+<Figures/imu.png, id=426, 652.4375pt x 367.3725pt>
+File: Figures/imu.png Graphic file (type png)
+<use Figures/imu.png>
+Package pdftex.def Info: Figures/imu.png  used on input line 509.
+(pdftex.def)             Requested size: 299.20059pt x 168.47766pt.
+[13
 pdfTeX warning (ext4): destination with the same identifier (name{figure.10}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.508 
-       <./Figures/step50.png> <./Figures/arduino.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 510--512
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 528--530
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 531--532
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 564--566
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 567--569
-
- []
-
-<Figures/Control_Loop_Diagram.png, id=396, 663.47874pt x 367.3725pt>
-File: Figures/Control_Loop_Diagram.png Graphic file (type png)
-<use Figures/Control_Loop_Diagram.png>
-Package pdftex.def Info: Figures/Control_Loop_Diagram.png  used on input line 575.
-(pdftex.def)             Requested size: 373.99693pt x 207.08374pt.
-[13
+l.513 
+      
 pdfTeX warning (ext4): destination with the same identifier (name{figure.11}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.578 \end{figure}
-                   <./Figures/imu.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 581--583
+l.513 
+       <./Figures/step50.png> <./Figures/arduino.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 515--517
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 584--585
+Underfull \hbox (badness 10000) in paragraph at lines 533--535
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 592--594
+Underfull \hbox (badness 10000) in paragraph at lines 536--537
 
  []
 
-<Figures/PWM_Control.jpg, id=406, 425.33907pt x 113.67468pt>
-File: Figures/PWM_Control.jpg Graphic file (type jpg)
-<use Figures/PWM_Control.jpg>
-Package pdftex.def Info: Figures/PWM_Control.jpg  used on input line 598.
-(pdftex.def)             Requested size: 249.33128pt x 66.63557pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 616--618
+Underfull \hbox (badness 10000) in paragraph at lines 561--562
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 568--570
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 571--573
+
+ []
+
+<Figures/Control_Loop_Diagram.png, id=437, 663.47874pt x 367.3725pt>
+File: Figures/Control_Loop_Diagram.png Graphic file (type png)
+<use Figures/Control_Loop_Diagram.png>
+Package pdftex.def Info: Figures/Control_Loop_Diagram.png  used on input line 579.
+(pdftex.def)             Requested size: 373.99693pt x 207.08374pt.
 [14
 pdfTeX warning (ext4): destination with the same identifier (name{figure.12}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.627 \subsubsection
-                    {Forward/Backward Movement}
-pdfTeX warning (ext4): destination with the same identifier (name{figure.13}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.627 \subsubsection
-                    {Forward/Backward Movement} <./Figures/Control_Loop_Diagram.png> <./Figures/PWM_Control.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 630--632
+l.582 \end{figure}
+                   <./Figures/imu.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 585--587
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 637--639
+Underfull \hbox (badness 10000) in paragraph at lines 588--589
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 654--657
+Underfull \hbox (badness 10000) in paragraph at lines 596--598
 
  []
 
+<Figures/PWM_Control.jpg, id=447, 425.33907pt x 113.67468pt>
+File: Figures/PWM_Control.jpg Graphic file (type jpg)
+<use Figures/PWM_Control.jpg>
+Package pdftex.def Info: Figures/PWM_Control.jpg  used on input line 602.
+(pdftex.def)             Requested size: 249.33128pt x 66.63557pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 658--660
-
- []
-
-<Figures/Unauthorized_Connection.jpg, id=420, 793.46437pt x 285.31593pt>
-File: Figures/Unauthorized_Connection.jpg Graphic file (type jpg)
-<use Figures/Unauthorized_Connection.jpg>
-Package pdftex.def Info: Figures/Unauthorized_Connection.jpg  used on input line 664.
-(pdftex.def)             Requested size: 249.33128pt x 89.65295pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 670--671
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 680--683
+Underfull \hbox (badness 10000) in paragraph at lines 620--622
 
  []
 
 [15
+pdfTeX warning (ext4): destination with the same identifier (name{figure.13}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.631 \subsubsection
+                    {Forward/Backward Movement}
 pdfTeX warning (ext4): destination with the same identifier (name{figure.14}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.687 
-       <./Figures/Unauthorized_Connection.jpg>]
-<Figures/Robot_Driver_App.jpg, id=429, 1115.16624pt x 2055.68pt>
-File: Figures/Robot_Driver_App.jpg Graphic file (type jpg)
-<use Figures/Robot_Driver_App.jpg>
-Package pdftex.def Info: Figures/Robot_Driver_App.jpg  used on input line 690.
-(pdftex.def)             Requested size: 124.66563pt x 229.79546pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 696--698
+l.631 \subsubsection
+                    {Forward/Backward Movement} <./Figures/Control_Loop_Diagram.png> <./Figures/PWM_Control.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 634--636
 
  []
 
-<Figures/stm32.jpg, id=431, 642.4pt x 642.4pt>
-File: Figures/stm32.jpg Graphic file (type jpg)
-<use Figures/stm32.jpg>
-Package pdftex.def Info: Figures/stm32.jpg  used on input line 709.
-(pdftex.def)             Requested size: 149.6003pt x 149.6015pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 641--643
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 658--661
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 662--664
+
+ []
+
+<Figures/Unauthorized_Connection.jpg, id=461, 793.46437pt x 285.31593pt>
+File: Figures/Unauthorized_Connection.jpg Graphic file (type jpg)
+<use Figures/Unauthorized_Connection.jpg>
+Package pdftex.def Info: Figures/Unauthorized_Connection.jpg  used on input line 668.
+(pdftex.def)             Requested size: 249.33128pt x 89.65295pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 674--675
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 684--687
+
+ []
+
 [16
 pdfTeX warning (ext4): destination with the same identifier (name{figure.15}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.715 
-      
+l.691 
+       <./Figures/Unauthorized_Connection.jpg>]
+<Figures/Robot_Driver_App.jpg, id=470, 1115.16624pt x 2055.68pt>
+File: Figures/Robot_Driver_App.jpg Graphic file (type jpg)
+<use Figures/Robot_Driver_App.jpg>
+Package pdftex.def Info: Figures/Robot_Driver_App.jpg  used on input line 694.
+(pdftex.def)             Requested size: 124.66563pt x 229.79546pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 700--702
+
+ []
+
+<Figures/stm32.jpg, id=472, 642.4pt x 642.4pt>
+File: Figures/stm32.jpg Graphic file (type jpg)
+<use Figures/stm32.jpg>
+Package pdftex.def Info: Figures/stm32.jpg  used on input line 713.
+(pdftex.def)             Requested size: 149.6003pt x 149.6015pt.
+[17
 pdfTeX warning (ext4): destination with the same identifier (name{figure.16}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.715 
-       <./Figures/Robot_Driver_App.jpg> <./Figures/stm32.jpg>]
-<Figures/stm32_pinout_in.png, id=444, 384.6872pt x 394.47375pt>
-File: Figures/stm32_pinout_in.png Graphic file (type png)
-<use Figures/stm32_pinout_in.png>
-Package pdftex.def Info: Figures/stm32_pinout_in.png  used on input line 721.
-(pdftex.def)             Requested size: 264.98834pt x 271.72972pt.
-
-Overfull \hbox (40.5917pt too wide) in paragraph at lines 721--722
- [][] 
- []
-
-<Figures/stm32_pinout_out.png, id=445, 429.85594pt x 381.67593pt>
-File: Figures/stm32_pinout_out.png Graphic file (type png)
-<use Figures/stm32_pinout_out.png>
-Package pdftex.def Info: Figures/stm32_pinout_out.png  used on input line 727.
-(pdftex.def)             Requested size: 239.35995pt x 212.53151pt.
-<Figures/distancesensor.png, id=446, 602.25pt x 359.84438pt>
-File: Figures/distancesensor.png Graphic file (type png)
-<use Figures/distancesensor.png>
-Package pdftex.def Info: Figures/distancesensor.png  used on input line 742.
-(pdftex.def)             Requested size: 149.6003pt x 89.38434pt.
-[17
+l.719 
+      
 pdfTeX warning (ext4): destination with the same identifier (name{figure.17}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.753 \
-       
+l.719 
+       <./Figures/Robot_Driver_App.jpg> <./Figures/stm32.jpg>]
+<Figures/stm32_pinout_in.png, id=485, 384.6872pt x 394.47375pt>
+File: Figures/stm32_pinout_in.png Graphic file (type png)
+<use Figures/stm32_pinout_in.png>
+Package pdftex.def Info: Figures/stm32_pinout_in.png  used on input line 725.
+(pdftex.def)             Requested size: 264.98834pt x 271.72972pt.
+
+Overfull \hbox (40.5917pt too wide) in paragraph at lines 725--726
+ [][] 
+ []
+
+<Figures/stm32_pinout_out.png, id=486, 429.85594pt x 381.67593pt>
+File: Figures/stm32_pinout_out.png Graphic file (type png)
+<use Figures/stm32_pinout_out.png>
+Package pdftex.def Info: Figures/stm32_pinout_out.png  used on input line 731.
+(pdftex.def)             Requested size: 239.35995pt x 212.53151pt.
+<Figures/distancesensor.png, id=487, 602.25pt x 359.84438pt>
+File: Figures/distancesensor.png Graphic file (type png)
+<use Figures/distancesensor.png>
+Package pdftex.def Info: Figures/distancesensor.png  used on input line 746.
+(pdftex.def)             Requested size: 149.6003pt x 89.38434pt.
+[18
 pdfTeX warning (ext4): destination with the same identifier (name{figure.18}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.753 \
+l.757 \
        
 pdfTeX warning (ext4): destination with the same identifier (name{figure.19}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.753 \
-        <./Figures/stm32_pinout_in.png> <./Figures/stm32_pinout_out.png> <./Figures/distancesensor.png>]
-<Figures/colorsensor.jpg, id=458, 446.1468pt x 361.35pt>
-File: Figures/colorsensor.jpg Graphic file (type jpg)
-<use Figures/colorsensor.jpg>
-Package pdftex.def Info: Figures/colorsensor.jpg  used on input line 762.
-(pdftex.def)             Requested size: 149.6003pt x 121.16464pt.
-<Figures/rfidsensor.png, id=460, 301.125pt x 301.125pt>
-File: Figures/rfidsensor.png Graphic file (type png)
-<use Figures/rfidsensor.png>
-Package pdftex.def Info: Figures/rfidsensor.png  used on input line 778.
-(pdftex.def)             Requested size: 149.6003pt x 149.6064pt.
- [18
+l.757 \
+       
 pdfTeX warning (ext4): destination with the same identifier (name{figure.20}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.790 
-      
+l.757 \
+        <./Figures/stm32_pinout_in.png> <./Figures/stm32_pinout_out.png> <./Figures/distancesensor.png>]
+<Figures/colorsensor.jpg, id=500, 446.1468pt x 361.35pt>
+File: Figures/colorsensor.jpg Graphic file (type jpg)
+<use Figures/colorsensor.jpg>
+Package pdftex.def Info: Figures/colorsensor.jpg  used on input line 766.
+(pdftex.def)             Requested size: 149.6003pt x 121.16464pt.
+<Figures/rfidsensor.png, id=502, 301.125pt x 301.125pt>
+File: Figures/rfidsensor.png Graphic file (type png)
+<use Figures/rfidsensor.png>
+Package pdftex.def Info: Figures/rfidsensor.png  used on input line 782.
+(pdftex.def)             Requested size: 149.6003pt x 149.6064pt.
+ [19
 pdfTeX warning (ext4): destination with the same identifier (name{figure.21}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.790 
-       <./Figures/colorsensor.jpg> <./Figures/rfidsensor.png>]
-<Figures/speaker.png, id=472, 287.0725pt x 291.0875pt>
-File: Figures/speaker.png Graphic file (type png)
-<use Figures/speaker.png>
-Package pdftex.def Info: Figures/speaker.png  used on input line 795.
-(pdftex.def)             Requested size: 99.73099pt x 101.12262pt.
-<Figures/PiZero_2.jpg, id=474, 1284.8pt x 1284.8pt>
-File: Figures/PiZero_2.jpg Graphic file (type jpg)
-<use Figures/PiZero_2.jpg>
-Package pdftex.def Info: Figures/PiZero_2.jpg  used on input line 820.
-(pdftex.def)             Requested size: 149.6003pt x 149.58191pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 828--831
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 832--834
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 835--838
-
- []
-
-<Figures/PiCamera_App.jpg, id=475, 633.11531pt x 529.98pt>
-File: Figures/PiCamera_App.jpg Graphic file (type jpg)
-<use Figures/PiCamera_App.jpg>
-Package pdftex.def Info: Figures/PiCamera_App.jpg  used on input line 842.
-(pdftex.def)             Requested size: 249.33128pt x 208.71306pt.
-[19
+l.794 
+      
 pdfTeX warning (ext4): destination with the same identifier (name{figure.22}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.845 \end{figure}
-                  
+l.794 
+       <./Figures/colorsensor.jpg> <./Figures/rfidsensor.png>]
+<Figures/speaker.png, id=513, 287.0725pt x 291.0875pt>
+File: Figures/speaker.png Graphic file (type png)
+<use Figures/speaker.png>
+Package pdftex.def Info: Figures/speaker.png  used on input line 799.
+(pdftex.def)             Requested size: 99.73099pt x 101.12262pt.
+<Figures/PiZero_2.jpg, id=515, 1284.8pt x 1284.8pt>
+File: Figures/PiZero_2.jpg Graphic file (type jpg)
+<use Figures/PiZero_2.jpg>
+Package pdftex.def Info: Figures/PiZero_2.jpg  used on input line 824.
+(pdftex.def)             Requested size: 149.6003pt x 149.58191pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 832--835
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 836--838
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 839--842
+
+ []
+
+<Figures/PiCamera_App.jpg, id=516, 633.11531pt x 529.98pt>
+File: Figures/PiCamera_App.jpg Graphic file (type jpg)
+<use Figures/PiCamera_App.jpg>
+Package pdftex.def Info: Figures/PiCamera_App.jpg  used on input line 846.
+(pdftex.def)             Requested size: 249.33128pt x 208.71306pt.
+[20
 pdfTeX warning (ext4): destination with the same identifier (name{figure.23}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.845 \end{figure}
-                   <./Figures/speaker.png> <./Figures/PiZero_2.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 861--864
-
- []
-
-<Figures/S3Bucket_Files.jpg, id=485, 1353.55687pt x 612.03656pt>
-File: Figures/S3Bucket_Files.jpg Graphic file (type jpg)
-<use Figures/S3Bucket_Files.jpg>
-Package pdftex.def Info: Figures/S3Bucket_Files.jpg  used on input line 868.
-(pdftex.def)             Requested size: 498.66258pt x 225.47873pt.
-[20
+l.849 \end{figure}
+                  
 pdfTeX warning (ext4): destination with the same identifier (name{figure.24}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.872 
-       <./Figures/PiCamera_App.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 883--884
+l.849 \end{figure}
+                   <./Figures/speaker.png> <./Figures/PiZero_2.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 865--868
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 885--886
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 891--893
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 894--896
-
- []
-
-<Figures/Stripchart_k06.jpg, id=493, 650.43pt x 545.18681pt>
-File: Figures/Stripchart_k06.jpg Graphic file (type jpg)
-<use Figures/Stripchart_k06.jpg>
-Package pdftex.def Info: Figures/Stripchart_k06.jpg  used on input line 900.
-(pdftex.def)             Requested size: 299.20059pt x 250.78897pt.
+<Figures/S3Bucket_Files.jpg, id=526, 1353.55687pt x 612.03656pt>
+File: Figures/S3Bucket_Files.jpg Graphic file (type jpg)
+<use Figures/S3Bucket_Files.jpg>
+Package pdftex.def Info: Figures/S3Bucket_Files.jpg  used on input line 872.
+(pdftex.def)             Requested size: 498.66258pt x 225.47873pt.
 [21
 pdfTeX warning (ext4): destination with the same identifier (name{figure.25}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.904 
-       <./Figures/S3Bucket_Files.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 906--908
+l.876 
+       <./Figures/PiCamera_App.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 887--888
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 917--919
+Underfull \hbox (badness 10000) in paragraph at lines 889--890
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 922--923
+Underfull \hbox (badness 10000) in paragraph at lines 895--897
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 932--934
+Underfull \hbox (badness 10000) in paragraph at lines 898--900
 
  []
 
+<Figures/Stripchart_k06.jpg, id=534, 650.43pt x 545.18681pt>
+File: Figures/Stripchart_k06.jpg Graphic file (type jpg)
+<use Figures/Stripchart_k06.jpg>
+Package pdftex.def Info: Figures/Stripchart_k06.jpg  used on input line 904.
+(pdftex.def)             Requested size: 299.20059pt x 250.78897pt.
 [22
 pdfTeX warning (ext4): destination with the same identifier (name{figure.26}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.957 
-       <./Figures/Stripchart_k06.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 961--967
+l.908 
+       <./Figures/S3Bucket_Files.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 910--912
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 968--974
+Underfull \hbox (badness 10000) in paragraph at lines 921--923
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 979--989
+Underfull \hbox (badness 10000) in paragraph at lines 926--927
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 990--997
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 998--1004
+Underfull \hbox (badness 10000) in paragraph at lines 936--938
 
  []
 
 [23
-pdfTeX warning (ext4): destination with the same identifier (name{table.3}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1012 \subsection
-                  {Appendix: Budget}]
-<Figures/financials.png, id=516, 1678.27pt x 242.9075pt>
-File: Figures/financials.png Graphic file (type png)
-<use Figures/financials.png>
-Package pdftex.def Info: Figures/financials.png  used on input line 1016.
-(pdftex.def)             Requested size: 498.66258pt x 72.17227pt.
-
-Underfull \hbox (badness 1014) in paragraph at lines 1047--1047
-[]\OT1/cmr/m/n/10 high noise vari-ance (es-pe-cially with
- []
-
-[24
 pdfTeX warning (ext4): destination with the same identifier (name{figure.27}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1080 ...tation}, label={lst:arduino_angle_code}]
-                                                  
+l.961 
+       <./Figures/Stripchart_k06.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 973--975
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 976--977
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 978--979
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 983--984
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 985--989
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 994--998
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 999--1004
+
+ []
+
+[24
+pdfTeX warning (ext4): destination with the same identifier (name{table.3}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1006 \subsubsection
+                     {STM32 Sensors}]
+Underfull \hbox (badness 10000) in paragraph at lines 1018--1021
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1022--1024
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1029--1032
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1033--1036
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1037--1040
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1045--1048
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1049--1050
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1055--1065
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1066--1073
+
+ []
+
+[25]
+Underfull \hbox (badness 1072) in paragraph at lines 1084--1085
+[]\OT1/cmr/m/n/10 Finalize the robot's phys-i-cal de-sign|including mass dis-tri-bu-tion, wheel-base, and com-po-nent place-
+ []
+
+<Figures/financials.png, id=565, 1678.27pt x 242.9075pt>
+File: Figures/financials.png Graphic file (type png)
+<use Figures/financials.png>
+Package pdftex.def Info: Figures/financials.png  used on input line 1103.
+(pdftex.def)             Requested size: 498.66258pt x 72.17227pt.
+
+Overfull \hbox (0.79999pt too wide) in paragraph at lines 1103--1104
+ [][] 
+ []
+
+[26]
+Underfull \hbox (badness 1014) in paragraph at lines 1134--1134
+[]\OT1/cmr/m/n/10 high noise vari-ance (es-pe-cially with
+ []
+
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 1165.
+[27
+pdfTeX warning (ext4): destination with the same identifier (name{figure.28}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1171   if 
+            (!IMU.gyroscopeAvailable()) return;
 pdfTeX warning (ext4): destination with the same identifier (name{table.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1080 ...tation}, label={lst:arduino_angle_code}]
-                                                   <./Figures/financials.png>]
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 1080.
- [25] [26] [27] [28] [29] [30] [31] [32] [33] [34]
-Overfull \hbox (21.14848pt too wide) in paragraph at lines 1801--1802
+l.1171   if 
+            (!IMU.gyroscopeAvailable()) return; <./Figures/financials.png>] [28] [29] [30] [31] [32] [33] [34] [35] [36] [37]
+Overfull \hbox (21.14848pt too wide) in paragraph at lines 1886--1887
 [][][][][][][][][][][][][][][][][][][][][][][][][][]  
  []
 
-[35] [36] [37] [38] [39] [40] (Report.aux)
+[38] [39] [40] [41] [42] [43] (Report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
 Package rerunfilecheck Info: File `Report.out' has not changed.
-(rerunfilecheck)             Checksum: 3683A175C4260CAF4F8760A61FA13B70;8974.
+(rerunfilecheck)             Checksum: C47314F040F267D365BBE4A56FF7BCAC;9701.
 Package logreq Info: Writing requests to 'Report.run.xml'.
 \openout1 = `Report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 21150 strings out of 474542
- 359452 string characters out of 5744446
- 2179978 words of memory out of 5000000
- 41973 multiletter control sequences out of 15000+600000
+ 21176 strings out of 474542
+ 359958 string characters out of 5744446
+ 2183978 words of memory out of 5000000
+ 41988 multiletter control sequences out of 15000+600000
  568215 words of font info for 75 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,11n,81p,1217b,1999s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\munta\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex8.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt8.pfb><C:/Users/munta/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on Report.pdf (41 pages, 5390630 bytes).
+Output written on Report.pdf (44 pages, 6500781 bytes).
 PDF statistics:
- 1973 PDF objects out of 2073 (max. 8388607)
- 1191 named destinations out of 1200 (max. 500000)
- 576 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 2029 PDF objects out of 2073 (max. 8388607)
+ 1202 named destinations out of 1440 (max. 500000)
+ 637 words of extra memory for PDF output out of 10000 (max. 10000000)
 

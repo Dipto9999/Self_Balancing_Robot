@@ -35,12 +35,11 @@
     \Huge \textbf{Self-Balancing Robot}
 
     \vspace{100pt}
-    \vspace{100pt}
 
     \large Course: ELEC 391 201 2024W2 \\[1em]
     \large Authors: Team B-17 (Tomaz Zlindra, Muntakim Rahman, Xianyao Li) \\[1em]
     \large Instructors: Dr.\ Joseph Yan and Dr.\ Cristian Grecu \\[1em]
-    \large Submission Date: April 13th, 2025 \\
+    \large Submission Date: 2025--04--13 \\
 }
 
 \date{} % Remove default date
@@ -49,6 +48,7 @@
 
 \pagenumbering{gobble} % Suppress page numbering for the title page
 \maketitle
+
 \newpage % Start numbering after title page
 \pagenumbering{arabic} % Restart numbering at 1
 
@@ -59,38 +59,29 @@
 \section{Introduction}
 
 \begin{minipage}{\linewidth}
-    One of the engineering challenge we need to deal with is unlike the LTI system
-    we focused on in ELEC 221 / 341, the bot is a non-linear, time-variant system,
-    moreover, since the inverted pendulum have a tendency to tip over, this system
-    is also unstable, that means most of the PID tuning techniques are not
-    applicable to the system. For example, the Ziegler-Nichols method is a fast and
-    effective tuning technique, but it cannot be applied to the system since the
-    method requires a stable system. the non-linearity of the system also implies
-    that the system can only be controlled in a region where the response of the
-    system can be approximated as a linear system, and the time-variance of the
-    system implies that the system is unobservable since we cannot determine the
-    internal state of the system based on its output measurements. These factors
-    bring extra challenge for controlling the system, and we need to come up with
-    an effective control scheme that can deal with those issues.\\
+    This project focused on the design and development of a self-balancing robot which can be driven via \textbf{Bluetooth Low Energy (BLE)}.
+    The robot autonomously maintained its upright position with real-time feedback from an on-board microcontroller \textbf{IMU},
+    with closed-loop controller continuously adjusting the motors to correct for angular tilt. \\
+\end{minipage}
 
-    Furthermore, there are also enginnering problems we need to solve with the PID
-    controller. For example, the D-term amplifies higher frequency measurement or
-    process noise, which can cause large amounts of change in the output. Another
-    problem with the PID controller is the integral windup, when a large change in
-    setpoint occurs, the I-term will accumulates a significant error during windup,
-    causing overshoot and degraded stability and potentially makes the system
-    ubstable. These engineering problems need to be solved by having modification to
-    the algorithm, so that it can be addressed. \\
+\begin{figure}[H]
+    \centering
+    {\setlength{\fboxsep}{0pt}\fbox{\includegraphics[width=0.5\textwidth]{Figures/WALL-E.jpg}}}
+    \caption{WALL-E: Self-Balancing Robot Prototype}
+    \label{fig:wall_e}
+\end{figure}
+
+\begin{minipage}{\linewidth}
+    It was also designed to support wireless control from a human user, responding to directional commands from a mobile device.
+    The system integrates both stability and mobility, demonstrating precise control in dynamic environments.
 \end{minipage}
 
 \section{Requirements, Specifications and Constraints}
 
 \subsection{Functional Requirements}
 
-Table~\ref{tab:functional_requirements} lists the functional requirements of the self-balancing robot. These are prioritized by category,
-either a core or additional feature. The core functionality of the robot relates to its ability to autonomously balance itself and be driven
-by a human user via Bluetooth. The additional features were designed to enhance the robot's capabilities, in detecting environmental factors and
-providing useful information to the user.
+Table~\ref{tab:functional_requirements} lists the functional requirements of the self-balancing robot. These are prioritized by category as
+either a core or additional feature. \\
 
 \begin{table}[H]
     \centering
@@ -128,8 +119,13 @@ providing useful information to the user.
     \label{tab:functional_requirements}
 \end{table}
 
+The core functionality of the robot relate to its ability to autonomously balance itself and be driven
+by a human user via \textbf{BLE}. The additional features were designed to enhance the robot's capabilities, in detecting environmental factors and
+providing useful information to the user.
+
 \subsection{Performance Requirements}
-Table \ref{tab:performance_requirements} outlines the performance requirements for the self-balancing robot, providing specific quantitative targets to assess the system's effectiveness. These requirements closely align with the functional requirements, but with the addition of measurable criteria—such as recovery angle, speed and transmission speed. By translating functional goals into performance metrics, we ensured that the robot’s behavior could be consistently validated against clearly defined benchmarks. This approach helped guide both the design process and iterative improvements throughout development.
+Table \ref{tab:performance_requirements} outlines the performance requirements for the self-balancing robot, providing specific quantitative targets to assess the system's effectiveness.
+These closely align with the functional requirements, but with the addition of measurable criteria—such as recovery angle, speed and transmission speed.
 
 \begin{table}[H]
     \centering
@@ -138,52 +134,60 @@ Table \ref{tab:performance_requirements} outlines the performance requirements f
         \hline
         \textbf{ID} & \textbf{Requirement Description} & \textbf{Priority} \\
         \hline
-        PR1 & The robot must respond to a 15 degree disturbance and re-balance & Core \\
+        PR1 & The robot must respond to a $15 ^\circ$  disturbance and re-balance & Core \\
         \hline
-        PR2 & The robot must maintain balance with a positional drift of less than 15 cm over 10 seconds on a flat surface. & Core \\
+        PR2 & The robot must maintain balance with a positional drift of less than $15$ cm over $10$s on a flat surface. & Core \\
         \hline
-        PR3 & The Bluetooth latency for control commands must be less than 100 ms. & Core \\
+        PR3 & The Bluetooth latency for control commands must be less than $100$ ms. & Core \\
         \hline
-        PR4 & The robot must be able to maintain a Bluetooth connection within a range of at least 5 meters. & Core \\
+        PR4 & The robot must be able to maintain a Bluetooth connection within a range of at least $5$m. & Core \\
         \hline
-        PR5 & The robot must be to move forward, backward, left (45$^\circ$) and right (45$^\circ$) within 5 seconds & Core \\
+        PR5 & The robot must be to move forward, backward, left ($45^\circ$) and right ($45^\circ$) within 5 seconds & Core \\
         \hline
-        PR6 & The obstacle detection system must stop the robot within 1 cm of an obstacle detected between 2–30 cm. & Additional Feature \\
+        PR6 & The obstacle detection system must stop the robot within $1$cm of an obstacle detected between $2-30$cm. & Additional Feature \\
         \hline
-        PR7 & The color sensor must identify red and respond accordingly within 100ms & Additional Feature \\
+        PR7 & The color sensor must identify red and respond accordingly within $100$ms & Additional Feature \\
         \hline
-        PR8 & The RFID reader must successfully detect and authenticate tags within 1 second. & Additional Feature \\
+        PR8 & The RFID reader must successfully detect and authenticate tags within $1$s. & Additional Feature \\
         \hline
-        PR9 & The Raspberry Pi Zero must transmit a camera feed at no less than 1 FPS. & Additional Feature \\
+        PR9 & The Raspberry Pi Zero must transmit a camera feed at no less than $1$ FPS. & Additional Feature \\
         \hline
     \end{tabularx}
     \caption{Performance Requirements of the Self-Balancing Robot}
     \label{tab:performance_requirements}
 \end{table}
 
+By translating functional goals into performance metrics, we ensured that the robot's behavior could be consistently validated against clearly defined benchmarks.
+This approach helped guide both the design process and iterative improvements throughout development.
+
 \subsection{Constraints}
 
 \subsubsection{Financial}
-This project operated under a strict financial constraint, with a maximum budget of \$65 allocated specifically for additional features (excluding taxes and shipping). To maximize the number of features within this limit, we opted to purchase components from alternative vendors when they offered more competitive prices than DigiKey. We determined that the most effective use of our budget was to prioritize implementing multiple smaller features, rather than allocating the entire amount toward a single major feature.
+This project operated under a strict financial constraint, with a maximum budget of \$65 allocated specifically for additional
+features (excluding taxes and shipping). To maximize the number of features within this limit, we opted to purchase components from alternative vendors when they offered more competitive prices than DigiKey. We determined that the most effective use of our budget was to prioritize implementing multiple smaller features,
+rather than allocating the entire amount toward a single major feature. \\
 
-\
 
-For a detailed breakdown of the expenses, refer to the \href{https://docs.google.com/spreadsheets/d/1k2FMDTlyxH50N65zvA1Ss5obWOlDuc3JaWVVDWrQ88E/edit?usp=sharing}{Google Sheet with all financial details} An image can also be found in the Appendix in Figure \ref{fig:financials}.
+\textit{For a detailed breakdown of the expenses and financial details, refer to the following \href{https://docs.google.com/spreadsheets/d/1k2FMDTlyxH50N65zvA1Ss5obWOlDuc3JaWVVDWrQ88E/edit?usp=sharing}{Google Sheet}.
+The high-level breakdown is also included in the Appendix (i.e. Figure~\ref{fig:financials}).}
 
 \subsubsection{Temporal}
 
-Although the final project deliverable was due on April 8th, 2025, we set several soft deadlines along the way to track our progress and prevent last-minute workload buildup. Some of the main deadlines are shown below.
+Although the final project deliverable was due on \textbf{2025--04--08}, we set several soft deadlines along the way to track our progress
+and prevent last-minute workload buildup. Some of the main deadlines are shown below.
 
-\begin{description}
-  \item[February 28th, 2025] Motor Control PWM for Arduino
-  \item[March 6th, 2025] Completed BLE Integration with Python App
-  \item[March 7th, 2025] Completed Distance Sensor and Color Sensor STM32 Firmware
-  \item[March 13th, 2025] Completed PID k-value Calculations
-  \item[March 14th, 2025] Completed RFID STM32 Firmware
-  \item[March 20th, 2025] Completed Raspberry Pi App
-  \item[March 21st, 2025] Completed Speaker Integration STM32 Firmware
-  \item[March 28th, 2025] Completed Robot Balancing
-\end{description}
+\begin{minipage}{\linewidth}
+    \begin{description}
+        \item[2025--02--28:] Motor Control PWM for Arduino
+        \item[2025--03--06:] Completed BLE Integration with Python App
+        \item[2025--03--07:] Completed Distance Sensor and Color Sensor STM32 Firmware
+        \item[2025--03--13:] Completed PID k-value Calculations
+        \item[2025--03--14:] Completed RFID STM32 Firmware
+        \item[2025--03--20:] Completed Raspberry Pi App
+        \item[2025--03--21:] Completed Speaker Integration STM32 Firmware
+        \item[2025--03--28:] Completed Robot Balancing
+    \end{description}
+\end{minipage}
 
 Although most deadlines were met, a few, particularly the robot balancing milestone were not achieved on time. This delay was primarily due to some questionable firmware design decisions that introduced unforeseen challenges. Fortunately, these issues were resolved, and the system was successfully completed in the end.
 
@@ -284,7 +288,8 @@ the second layer symmetrically.
 \subsubsection{L-stand Design}
 The design of the L-stand is shown below:
 \begin{figure}[H]
-    \centerline{\includegraphics[width=0.5\linewidth]{Figures/standDis.png}}
+    \centering
+    {\setlength{\fboxsep}{0pt}\fbox{\includegraphics[width=0.5\linewidth]{Figures/standDis.png}}}
     \caption{Design of the L-stand for Mounting the Distance Sensor}
 \end{figure}
 
@@ -301,7 +306,7 @@ The L-stand for the color sensor follows the same design principles with
 different dimension, thus is not shown here.
 
 \subsection{PID Modeling and Simulation}
-\subsubsection{Measuring Robot Parameters}
+\subsubsection{Robot Parameters}
 
 With the corrected transfer function, we need to find the values of the
 parameters in order to get the transfer function. \\
@@ -549,19 +554,18 @@ where:
 \begin{center}
     $\therefore$ From extensive testing, a value of $k = 0.95$ was selected. \\
 \end{center}
-
-\textit{
-    Lower values of $k$ caused the noise from the accelerometer to become significant, leading to large oscillations and loss of balance.
+\textit{Lower values of $k$
+    caused the noise from the accelerometer to become significant, leading to large oscillations and loss of balance.
     Similarly, increasing $k$ was avoided. The gyroscope bias would accumulate quickly (i.e., without a reference point)
     and cause the robot to lose balance.
-}\vspace{0.5cm}
+} \\
 
 The code snippet for this exact implementation is demonstrated in Listing \ref{lst:arduino_angle_code}.
 
-\subsection{Autonomous-Balancing}
+\subsection{Balancing}
 
 \begin{minipage}{\linewidth}
-    The most challenging part of this project was to implement the PID controller to balance the robot. Since we had closed-loop control,
+    The most challenging part of this project was to implement the \textbf{PID} controller to balance the robot. Since we had closed-loop control,
     with the measured angle acting as feedback, it was crticial that we were able to act upon new measurements when determining the control signal. \\
 
     Initially, we attempted to implement these \textbf{Interrupt Service Routine (ISR)} to meet a designed control frequency of $20$ Hz.
@@ -616,7 +620,7 @@ The code snippet for this exact implementation is demonstrated in Listing \ref{l
     The robot was designed to move in four directions: \textbf{FORWARD, BACKWARD, LEFT, RIGHT}.
     As shown in Figure~\ref{fig:control_loop_diagram}, this was designed to be integrated into the control loop.  \\
 
-    Balancing was the highest priority of the system at any given time. To move the robot, we injected noise into the system for a short period of time
+    Balancing was the highest priority of the system at (almost) any given moment. To move the robot, we injected noise into the system for a short duration
     (i.e. $1.5$ seconds). After this, we returned to idle balancing to prevent the system from reaching a point of instability.
 
     \
@@ -876,7 +880,7 @@ wirelessly access it the \textbf{Raspberry Pi Connect} software.
     We were able to download these files from the \textbf{AWS S3 Bucket} to our local machine for offline access.
 \end{minipage}
 
-\section{Verification and Validation}
+\section{Meeting Requirements}
 \subsection{Verification}
 
 \begin{minipage}{\linewidth}
@@ -885,7 +889,7 @@ wirelessly access it the \textbf{Raspberry Pi Connect} software.
     This was done to compare performance as we tweaked parameters. \\
 \end{minipage}
 
-\subsubsection{Angle Measurement Accuracy}
+\subsubsection{Angle Accuracy}
 
 \begin{minipage}{\linewidth}
     Early on in development, we realized that accurate angle measurements were critical to the robot's ability to successfully
@@ -907,14 +911,14 @@ wirelessly access it the \textbf{Raspberry Pi Connect} software.
     and observed the complementary filter's performance with a given $k$ value. \\
 
     From saving and comparing these logs, we observed trends in the
-    angle measurements from the accelerometer and gyroscope. This enabled us to optimize the benefits of both sensor and
+    angle measurements from the accelerometer and gyroscope. This enabled us to optimize the benefits of both sensors and
     was critical in ensuring that we were able to balance the robot successfully.
 \end{minipage}
 
-\subsubsection{PID Tuning}
+\subsubsection{Model Parameters}
 
 \begin{minipage}{\linewidth}
-    Similarly, we developed a debugging tool in the \textbf{Arduino} firmware to tune \textbf{PID} parameters during operation.
+    Similarly, we developed a debugging tool in the \textbf{Arduino} firmware to tune \textbf{PID} parameters during operation (\textbf{FR1}, \textbf{FR6}).
     The source code for this is shown in Listing \ref{lst:arduino_ble_tuning_code} in the Appendix. \\
 \end{minipage}
 
@@ -955,27 +959,99 @@ wirelessly access it the \textbf{Raspberry Pi Connect} software.
     \label{tab:parameter_behavior}
 \end{table}
 
+\subsubsection{Movement Implementation}
+To verify that the movement met the requirements outlined in PR5, we tested the robot's ability to respond accurately to directional commands sent via the Bluetooth Low Energy (BLE) interface. Using a mobile device, we issued forward, backward, left, and right commands while observing the robot's response in real time. The robot successfully executed each command within the 5 second time interval, while maintaining balance, demonstrating reliable communication and precise motor control. This confirmed that the BLE-based movement functionality met the performance expectations specified in the requirement.
+
+\subsubsection{Others}
+To verify the remaining requirements not covered above, we relied on a combination of simple tools and observation. For distance and size-related measurements, we used rulers to confirm dimensions and movement ranges. Timing-related behaviors were checked using internal timers and debug outputs via USART to ensure proper response times and delays. In cases where quantitative measurement was unnecessary or impractical, we used visual observation to confirm correct operation. These methods provided sufficient confidence that the robot met the functional and performance criteria across all remaining requirements.
+
 \subsection{Validation}
 
-\begin{minipage}{\linewidth}
-    To evaluate the balancing performance, we placed the robot on the lab floor and
-    allowed it to balance without external assistance for one minute. A ruler was
-    placed on the ground to measure any drift over time. During testing, the robot
-    was able to maintain balance for over five minutes and remained relatively
-    stationary, drifting less than five centimeters. These results indicate that the
-    system meets the balancing requirement.\\
+\subsubsection{User Acceptance Testing (UAT)}
 
-    To test angle management, we applied a force to the top of the pendulum to tilt
-    the robot approximately 15 degrees and observed whether it could recover without
-    tipping over. The robot successfully recovered from tilts of up to 20 degrees
-    without oscillation. However, when the tilt angle exceeded 20 degrees, it was
-    unable to recover from the disturbance. These results indicate that the system
-    meets the angle management requirement within the expected operating range.\\
+\begin{minipage}{\linewidth}
+    Similar to the software development cycle, we tested the integration of both core and extra features
+    with critical examination from team stakeholders. \\
+
+    We delegated this for there to be an owner responsible for implementation, but another team member who set the requirements for success in Table~\ref{tab:functional_requirements} and Table~\ref{tab:performance_requirements}. \\
+
+    Looking at the ability to balance and move the robot, the Modeling Lead was the UAT lead in providing feedback for firmware implementation, whereas the Firmware \& Extra Features Leads provided feedback on current parameters. \\
 \end{minipage}
 
-\section{Conclusions and Future Work}
+\subsubsection{Balancing Criteria}
 \begin{minipage}{\linewidth}
+    To observe the borders of stability (i.e. analogous to edge-case testing), we placed the robot on the lab floor and observed its ability to balance (without external assistance) for $1$ minute (\textbf{FR1}). \\
 
+    A ruler was placed on the ground to measure drift accumulation (\textbf{PR2}). Once the robot
+    was able to maintain balance $> 5$ minutes and remained relatively
+    stationary (i.e. drifting $< 5$ cm), we unanimously agreed that results indicated that we met the balancing
+    requirement. \\
+\end{minipage}\vspace{0.5mm}
+
+\subsubsection{Angle Management}
+
+\begin{minipage}{\linewidth}
+    To test angle management (i.e. resilience to external force), we introduced noise to the system.
+    We applied a force to the top of the pendulum to tilt
+    the robot $\sim 15 \deg$ and observed whether it could recover without
+    tipping over (\textbf{PR1}). \\
+
+    The robot successfully recovered from angular tilts $\leq 20 \deg$
+    without oscillation. However, when the tilt angle $> 20 \deg$, we observed that it was
+    unable to recover from the disturbance. Observing this border of stability gave us understanding
+    of the system behavior while making us confident that we met the set requirement of angle management
+    within the expected operating range.\\
+\end{minipage}
+
+\subsubsection{STM32 Sensors}
+
+\begin{minipage}{\linewidth}
+    We approached the integration of environmental response as an enhancement of existing core functionality.
+    We should be able to meet all existing requirements, while enhancing the user experience. When testing the utility of
+    the \textbf{HC-SR04} distance sensor and \textbf{TCS34725} color sensor, we prioritized the following main criteria:
+    \begin{itemize}
+        \item Balancing should be unaffected by the addition of sensors (i.e.~\textbf{PR1}, \textbf{PR2})
+        \item Driver should be able to navigate the robot from A to B within a reasonable time (i.e.~\textbf{PR3}, \textbf{PR5}).
+        \item The robot should not hit any obstacles while moving (i.e.~\textbf{PR6}).
+    \end{itemize}
+
+    These are inherently included in the requirements from Table~\ref{tab:functional_requirements} and Table~\ref{tab:performance_requirements}.
+    However, we wanted to ensure that we could compare the ability to meet each of these both before / after feature integration,
+    and ensure that we either avoid or reduce performance degradation. \\
+
+    Once we observed that this (qualitatively) made it easier to navigate the robot and meet the relevant performance requirements, we
+    labeled the feature as a success. \\
+\end{minipage}
+
+\subsubsection{Secure Authentication}
+
+\begin{minipage}{\linewidth}
+    Similarly, the addition of the \textbf{RC522} RFID module and \textbf{BLE} authentication were designed to enhance the security of the robot.
+    These actually were designed to make it more difficult for user onboarding in a sense. However, we wanted to ensure that access was as simple for the
+    intended user, while being as difficult as possible for an unauthorized user. \\
+
+    The \textbf{Robot Driver App} was appropriately designed such that other team members could easily onboard themselves to the robot, without knowing
+    that the intended application handled the authentication process in the background. The Firmware Lead was responsible for this,
+    and observed team member onboarding difficulty as a success metric. \\
+
+    To ensure security was prioritized, we performed edge-case testing in which either the \textbf{BLE} connection was interrupted or the
+    \textbf{RC522} RFID module was disconnected. We observed that the robot prevented access under these conditions, but could unconditionally recover
+    if they were reconnected. \\
+\end{minipage}
+
+\subsubsection{Camera File Storage}
+
+\begin{minipage}{\linewidth}
+    We struggled the most with the \textbf{Raspberry Pi Zero 2 W} camera feed. It was straightforward to meet the success criteria of being able to record at $1$ FPS and display the live feed.
+    We were also able to succesfully store images/videos to the \textbf{SD Card} storage. However,
+    (an implied) success criteria entailed the user being able to successfully complete the end-to-end process of accessing the camera feed and downloading the images/videos from the \textbf{AWS S3 Bucket}. \\
+
+    We had to perform this test under the condition that the robot was powered off in the downloading stage. Once this was met, the feature was (tentatively) labeled as a success. \\
+\end{minipage}
+
+\section{Conclusion}
+
+\begin{minipage}{\linewidth}
     The implementation of the PID controller is effective, allowing the robot to
     balance with reasonable resistance to external disturbances. However, one
     improvement would be to utilize the encoder and implement an additional,
@@ -985,7 +1061,7 @@ wirelessly access it the \textbf{Raspberry Pi Connect} software.
     maintain balance, it has a degraded stability under significant external
     disturbances. By introducing a cascaded PID controller, the I term in the main
     controller could be reduced, leading to improved stability and better angle
-    management.\\
+    management. \\
 
     In terms of structural design, we raised the third layer to increase the
     linearity of the system's step response within its controllable region. While
@@ -993,28 +1069,39 @@ wirelessly access it the \textbf{Raspberry Pi Connect} software.
     more prone to external disturbances. One possible improvement is to replace the
     current motors with ones that have less mechanical slack, which would provide a
     more responsive system. This would allow us to lower the third layer, enhancing
-    angle management while maintaining linear behavior.\\
+    angle management while maintaining linear behavior. \\
+\end{minipage}
 
-    Additionally, although the distance sensors are mounted using L-stands, we did
-    not cut the mounting holes on the second layer. Instead, the stands were
-    taped in place, which led to noticeable shakiness during testing. This affected
-    the stability and observability of the system. If more time were available,
-    cutting proper mounting holes in the second layer would help makes the sensors
-    more secure and improve the overall system performance. \\
+\subsection{Future Improvements}
+
+\begin{minipage}{\linewidth}
+For future revisions, especially related to control systems, we have a few key takeaways.
+\begin{itemize}
+    \item Keep the PID control code as simple and clean as possible. Adding excess logic, layers of filtering, or non-essential conditions can introduce instability and make tuning more difficult.
+
+    \item Avoid starting PID tuning or training until all key modules that perform background calculations are integrated. Adding or removing modules later can shift timing and alter the effective control behavior, requiring re-tuning. Introducing deliberate delays can help simulate sensor acquisition timing during early development.
+
+    \item Finalize the robot’s physical design—including mass distribution, wheelbase, and component placement—before tuning the controller. Significant changes to the hardware can affect system dynamics and invalidate earlier tuning efforts.
+
+    \item Use real-time plotting or data logging to observe variables such as sensor readings, control output, and error values. This helps in diagnosing control issues and speeding up the tuning process.
+
+    \item Avoid over-relying on simulation unless your model is very accurate. Physical systems often behave unpredictably due to noise, friction, and delays, which may not be captured in simulation.
+
+    \item Make safety a priority when testing control systems. Start with lower gains and increase gradually, especially on systems like self-balancing robots that can become unstable quickly.
+\end{itemize}
 \end{minipage}
 
 \section{References}
 \printbibliography[heading=none]
 
 \section{Appendices}
-Include sections that do not fit well in the main body of the report but help to show the development progress and justify your decisions. These might include (but may not be restricted to) the following:
 
 \subsection{Appendix: Budget}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{Figures/financials.png}
-    \caption{Extra Features Budget Rundown}
+    {\setlength{\fboxsep}{0pt}\fbox{\includegraphics[width=1\textwidth]{Figures/financials.png}}}
+    \caption{Extra Features Financial Summary}
     \label{fig:financials}
 \end{figure}
 
@@ -1048,8 +1135,7 @@ Include sections that do not fit well in the main body of the report but help to
     \caption{IMU Sensors: Pros and Cons}
 \end{table}
 
-\subsection{Appendix: Drawings, Schematics, and Blueprints}
-
+% \subsection{Appendix: Drawings, Schematics, and Blueprints}
 \subsection{Appendix: Datasheets / Product Specifications}
 Supporting Datasheets and Technical Documentation for Core Features (does not include battery related components, mechanical components, or generic electrical components):
 
@@ -1072,12 +1158,11 @@ Supporting Datasheets and Technical Documentation for Additional Features:
     \item \href{https://www.sameskydevices.com/product/resource/cem-1203-42-.pdf?srsltid=AfmBOorbfJiXs7OIBQN95JLHokXYxTFx0Sd8qTPObMLqcfIHXVElk2uz}{CEM-1302 Speaker/Buzzer}
 \end{enumerate}
 %\subsection{Appendix: Relevant Industry Standards and Regulations Used}
+% \subsection{Appendix: Prototypes}
 
-\subsection{Appendix: Prototypes}
+\subsection{Appendix: Source Code}
 
-\subsection{Appendix: Sample Code}
-
-\begin{lstlisting}[caption={Arduino IMU Complementary Filter Firmware Implementation}, label={lst:arduino_angle_code}]
+\begin{lstlisting}[caption={Source Code : Arduino IMU Complementary Filter}, label={lst:arduino_angle_code}]
 ANGLES Angles = {0, 0, 0}; // Accelerometer, Gyroscope, Complementary
 void getAngles(ANGLES &Angles) {
   float currAccel, currGyro, currComplementary;
@@ -1115,7 +1200,7 @@ void getAngles(ANGLES &Angles) {
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Arduino PID Firmware Implementation}, label={lst:arduino_pid_code}]
+\begin{lstlisting}[caption={Source Code : Arduino PID Controller}, label={lst:arduino_pid_code}]
 void balanceRobot(int bleDirection) {
     // Get Measured Angle
     measuredAngle = Angles.Complementary; // Complementary Filter
@@ -1135,7 +1220,7 @@ void balanceRobot(int bleDirection) {
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Arduino Motor PWM Firmware Implementation}, label={lst:arduino_pwm_code}]
+\begin{lstlisting}[caption={Source Code : Arduino Motor Driver}, label={lst:arduino_pwm_code}]
 /*
  * Fast Decay: Hold Primary Input at PWM Duty Cycle, Secondary Input Low.
  */
@@ -1163,7 +1248,7 @@ void moveSlowDecay(XIN &motor, DirPWM dir, float dutyCycle) {
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Arduino Movement Firmware Implementation}, label={lst:arduino_movement_code}]
+\begin{lstlisting}[caption={Source Code : Arduino Movement Statemachine}, label={lst:arduino_movement_code}]
 void drive(float u_t, float errorAngle) {
     currDutyCycle = normalizePWM(u_t, 0);
 
@@ -1216,7 +1301,7 @@ void drive(float u_t, float errorAngle) {
     return;
 }
 \end{lstlisting}
-\begin{lstlisting}[caption={Arduino BLE Firmware Implementation}, label={lst:arduino_ble_code}]
+\begin{lstlisting}[caption={Source Code : Arduino BLE Functionality}, label={lst:arduino_ble_code}]
 void setupBLE() {
   pinMode(LED_BUILTIN, OUTPUT); // Init Built-in LED to Indicate Connection Status
 
@@ -1283,7 +1368,7 @@ void rxBLE(BLEDevice central, BLECharacteristic characteristic) {
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Arduino BLE PID Tuning}, label={lst:arduino_ble_tuning_code}]
+\begin{lstlisting}[caption={Source Code : Arduino BLE Parameter Updates}, label={lst:arduino_ble_tuning_code}]
 void updateParamBLE(const char* bleBuff) {
   char paramType[STD_BUFFSIZE] = {0};
   char valueStr[STD_BUFFSIZE] = {0};
@@ -1328,7 +1413,7 @@ void updateParamBLE(const char* bleBuff) {
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={STM32 HC-SR04 Firmware Implementation}, label={lst:stm32_distancesensor_code}]
+\begin{lstlisting}[caption={Source Code : STM32 HC-SR04 Firmware}, label={lst:stm32_distancesensor_code}]
 void DistanceSensor_InputCaptureInterrupt(distancesensor* sensor)
 {
     if (HAL_GPIO_ReadPin(sensor->icGPIOPort, sensor->icGPIOPin)) {
@@ -1366,7 +1451,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) {
 
 
 
-\begin{lstlisting}[caption={STM32 TCS34725 Firmware Implementation}, label={lst:stm32_colorsensor_code}]
+\begin{lstlisting}[caption={Source Code : STM32 TCS34725 Firmware}, label={lst:stm32_colorsensor_code}]
 #include "colorsensor.h"
 
 #define TCS3472_SLAVE_ADDRESS 0x29 << 1
@@ -1475,7 +1560,7 @@ void ColorSensor_Handle(colorsensor* sensor)
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={STM32 RC522 Firmware Implementation}, label={lst:stm32_rfidsensor_code}]
+\begin{lstlisting}[caption={Source Code : STM32 RC522 Firmware}, label={lst:stm32_rfidsensor_code}]
 #include "rfid.h"
 
 #include "speaker.h"
@@ -1590,7 +1675,7 @@ void RFID_SecurityLogic(rfid* sensor)
 
 \end{lstlisting}
 
-\begin{lstlisting}[caption={STM32 Speaker Firmware Implementation}, label={lst:stm32_speaker_code}]
+\begin{lstlisting}[caption={Source Code : STM32 Speaker Firmware}, label={lst:stm32_speaker_code}]
 #include "speaker.h"
 
 
@@ -1704,7 +1789,7 @@ void Speaker_SetAutoReload(speaker* speaker, uint16_t value)
 
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Robot Driver App}, label={lst:driver_app_code}]
+\begin{lstlisting}[caption={Source Code : Robot Driver App}, label={lst:driver_app_code}]
     import asyncio
     import threading
 
@@ -1833,7 +1918,7 @@ void Speaker_SetAutoReload(speaker* speaker, uint16_t value)
 \end{lstlisting}
 
 
-\begin{lstlisting}[caption={PiCamera Display}, label={lst:picamera_display_code}]
+\begin{lstlisting}[caption={Source Code : PiCamera Display}, label={lst:picamera_display_code}]
 from picamera2 import Picamera2
 from picamera2.encoders import H264Encoder
 from libcamera import Transform
@@ -1925,7 +2010,7 @@ class CameraDisplay(tk.Frame):
         self.camera.close()
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Python Stripchart}, label={lst:stripchart_code}]
+\begin{lstlisting}[caption={Source Code : Python Stripchart}, label={lst:stripchart_code}]
     class StripChart:
     # SAMPLE_RATE = 0.250 # 250 ms
     SAMPLE_RATE = 1 # 1000 ms
