@@ -401,7 +401,7 @@ minimal impact on the overall transfer function.
 \subsubsection{PID Parameter Calculation}
 
 From the previously derived transfer function, we observe that the two open-loop
-poles are located at 0 and -0.3439, indicating that the system is unstable. To
+poles are located at $0$ and $-0.3439$, indicating that the system is unstable. To
 stabilize the system, a feedback control loop must be introduced to shift the
 poles of the closed-loop transfer function to stable locations. To determine the
 PID parameters, we can apply the pole placement method: \\
@@ -439,17 +439,17 @@ time constant $N$. By measuring the runtime of the main control loop, we found
 the worst-case execution frequency to be 25 Hz. According to the Nyquist
 theorem, the sampling rate must be at least twice the highest frequency
 component to accurately capture the system dynamics. Therefore, the maximum
-allowable control bandwidth is 12.5 Hz, corresponding to a minimum time constant
-of approximately 0.08. To ensure stability and responsiveness while staying
-within this limit, we chose a time constant of 1/4 seconds, which places the
-desired pole at $-8\pi$ and the resulting $K_p$ and $K_d$ are 0.6462 and 0.0511,
+allowable control bandwidth is $12.5$ Hz, corresponding to a minimum time constant
+of approximately $0.08$. To ensure stability and responsiveness while staying
+within this limit, we chose a time constant of $0.25$ s, which places the
+desired pole at $-8\pi$ and the resulting $K_p$ and $K_d$ are $0.6462$ and $0.0511$,
 respectively.
 
 \
 
 The I term is added after to address the drifting issue we encountered during
 the testing. The value of $K_i$ was found by trial and error, and the final
-value of $K_i$ is 11.5.
+value of $K_i$ is $11.5$.
 
 \subsubsection{Simulink Simulation}
 
@@ -621,7 +621,7 @@ The code snippet for this exact implementation is demonstrated in Listing \ref{l
     As shown in Figure~\ref{fig:control_loop_diagram}, this was designed to be integrated into the control loop.  \\
 
     Balancing was the highest priority of the system at (almost) any given moment. To move the robot, we injected noise into the system for a short duration
-    (i.e. $1.5$ seconds). After this, we returned to idle balancing to prevent the system from reaching a point of instability.
+    (i.e. $1.5$ s). After this, we returned to idle balancing to prevent the system from reaching a point of instability.
 
     \
 
@@ -960,10 +960,19 @@ wirelessly access it the \textbf{Raspberry Pi Connect} software.
 \end{table}
 
 \subsubsection{Movement Implementation}
-To verify that the movement met the requirements outlined in PR5, we tested the robot's ability to respond accurately to directional commands sent via the Bluetooth Low Energy (BLE) interface. Using a mobile device, we issued forward, backward, left, and right commands while observing the robot's response in real time. The robot successfully executed each command within the 5 second time interval, while maintaining balance, demonstrating reliable communication and precise motor control. This confirmed that the BLE-based movement functionality met the performance expectations specified in the requirement.
+To verify that the movement met the requirements outlined in \textbf{PR5},
+we tested the robot's ability to respond accurately to directional commands sent via the \textbf{BLE} interface.
+Using a mobile device, we issued \textbf{FORWARD, BACKWARD, LEFT, RIGHT} commands while observing the robot's response in real time.
+The robot successfully executed each command within the $5$ s time interval,
+while maintaining balance, demonstrating reliable communication and precise motor control.
+This confirmed that the \textbf{BLE} movement functionality met the performance expectations specified in the requirement.
 
-\subsubsection{Others}
-To verify the remaining requirements not covered above, we relied on a combination of simple tools and observation. For distance and size-related measurements, we used rulers to confirm dimensions and movement ranges. Timing-related behaviors were checked using internal timers and debug outputs via USART to ensure proper response times and delays. In cases where quantitative measurement was unnecessary or impractical, we used visual observation to confirm correct operation. These methods provided sufficient confidence that the robot met the functional and performance criteria across all remaining requirements.
+\subsubsection{Remaining Requirements}
+To verify the remaining requirements not covered above, we relied on a combination of simple tools and observation.
+For distance and size-related measurements, we used rulers to confirm dimensions and movement ranges.
+Timing-sensitive behaviors was evaluated with internal timers and debug outputs via \textbf{USART}. We used these to ensure response times and delays were adequate.
+In cases where quantitative measurement was unnecessary or impractical, we used visual observation to confirm correct operation.
+These methods provided sufficient confidence that the robot met the functional and performance criteria across all remaining requirements.
 
 \subsection{Validation}
 
@@ -1052,14 +1061,14 @@ To verify the remaining requirements not covered above, we relied on a combinati
 \section{Conclusion}
 
 \begin{minipage}{\linewidth}
-    The implementation of the PID controller is effective, allowing the robot to
+    The implementation of the PID controller was effective and enabled the robot to
     balance with reasonable resistance to external disturbances. However, one
-    improvement would be to utilize the encoder and implement an additional,
+    improvement would be to utilize an encoder and implement an additional,
     cascaded PID controller. This could help reduce oscillations and improve the
     robot's ability to remain stationary. It may also enhance the angle
-    management — since the current system requires a relatively high I-term to
-    maintain balance, it has a degraded stability under significant external
-    disturbances. By introducing a cascaded PID controller, the I term in the main
+    management. Since the current system requires a relatively high $K_i$ term to
+    maintain balance, it has degraded stability under significant external
+    disturbances. By introducing a cascaded PID controller, the $K_i$ term in the main
     controller could be reduced, leading to improved stability and better angle
     management. \\
 
@@ -1075,21 +1084,48 @@ To verify the remaining requirements not covered above, we relied on a combinati
 \subsection{Future Improvements}
 
 \begin{minipage}{\linewidth}
-For future revisions, especially related to control systems, we have a few key takeaways.
-\begin{itemize}
-    \item Keep the PID control code as simple and clean as possible. Adding excess logic, layers of filtering, or non-essential conditions can introduce instability and make tuning more difficult.
+    For future revisions, especially related to control systems, we have a few key takeaways.
+        \begin{itemize}
+            \item \textbf{Keep the PID control code as simple and straightforward as possible.}
+                \begin{itemize}
+                    \item Adding excessive logic, layers of filtering, and unnecessary conditions introduced both complexity and instability in our system, which made tuning more difficult.
+                \end{itemize}
 
-    \item Avoid starting PID tuning or training until all key modules that perform background calculations are integrated. Adding or removing modules later can shift timing and alter the effective control behavior, requiring re-tuning. Introducing deliberate delays can help simulate sensor acquisition timing during early development.
+            \item \textbf{Avoid tuning the PID controller until key modules for background calculations are integrated}.
+                \begin{itemize}
+                    \item Adding / removing modules can shift timing and alter the effective control behavior, which would lead to a vicious cycle of re-tuning.
+                    \item Introducing deliberate delays can help simulate sensor acquisition timing during early development.
+                \end{itemize}
 
-    \item Finalize the robot’s physical design—including mass distribution, wheelbase, and component placement—before tuning the controller. Significant changes to the hardware can affect system dynamics and invalidate earlier tuning efforts.
+            \item \textbf{Finalize the robot's physical design before tuning the controller (i.e.~mass distribution, wheelbase, and component placement).}
+                \begin{itemize}
+                    \item Significant changes to the hardware likely affect system dynamics and invalidate earlier tuning efforts (i.e. leading to cyclical controller tuning).
+                \end{itemize}
 
-    \item Use real-time plotting or data logging to observe variables such as sensor readings, control output, and error values. This helps in diagnosing control issues and speeding up the tuning process.
+            \item \textbf{Use real-time plotting / data logging to observe variables such as sensor readings, control output, and error values.}
+                \begin{itemize}
+                    \item This helps in diagnosing control issues and speeding up the tuning process.
+                    \item We originally planned on addressing this with the \textbf{Raspberry Pi} serial interface, but due to time constraints, were unable to meet the necessary acceptance criteria to use this and enhance our system.
+                \end{itemize}
 
-    \item Avoid over-relying on simulation unless your model is very accurate. Physical systems often behave unpredictably due to noise, friction, and delays, which may not be captured in simulation.
+            \item \textbf{Avoid over-relying on simulation unless the model is very accurate.}
+                \begin{itemize}
+                    \item Physical systems often behave unpredictably due to noise, friction, and delays, which are difficult to capture in simulation.
+                \end{itemize}
 
-    \item Make safety a priority when testing control systems. Start with lower gains and increase gradually, especially on systems like self-balancing robots that can become unstable quickly.
-\end{itemize}
-\end{minipage}
+            \item \textbf{Make safety a priority when testing control systems.}
+                \begin{itemize}
+                    \item Starting with lower gains and gradually increasing them, especially on inherently unstable systems like the self-balancing robot, helps improve performance without the risk of instability.
+                \end{itemize}
+
+            \item \textbf{Seemlessly integrate the security experience in the software tools.}
+                \begin{itemize}
+                    \item We started enhancing the security of the robot very late during development.
+                    \item Implementing a \textbf{BLE} pairing code was an idea we toyed with throughout this 12-week project. However, we were inspired to implement the firmware layer when we realized our robot was vulnerable to unauthorized access.
+                    \item Another addition we'd have added given $\sim 1$ week of development would be to implement a password in the \textbf{Robot Driver App} to add another layer of security (i.e. via software).
+                \end{itemize}
+        \end{itemize}
+    \end{minipage}
 
 \section{References}
 \printbibliography[heading=none]
