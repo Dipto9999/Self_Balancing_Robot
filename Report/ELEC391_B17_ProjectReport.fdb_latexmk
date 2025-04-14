@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber ELEC391_B17_ProjectReport"] 0 "ELEC391_B17_ProjectReport.bcf" "ELEC391_B17_ProjectReport.bbl" "ELEC391_B17_ProjectReport" 1744613790.28578 -1
-  "ELEC391_B17_ProjectReport.bcf" 1744613790 107008 965b254708afd83c38e6f60829e3643b "pdflatex"
+["biber ELEC391_B17_ProjectReport"] 1744613957.272 "ELEC391_B17_ProjectReport.bcf" "ELEC391_B17_ProjectReport.bbl" "ELEC391_B17_ProjectReport" 1744613961.89075 0
+  "ELEC391_B17_ProjectReport.bcf" 1744613961 107008 965b254708afd83c38e6f60829e3643b "pdflatex"
   "ref.bib" 1744392630 517 51892aa5fe95170e70e670077dd93898 ""
   (generated)
   "ELEC391_B17_ProjectReport.bbl"
   "ELEC391_B17_ProjectReport.blg"
   (rewritten before read)
-["pdflatex"] 1744613787.65668 "c:/Muntakim_Files/School/Engineering_Bachelors/2024/ELEC_391/Github_Repository/Report/ELEC391_B17_ProjectReport.tex" "ELEC391_B17_ProjectReport.pdf" "ELEC391_B17_ProjectReport" 1744613790.28636 0
+["pdflatex"] 1744613959.25183 "c:/Muntakim_Files/School/Engineering_Bachelors/2024/ELEC_391/Github_Repository/Report/ELEC391_B17_ProjectReport.tex" "ELEC391_B17_ProjectReport.pdf" "ELEC391_B17_ProjectReport" 1744613961.89131 0
   "C:/Users/munta/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1744392653 1050267 d4f6887258cf83cef40cd2d569ca442d ""
   "C:/Users/munta/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1708044569 11548 2c9ee6d384129f23992eeada6c1e7d0f ""
   "C:/Users/munta/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1706737176 24210787 ec82fd334ad3edce9198fa3fba838d8c ""
@@ -135,12 +135,12 @@
   "C:/Users/munta/AppData/Local/Programs/MiKTeX/tex/latex/tools/tabularx.sty" 1700599895 7147 d45559f8a31b8c53ada0640516660003 ""
   "C:/Users/munta/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/munta/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
-  "ELEC391_B17_ProjectReport.aux" 1744613789 18764 c0d6dbaa268aa6a5c35bd2255caac605 "pdflatex"
-  "ELEC391_B17_ProjectReport.bbl" 1744612618 2305 727308015e67d350a6a40c3204129794 "biber ELEC391_B17_ProjectReport"
-  "ELEC391_B17_ProjectReport.out" 1744613790 9784 15dad616d2861639eb4bfe8278c1f1f1 "pdflatex"
-  "ELEC391_B17_ProjectReport.run.xml" 1744613790 2542 575aeeeffd66d83b02e0218ce65d3952 "pdflatex"
-  "ELEC391_B17_ProjectReport.tex" 1744613787 100104 1d25ef2a0b0a386aaabfa29c2f79d241 ""
-  "ELEC391_B17_ProjectReport.toc" 1744613790 5542 c9a8811ebd8c80e5f2ca26c89b446618 "pdflatex"
+  "ELEC391_B17_ProjectReport.aux" 1744613961 18764 c0d6dbaa268aa6a5c35bd2255caac605 "pdflatex"
+  "ELEC391_B17_ProjectReport.bbl" 1744613959 2305 727308015e67d350a6a40c3204129794 "biber ELEC391_B17_ProjectReport"
+  "ELEC391_B17_ProjectReport.out" 1744613961 9784 15dad616d2861639eb4bfe8278c1f1f1 "pdflatex"
+  "ELEC391_B17_ProjectReport.run.xml" 1744613961 2542 575aeeeffd66d83b02e0218ce65d3952 "pdflatex"
+  "ELEC391_B17_ProjectReport.tex" 1744613951 100104 1d25ef2a0b0a386aaabfa29c2f79d241 ""
+  "ELEC391_B17_ProjectReport.toc" 1744613961 5542 c9a8811ebd8c80e5f2ca26c89b446618 "pdflatex"
   "Figures/3rdlayer.png" 1744600972 22838 2a5db6f07212c9342a12e24eaea28942 ""
   "Figures/Architecture_Diagram.png" 1744600982 47894 e37aff54a77f746fd99942840700fbca ""
   "Figures/Control_Loop_Diagram.png" 1744601002 35823 2e1beeb7891f8a894a6f39108b92cfb2 ""
@@ -164,12 +164,12 @@
   "Figures/simModel.png" 1744601104 23852 fa03ab7be2ed8a487303bf9f56a8960b ""
   "Figures/speaker.png" 1744601110 32744 9cc44f2079f3e88e77f9e588b110efeb ""
   "Figures/standDis.png" 1744601115 42287 837c398b705737c8216d5cde4b11cece ""
-  "Figures/step25.png" 1744604461 71862 82a17388e92504a42e39077ebfe6fa49 ""
-  "Figures/step50.png" 1744604467 73263 510d917dd99cea3c2a63e06cdfde67f6 ""
+  "Figures/step25.png" 1744613951 71862 82a17388e92504a42e39077ebfe6fa49 ""
+  "Figures/step50.png" 1744613951 73263 510d917dd99cea3c2a63e06cdfde67f6 ""
   "Figures/stm32.jpg" 1744601143 32349 510ead895d69f7c54c2a64bfbff7637b ""
   "Figures/stm32_pinout_in.png" 1744601131 62288 2197632521a456037d4c3a5ae28bc136 ""
   "Figures/stm32_pinout_out.png" 1744601137 26879 3ac32ba439b3ca8aa92069bfec07b216 ""
-  "c:/Muntakim_Files/School/Engineering_Bachelors/2024/ELEC_391/Github_Repository/Report/ELEC391_B17_ProjectReport.tex" 1744613787 100104 1d25ef2a0b0a386aaabfa29c2f79d241 ""
+  "c:/Muntakim_Files/School/Engineering_Bachelors/2024/ELEC_391/Github_Repository/Report/ELEC391_B17_ProjectReport.tex" 1744613951 100104 1d25ef2a0b0a386aaabfa29c2f79d241 ""
   (generated)
   "ELEC391_B17_ProjectReport.aux"
   "ELEC391_B17_ProjectReport.bcf"
