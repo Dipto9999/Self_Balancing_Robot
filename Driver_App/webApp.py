@@ -105,7 +105,7 @@ class RobotDriverApp:
                     error = "Access Denied: Incorrect Code!"
             return render_template("login.html", error = error)
 
-        @self.app.route("/logout")
+        @self.app.route("/logout", methods = ["POST"])
         def logout():
             session.clear()
             return redirect(url_for("auth_handler"))
