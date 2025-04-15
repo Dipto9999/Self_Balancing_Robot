@@ -1,9 +1,13 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
+#include "serial.h"
+#include "ble.h"
 #include "pwm.h"
 #include "angle.h"
 #include "gpio.h"
+
+#include "driver.h"
 
 #define DISABLE_INTEGRAL_BUTTON 10
 
@@ -32,9 +36,12 @@ extern int bleDirection;
 
 /* Function Prototypes */
 
-void setupController();
-void setupMotors();
+extern void setupController();
+extern void setupMotors();
 
-void balanceRobot(int bleDirection);
+extern void balanceRobot(int bleDirection);
+
+extern void updateParamBLE(const char* bleBuff);
+extern void updateParamSerial();
 
 #endif

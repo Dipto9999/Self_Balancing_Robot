@@ -7,9 +7,6 @@
 #include "gpio.h"
 #include "driver.h"
 
-unsigned long lastBLETime = 0;
-const unsigned long BLE_INTERVAL = 100;
-
 void setup() {
   setupSerial();
   setupGPIO();
@@ -19,16 +16,11 @@ void setup() {
 
   setupMotors();
 
-  // Serial.println("Setup Complete!");
+  Serial.println("Setup Complete!");
 }
 
 void loop() {
-  unsigned long currentMillis = millis();
-  // Wait for BLE Connection to Override Motors
-  if (currentMillis - lastBLETime >= BLE_INTERVAL) {
-    lastBLETime = currentMillis;
-    BLE.poll(); // Poll the BLE Device
-  }
+  checkEventBLE(); // Check BLE Connection for New Events
 
   if (stmConnected) {
     checkRFID(); // Check RFID Status
@@ -44,17 +36,18 @@ void loop() {
     return; // Exit Function
   } else if (!isAuthenticated) {
     moveForward(0); // Stop Motors
-    if (!pairPrompted) {
-      customCharacteristic.writeValue("Enter Code:"); // Send Pairing Prompt
-      pairPrompted = true; // Set Pairing Prompt Flag
+    if (!isPromptedBLE) {
+      customCharacteristic.writeValue("Enter Code:"); // Send BLE Prompt
+      isPromptedBLE = true; // Set BLE Prompt Flag
     }
     return; // Exit Function
   }
 
+  // Control Loop
   getAngles(Angles);
   balanceRobot(bleDirection);
 
-  // updatePID();
+  // updateParamSerial();
 
   // Send Data
   serialMsg = String(Angles.Accelerometer, 2) + " " +

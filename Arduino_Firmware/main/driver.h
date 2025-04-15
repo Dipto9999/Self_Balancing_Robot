@@ -7,14 +7,17 @@
 #define DEADZONE_PWM 0.055
 #define MAX_ERR_ANGLE 0.8
 
-void changeDirection(const char* bleBuff);
-float normalizePWM(float u_t, float adjustedPWM);
+extern float startTime, currTime;
+extern int directionCount; // Count Direction Changes
 
-void moveForward(float dutyCycle);
-void moveReverse(float dutyCycle);
-void turnLeft(float u_t, float scaleFactor);
-void turnRight(float u_t, float scaleFactor);
+extern float normalizePWM(float u_t, float adjustedPWM);
 
-void drive(float u_t, float errorAngle);
+extern void changeDirection(const char* bleBuff);
+extern void moveForward(float dutyCycle);
+extern void moveReverse(float dutyCycle);
+extern void turnLeft(float u_t, float scaleFactor);
+extern void turnRight(float u_t, float scaleFactor);
+
+extern void drive(float u_t, float errorAngle);
 
 #endif

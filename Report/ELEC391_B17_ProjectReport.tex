@@ -1362,12 +1362,12 @@ void setupBLE() {
   BLE.advertise(); // Advertising the BLE Device
 
   while (!BLE.connected()) BLE.poll(); // Wait for Connection
-  customCharacteristic.writeValue("Enter Code:"); // Send Pairing Prompt
+  customCharacteristic.writeValue("Enter Code:"); // Send BLE Prompt
 }
 
 void connectBLE(BLEDevice central) {
   digitalWrite(LED_BUILTIN, HIGH);
-  pairPrompted = false; // Reset Pairing Prompt Flag
+  isPromptedBLE = false; // Reset BLE Prompt Flag
 }
 
 void disconnectBLE(BLEDevice central) {
@@ -1375,7 +1375,7 @@ void disconnectBLE(BLEDevice central) {
   isAuthenticated = false; // Reset Authentication Status
 }
 
-void authenticateBLE() {
+void authBLE() {
   if (strcmp(buffBLE, CODE) == 0) {
     isAuthenticated = true;
     customCharacteristic.writeValue("Auth Success!");
@@ -1398,7 +1398,7 @@ void rxBLE(BLEDevice central, BLECharacteristic characteristic) {
     // updateParamBLE(buffBLE); // Update PID Parameters Based On BLE Input
     changeDirection(buffBLE); // Change Direction Based On BLE Input
   } else {
-    authenticateBLE(); // Authenticate Device
+    authBLE(); // Authenticate Device
   }
   return;
 }
