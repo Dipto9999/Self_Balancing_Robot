@@ -44,7 +44,7 @@ void setupController() {
 void setupMotors() {
     setupPWM(); // Initialize PWM Pins
     setupController(); // Initialize PID Controller
-    Serial.println("Motors Initialized!");
+    // Serial.println("Motors Initialized!");
 }
 
 void balanceRobot(int bleDirection) {

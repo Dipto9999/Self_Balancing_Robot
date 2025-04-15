@@ -11,9 +11,6 @@ float prevAngle = 0;
 
 float gx, gy, gz;
 float ax, ay, az = 0;
-float accelCondition;
-
-float driftingCondition = false;
 
 const long MAX_CALIBRATION = 50;
 unsigned long calibration_count = 0;

@@ -4,6 +4,7 @@ String serialMsg = "";
 
 void setupSerial() {
   Serial.begin(115200);
+  // Serial.println("Serial Initialized!");
 }
 
 void handleData(char expectedByte, String txData) {

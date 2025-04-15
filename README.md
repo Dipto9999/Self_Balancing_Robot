@@ -82,7 +82,7 @@ WALL-E prioritizes safe navigation and secure access.
 
 <p align="center">
   <i>
-    Source Code in <a href="/Arduino_Firmware">Arduino_Firmware</a> directory.
+    Source Code in <a href="/Arduino_Firmware/main">Arduino_Firmware</a> directory.
   </i>
 </p>
 

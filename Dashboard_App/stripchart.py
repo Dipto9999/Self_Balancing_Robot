@@ -43,14 +43,14 @@ class ArduinoSerial(serial.Serial) :
         print('Serial Port is Open')
 
 class StripChart:
-    # SAMPLE_RATE = 0.250 # 250 ms
-    SAMPLE_RATE = 1 # 1000 ms
-    def __init__(self, master, conn = None, data_size = 25, ylim = 30):
+    def __init__(self, master, conn = None, data_size = 25, sample_rate = 0.25, ylim = 30):
         self.master = master
         self.conn = conn
         self.fig, self.ax = plt.subplots(figsize = (900 / 100, 755 / 100))
 
-        self.data_size, self.ylim = data_size, ylim
+        self.data_size = data_size # Number of Samples to Display
+        self.sample_rate = sample_rate
+        self.ylim = ylim # Y-Axis Limits (Deg)
 
         # Angle Data (Additional Storage Preferred Over DataFrame for Speed)
         self.sample_data = []
@@ -59,7 +59,6 @@ class StripChart:
         self.complementary_data = []
 
         # DataFrame for Data Export
-        self.start_time = None
         self.data_df = pd.DataFrame(
             columns = [
                 'Time (PST)',
@@ -74,15 +73,13 @@ class StripChart:
 
         self.ax.set_xlim(
             0, # Start at 0s
-            # 1.25 * self.data_size * StripChart.SAMPLE_RATE * 0.1
-            1.25 * self.data_size * StripChart.SAMPLE_RATE
+            1.25 * (self.sample_rate * self.data_size)
         )
         self.ax.set_xticks(
             np.arange(
                 0,  # Start at 0s
-                # 1.25 * self.data_size * StripChart.SAMPLE_RATE * 0.1,
-                1.25 * self.data_size * StripChart.SAMPLE_RATE,
-                5  # Set Ticks to 5s Intervals
+                1.25 * (self.sample_rate * self.data_size),
+                self.sample_rate * 2
             )
         )
 
@@ -123,7 +120,7 @@ class StripChart:
             func = self.update, # Update Function
             frames = self.data_size, # Number of Frames
             blit = False, # Prevent Re-rendering Entire Plot
-            interval = StripChart.SAMPLE_RATE * 1000, # Delay in ms
+            interval = self.sample_rate * 1000, # Delay in ms
         )
         self.canvas = FigureCanvasTkAgg(self.fig, master = self.master)
         self.canvas_widget = self.canvas.get_tk_widget()
@@ -133,39 +130,33 @@ class StripChart:
         self.rx_angle()
 
         # Update Plot Data
-        # t_data = [t * 0.1 for t in self.sample_data]
-        t_data = [t for t in self.sample_data]
-        self.accelerometer_line.set_data(t_data, self.accelerometer_data)
-        self.gyroscope_line.set_data(t_data, self.gyroscope_data)
-        self.complementary_line.set_data(t_data, self.complementary_data)
+        self.accelerometer_line.set_data(self.sample_data, self.accelerometer_data)
+        self.gyroscope_line.set_data(self.sample_data, self.gyroscope_data)
+        self.complementary_line.set_data(self.sample_data, self.complementary_data)
 
         # Adjust x Limits to Scroll Forward
-        if (len(self.sample_data) > 0) and (self.sample_data[-1] > self.data_size):
+        if (len(self.sample_data) > 0) and (self.sample_data[-1] > (self.sample_rate * self.data_size)):
             self.ax.set_xlim(
-                t_data[0], # Start at First Data Point
-                # t_data[0] + 1.25 * self.data_size * StripChart.SAMPLE_RATE * 0.1
-                t_data[0] + 1.25 * self.data_size * StripChart.SAMPLE_RATE
+                self.sample_data[0], # Start at First Data Point
+                self.sample_data[0] + 1.25 * (self.sample_rate * self.data_size)
             ) # Display 25% More Data
             self.ax.set_xticks(
                 np.arange(
-                    t_data[0], # Start at First Data Point
-                    # t_data[0] + 1.25 * self.data_size * StripChart.SAMPLE_RATE * 0.1,
-                    t_data[0] + 1.25 * self.data_size * StripChart.SAMPLE_RATE,
-                    5  # Set Ticks to 5s Intervals
+                    self.sample_data[0], # Start at First Data Point
+                    self.sample_data[0] + 1.25 * (self.sample_rate * self.data_size),
+                    self.sample_rate * 2
                 )
             )
         else:
             self.ax.set_xlim(
                 0, # Start at 0s
-                # 1.25 * self.data_size * StripChart.SAMPLE_RATE * 0.1
-                1.25 * self.data_size * StripChart.SAMPLE_RATE
+                1.25 * (self.sample_rate * self.data_size)
             )
             self.ax.set_xticks(
                 np.arange(
                     0,  # Start at 0s
-                    # 1.25 * self.data_size * StripChart.SAMPLE_RATE * 0.1,
-                    1.25 * self.data_size * StripChart.SAMPLE_RATE,
-                    5  # Set Ticks to 5s Intervals
+                    1.25 * (self.sample_rate * self.data_size),
+                    self.sample_rate * 2
                 )
             )
 
@@ -175,9 +166,10 @@ class StripChart:
             self.conn.close()
             self.conn = None
 
-            fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
-            self.save_logs(fig_name)
-            self.save_fig(fig_name)
+    def save(self):
+        fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        self.save_logs(fig_name)
+        self.save_fig(fig_name)
 
     def rx_angle(self):
         """Read Angle Data from Serial Connection."""
@@ -210,18 +202,16 @@ class StripChart:
             print(f"Complementary Angle: {complementary_angle}°")
 
             # Append Data
-            new_sample = (self.sample_data[-1] + 1) if self.sample_data else 0
+            new_sample = (self.sample_data[-1] + self.sample_rate) if self.sample_data else 0
 
             self.sample_data.append(new_sample)
             self.accelerometer_data.append(accelerometer_angle)
             self.gyroscope_data.append(gyroscope_angle)
             self.complementary_data.append(complementary_angle)
 
-            self.start_time = dt.datetime.now(pytz.timezone('US/Pacific')) if self.start_time is None else self.start_time
-
             if self.data_df.empty:
                 self.data_df = pd.DataFrame({
-                    'Time (PST)': self.start_time,
+                    'Time (PST)': dt.datetime.now(pytz.timezone('US/Pacific')),
                     'Accelerometer Angle (Deg)': accelerometer_angle,
                     'Gyroscope Angle (Deg)': gyroscope_angle,
                     'Complementary Angle (Deg)': complementary_angle
@@ -230,13 +220,12 @@ class StripChart:
                 self.data_df = pd.concat([
                     self.data_df,
                     pd.DataFrame([{
-                        'Time (PST)': self.start_time + dt.timedelta(seconds = new_sample),
+                        'Time (PST)': dt.datetime.now(pytz.timezone('US/Pacific')),
                         'Accelerometer Angle (Deg)': accelerometer_angle,
                         'Gyroscope Angle (Deg)': gyroscope_angle,
                         'Complementary Angle (Deg)': complementary_angle
                     }])], ignore_index = True
                 )
-
         except serial.SerialException:
             self.conn.reconnect()
         except ValueError as value_error: # Parse Error
@@ -260,7 +249,8 @@ class StripChart:
         file_path = os.path.join(self.logbook_dir, f"{file_name}.csv")
 
         csv_df = self.data_df.copy()
-        csv_df['Time (PST)'] = self.data_df['Time (PST)'].dt.strftime('%Y-%m-%d %H:%M:%S')
+        csv_df['Time (PST)'] = self.data_df['Time (PST)'].dt.strftime('%H:%M:%S.%f').str[:-3]
+        # csv_df['Time (PST)'] = self.data_df['Time (PST)'].dt.strftime('%H:%M:%S.%f').str[:-3]
         csv_df.to_csv(file_path, index = False)
 
         print(f"Data Exported to {file_path}\n\nData Preview:\n")
@@ -291,6 +281,8 @@ class StripchartApp(tk.Tk):
         self.baudrate_entry = tk.Entry(self.serial_frame, bg = '#6e9eeb')
         self.baudrate_entry.insert(0, str(ArduinoSerial.BAUDRATE))
 
+        self.port_entry.bind("<Return>", lambda event: self.open_serial())
+        self.baudrate_entry.bind("<Return>", lambda event: self.open_serial())
         self.open_button = tk.Button(
             self.serial_frame, text = "Open", command = self.open_serial, bg = '#6e9eeb',
         )
@@ -377,23 +369,28 @@ class StripchartApp(tk.Tk):
 
             self.stripchart.start(self.conn) # Start StripChart
             self.stripchart.canvas_widget.grid(row = 0, column = 0)
-            self.open_button.config(state = tk.DISABLED)
+            self.open_button.config(text = "Close", command = self.close_serial, bg = '#f06e47')
         except serial.SerialException as serial_error:
             print("Serial Connection Error:", str(serial_error))
             self.conn = None
-            self.open_button.config(state = tk.NORMAL)
+            self.open_button.config(text = "Open", command = self.open_serial, bg = '#6e9eeb')
+
+    def close_serial(self):
+        if self.stripchart.conn is not None:
+            self.stripchart.stop()
+            self.open_button.config(text = "Open", command = self.open_serial, bg = '#6e9eeb')
 
     def save_data(self):
-        if self.stripchart.data_df.empty:
+        if not self.stripchart.data_df.empty:
+            self.stripchart.stop()
+            self.stripchart.save()
+            self.open_button.config(text = "Open", command = self.open_serial, bg = '#6e9eeb')
+        else:
             print("No Data Available")
-            return
-
-        self.stripchart.stop()
-        self.open_button.config(state = tk.NORMAL)
 
     def on_close(self):
         """Close Serial Connection on Application Exit."""
-        self.stripchart.stop() # Stop StripChart
+        self.save_data()
 
         # Exit Application
         self.destroy()

@@ -9,12 +9,12 @@ bool redAlert = false;
 
 void setupGPIO() {
     pinMode(PIN_STM32, INPUT_PULLUP);
-    if (digitalRead(PIN_STM32) == LOW) {
-        Serial.println("STM32 Not Connected!");
+    if (digitalRead(PIN_STM32) == HIGH) {
+        // Serial.println("STM32 Not Connected!");
         stmConnected = false; // STM32 Connected
         return; // STM32 Not Connected
     } else {
-        Serial.println("STM32 Connected!");
+        // Serial.println("STM32 Connected!");
         stmConnected = true; // STM32 Connected
 
         pinMode(PIN_RFID_DISABLED, INPUT_PULLUP);

@@ -6,7 +6,7 @@
 #include "serial.h"
 
 #define STD_BUFFSIZE 20
-#define CODE "0095"
+#define CODE "EVE"
 
 extern BLEService customService;
 extern BLECharacteristic customCharacteristic;
