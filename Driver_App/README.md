@@ -1,7 +1,7 @@
 
 # Robot Driver App
 
-This application is used to control the Self Balancing Robot. This is run and hosted on a local server, which is then temporarily hosted on the Internet.
+This application is used to send movement commands to WALL-E. This is run and hosted on a local server, which is then temporarily hosted on the Internet.
 
 ## Host Application
 

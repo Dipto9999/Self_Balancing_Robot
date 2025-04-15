@@ -4,7 +4,7 @@ import threading
 from bleak import BleakScanner, BleakClient, BleakError
 from flask import Flask, request, jsonify, render_template
 
-class BLEManager:
+class BluetoothManager:
     # Define UUIDs for BLE Service and Characteristic
     SERVICE_UUID = "00000000-5EC4-4083-81CD-A10B8D5CF6EC"
     CHARACTERISTIC_UUID = "00000001-5EC4-4083-81CD-A10B8D5CF6EC"
@@ -46,7 +46,7 @@ class BLEManager:
         self.client = BleakClient(address)
         try:
             await self.client.connect()
-            await self.client.write_gatt_char(BLEManager.CHARACTERISTIC_UUID, BLEManager.CODE.encode("utf-8"))
+            await self.client.write_gatt_char(BluetoothManager.CHARACTERISTIC_UUID, BluetoothManager.CODE.encode("utf-8"))
             self.is_connected = self.client.is_connected
             return self.is_connected
         except BleakError:
@@ -64,7 +64,7 @@ class BLEManager:
         if not (self.client and self.client.is_connected):
             return False, "Not Connected to BLE"
         try:
-            await self.client.write_gatt_char(BLEManager.CHARACTERISTIC_UUID, cmd.encode("utf-8"))
+            await self.client.write_gatt_char(BluetoothManager.CHARACTERISTIC_UUID, cmd.encode("utf-8"))
             return True, f"Sent Command: {cmd}"
         except BleakError as e:
             return False, f"Error Sending Command: {e}"
@@ -72,7 +72,7 @@ class BLEManager:
 class RobotDriverApp:
     def __init__(self):
         self.app = Flask("Robot Driver App")
-        self.ble_manager = BLEManager()
+        self.conn_manager = BluetoothManager()
         self._register_routes()
 
     def _register_routes(self):
@@ -82,7 +82,7 @@ class RobotDriverApp:
 
         @self.app.route("/scan", methods = ["GET"])
         def scan():
-            future = self.ble_manager.run_async(self.ble_manager.scan_devices())
+            future = self.conn_manager.run_async(self.conn_manager.scan_devices())
             devices = future.result(timeout = 30) # Wait for 30 Seconds
             return jsonify(devices)
 
@@ -91,14 +91,14 @@ class RobotDriverApp:
             data = request.get_json()
             if not data or "deviceAddress" not in data:
                 return jsonify({"error": "No Address Provided"}), 400
-            future = self.ble_manager.run_async(self.ble_manager.connect_device(data["deviceAddress"]))
+            future = self.conn_manager.run_async(self.conn_manager.connect_device(data["deviceAddress"]))
             success = future.result(timeout = 15) # Wait for 15 Seconds
             return (jsonify({"status": "Connected"}) if success
                     else (jsonify({"status": "Failed"}), 400))
 
         @self.app.route("/disconnect", methods = ["GET"])
         def disconnect():
-            future = self.ble_manager.run_async(self.ble_manager.disconnect_device())
+            future = self.conn_manager.run_async(self.conn_manager.disconnect_device())
             future.result(timeout = 10) # Wait for 5 Seconds
             return jsonify({"status": "Disconnected"})
 
@@ -108,8 +108,8 @@ class RobotDriverApp:
             if not data or "command" not in data:
                 return jsonify({"error": "No Command Provided"}), 400 # Bad Request
 
-            future = self.ble_manager.run_async(
-                self.ble_manager.send_cmd(data["command"])
+            future = self.conn_manager.run_async(
+                self.conn_manager.send_cmd(data["command"])
             )
             success, message = future.result(timeout = 10) # Wait for 5 Seconds
 
