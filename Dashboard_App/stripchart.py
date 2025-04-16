@@ -152,10 +152,13 @@ class StripChart:
         """Read Angle Data from Serial Connection."""
         def decode(incoming) :
             """Read Data from Serial Connection."""
-            if (self.conn is not None) :
-                return str(incoming.decode('ascii').strip('\r').strip('\n'))
-            else :
-                return None
+            decoded = None
+            if (self.conn is not None) and (incoming is not None):
+                try:
+                    decoded = str(incoming.decode('ascii')).strip('\r').strip('\n')
+                except UnicodeDecodeError:
+                    decoded = None
+            return decoded
 
         if self.conn is None:
             return
@@ -168,7 +171,14 @@ class StripChart:
         try:
             incoming = self.conn.readline()
             print(f"Incoming Data: {incoming}")
-            arduinoStream: list = str(decode(incoming)).rstrip('\r').split(' ')
+
+            decoded = decode(incoming)
+            print(f"Decoded Data: {decoded}")
+
+            if decoded is None:
+                raise ValueError(f"Received Invalid: {incoming}")
+
+            arduinoStream: list = str(decode(incoming)).split(' ')
             if len(arduinoStream) != 3:
                  raise ValueError
 
