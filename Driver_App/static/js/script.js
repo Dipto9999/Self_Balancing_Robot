@@ -22,8 +22,7 @@ const rightButton = document.getElementById('rightButton');
 /* Device Actions */
 /******************/
 
-/* Scanning for WALL-E */
-scanButton.addEventListener('click', () => {
+function scanDevices() {
     statusLabel.textContent = "Searching for WALL-E...";
 
     fetch('/scan') // Send Scan Request
@@ -58,10 +57,9 @@ scanButton.addEventListener('click', () => {
         console.error('Scan Error:', err);
         statusLabel.textContent = "Scan Error.";
     });
-});
+}
 
-/* Connecting to Selected Device */
-connectionButton.addEventListener('click', () => {
+function toggleConnection() {
     const deviceName = deviceSelect.options[deviceSelect.selectedIndex].text;
     const deviceAddress = deviceSelect.value;
 
@@ -83,7 +81,7 @@ connectionButton.addEventListener('click', () => {
                 connected = true;
                 statusLabel.textContent = "Connected!";
                 connectionButton.textContent = "Disconnect";
-                connectionButton.style.backgroundColor = "rgb(224, 127, 71)"; // Change Button Color
+                connectionButton.style.backgroundColor = "rgb(212, 77, 54)"; // Change Button Color
 
                 // Enable Command Buttons
                 entryButton.disabled = false;
@@ -93,7 +91,7 @@ connectionButton.addEventListener('click', () => {
                 leftButton.disabled = false;
                 rightButton.disabled = false;
             } else {
-            statusLabel.textContent = "Connection Failed.";
+                statusLabel.textContent = "Connection Failed.";
             }
         })
         .catch(err => { // Log Errors
@@ -124,35 +122,13 @@ connectionButton.addEventListener('click', () => {
             statusLabel.textContent = "Disconnect Error.";
         });
     }
-});
+}
 
 /********************/
 /* Movement Actions */
 /********************/
 
-function sendEntryCommand() {
-    const entryCommand = document.getElementById('entryInput').value; // Get Entry Input Value
-    if (entryCommand) {
-        fetch('/command', {
-            method: 'POST', // Send POST Request
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ command: entryCommand }) // Send Entry Command
-        })
-        .then(res => res.json()) // Parse JSON Response
-        .then(data => {
-            statusLabel.textContent = data.msg || data.error;
-            console.log(data.msg || data.error);
-        })
-        .catch(err => { // Log Errors
-            console.error('Error Sending Command:', err);
-            statusLabel.textContent = "Command Error.";
-        });
-    } else {
-        statusLabel.textContent = "No Command Provided.";
-    }
-}
-
-/* Sending Movement Commands */
+/* Sending Commands */
 function sendCommand(cmd) {
     fetch('/command', {
       method: 'POST', // Send POST Request
@@ -163,12 +139,28 @@ function sendCommand(cmd) {
     .then(data => {
         statusLabel.textContent = data.msg || data.error;
         console.log(data.msg || data.error);
+        if (data.msg === 'Device Disconnected') {
+            toggleConnection();
+        }
     })
     .catch(err => { // Log Errors
       console.error('Error Sending Command:', err);
       statusLabel.textContent = "Command Error.";
+      toggleConnection(); // Disconnect
     });
 }
+
+function sendEntryCommand() {
+    const entryCommand = document.getElementById('commandInput').value; // Get Entry Input Value
+    if (entryCommand) {
+        sendCommand(entryCommand); // Send Entry Command
+    } else {
+        statusLabel.textContent = "No Command Provided.";
+    }
+}+
+
+scanButton.addEventListener('click', scanDevices); /* Scanning for WALL-E */
+connectionButton.addEventListener('click', toggleConnection); /* Connecting to Selected Device */
 
 /* Bind Movement Commands */
 entryButton.addEventListener('click', () => sendEntryCommand());

@@ -1,6 +1,7 @@
+from generateKey import KeyGenerator
 import os
+
 from functools import wraps
-from dotenv import load_dotenv
 from datetime import timedelta
 
 import asyncio
@@ -65,7 +66,8 @@ class BluetoothManager:
     async def send_cmd(self, cmd):
         """Schedule Send Command Coroutine Using Button's Custom Command."""
         if not (self.client and self.client.is_connected):
-            return False, "Not Connected to BLE"
+            return False, "Device Disconnected"
+
         try:
             await self.client.write_gatt_char(BluetoothManager.CHARACTERISTIC_UUID, cmd.encode("utf-8"))
             return True, f"Sent Command: {cmd}"
@@ -76,22 +78,22 @@ class RobotDriverApp:
         self.app = Flask("Robot Driver App")
         self.app.secret_key = os.environ.get("FLASK_SECRET_KEY", "fallback_dev_key")
 
-        self.app.config['SESSION_PERMANENT'] = False
-        self.app.permanent_session_lifetime = timedelta(minutes = 15)
+        self.app.config['SESSION_PERMANENT'] = False # Session Expires on Browser Close
+        self.app.permanent_session_lifetime = timedelta(minutes = 15) # Inactive Session Timeout
 
         self.bluetooth_manager = BluetoothManager()
         self._register_routes()
 
-    def login(self):
-        def decorator(f):
-            @wraps(f)
-            def decorated_function(*args, **kwargs):
-                print("Session authenticated =", session.get("authenticated"))
-                if session.get("authenticated") != True:
-                    return redirect(url_for("auth_handler"))
-                return f(*args, **kwargs)
-            return decorated_function
-        return decorator
+    def login(self, f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            print("Session Auth =", session.get("authenticated"))
+            if not session.get("authenticated"):
+                # Redirect to Login Page
+                return redirect(url_for("auth_handler"))
+            # Otherwise, Proceed to Route
+            return f(*args, **kwargs)
+        return decorated_function
 
     def _register_routes(self):
         @self.app.route("/login", methods = ["GET", "POST"])
@@ -102,28 +104,30 @@ class RobotDriverApp:
                     session["authenticated"] = True
                     return redirect(url_for("index"))
                 else:
-                    error = "Access Denied: Incorrect Code!"
+                    error = "Access Denied!"
             return render_template("login.html", error = error)
 
         @self.app.route("/logout", methods = ["POST"])
         def logout():
+            future = self.bluetooth_manager.run_async(self.bluetooth_manager.disconnect())
+            future.result(timeout = 10) # Wait for 10 Seconds
             session.clear()
             return redirect(url_for("auth_handler"))
 
         @self.app.route("/")
-        @self.login()
+        @self.login
         def index():
             return render_template("index.html")
 
         @self.app.route("/scan", methods = ["GET"])
-        @self.login()
+        @self.login
         def scan():
             future = self.bluetooth_manager.run_async(self.bluetooth_manager.scan())
             devices = future.result(timeout = 30) # Wait for 30 Seconds
             return jsonify(devices)
 
         @self.app.route("/connect", methods = ["POST"])
-        @self.login()
+        @self.login
         def connect():
             data = request.get_json()
             if not data or "deviceAddress" not in data:
@@ -134,14 +138,14 @@ class RobotDriverApp:
                     else (jsonify({"status": "Failed"}), 400))
 
         @self.app.route("/disconnect", methods = ["GET"])
-        @self.login()
+        @self.login
         def disconnect():
             future = self.bluetooth_manager.run_async(self.bluetooth_manager.disconnect())
             future.result(timeout = 10) # Wait for 10 Seconds
             return jsonify({"status": "Disconnected"})
 
         @self.app.route("/command", methods = ["POST"])
-        @self.login()
+        @self.login
         def command():
             data = request.get_json()
             if not data or "command" not in data:
@@ -150,6 +154,7 @@ class RobotDriverApp:
                 self.bluetooth_manager.send_cmd(data["command"])
             )
             success, message = future.result(timeout = 10) # Wait for 10 Seconds
+
             if success:
                 return jsonify({"status": "OK", "msg": message})
             else:
@@ -159,5 +164,5 @@ class RobotDriverApp:
         self.app.run(host = "0.0.0.0", port = 5000, debug = False)
 
 if __name__ == "__main__":
-    load_dotenv() # Load Environment Variables from .env file
+    KeyGenerator()
     RobotDriverApp().run()

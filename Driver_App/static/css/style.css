@@ -21,35 +21,36 @@ h1 {
   color: rgb(145, 145, 145);
 }
 
+button {
+  border-radius: 5px;
+  border: none;
+}
+
+button:enabled {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.login-form {
+  display : flex;
+  padding : 5% 0 0 0;
+  flex-direction : column;
+  align-items : center;
+}
+
+.submit-button {
+  margin : 10px 0;
+  font-size : 16px;
+}
+
 .logout-container {
   position: absolute;
   top: 10px;
   right: 10px;
   z-index: 999;
-}
-
-.logout-button {
-  font-size: 14px;
-  padding: 6px 12px;
-  background-color: rgb(180, 55, 55);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-
-  transition: background-color 0.3s ease;
-}
-
-.logout-button:hover {
-  background-color: rgb(150, 30, 30);
-}
-
-/* Responsive For Smaller Screens */
-@media (max-width: 600px) {
-  .logout-button {
-    font-size: 12px;
-    padding: 5px 10px;
-  }
 }
 
 .main-content {
@@ -64,36 +65,36 @@ h1 {
 }
 
 .device-section {
-  margin-bottom: 20px;
+  margin : 0 0 20px 0;
 
   button {
     padding: 10px 20px;
-    font-size: 16px;
     margin: 5px;
+
+    color: white;
+    font-size: 16px;
   }
 
   select {
-    font-size: 16px;
     padding: 6px;
     margin: 5px;
+    font-size: 16px;
   }
-}
-
-#scanButton {
-  background-color: rgb(55, 92, 194);
-  color: white;
-  cursor: pointer;
 }
 
 .entry-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
-  #entryInput {
-    width: 75%;
-    margin-right: 10px;
-  }
+  margin: 0 0 10px 0; /* Space Below Each Entry Item */
+}
+
+.entry-input {
+  width: 75%;
+  margin: 0 10px;
+  padding: 5px;
+
+  font-size: 16px;
 }
 
 .move-container {
@@ -106,32 +107,211 @@ h1 {
   margin-top: 20px;
 }
 
-button.moveButton {
+.move-button {
   padding: 20px;
   width: 100%;
   height: 100%;
 
-  font-size: 24px;
-  background-color: rgb(120, 185, 114);
-
-  border: black 1px solid;
-  border-radius: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
+
+  font-size: 24px;
+  background-color: rgb(120, 185, 114);
+  border: black 1px solid;
 }
 
-#idleButton {
-  padding: 25px;
-  width: 100%;
-  height: 100%;
+.submit-button:enabled {
+  background-color: rgb(120, 185, 114);
+  color: black;
+}
 
-  background-color: rgb(216, 117, 100);
+.submit-button:enabled:hover {
+  background-color: rgb(20, 97, 6);
   color: white;
+  transform: scale(1.05); /* Slightly Enlarge Button on Hover */
+  transition: transform 0.2s ease-in-out, background-color 0.5s ease;
+}
+
+.move-button:enabled {
+  color: black;
+}
+
+.move-button:enabled:hover {
+  background-color: rgb(20, 97, 6);
+  color: white;
+  transform: scale(1.05); /* Slightly Enlarge Button on Hover */
+  transition: transform 0.2s ease-in-out, background-color 0.5s ease;
+}
+
+#errorMessage {
+  width: 75%;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 15px;
+  color: rgb(226, 65, 65);
 }
 
 #statusLabel {
   display: block;
-  margin-top: 10px;
+  margin: 15px 0;
+  font-size: 20px;
+}
+
+#logoutButton {
+  font-size: 12px;
+  padding: 6px 12px;
+  background-color: rgb(226, 65, 65);
+  transition: background-color 0.3s ease;
+  color: black;
+}
+
+#logoutButton:hover {
+  background-color: rgb(223, 37, 37);
+  color: white;
+  transform: scale(1.05); /* Slightly Enlarge Button on Hover */
+  transition: transform 0.2s ease-in-out, background-color 0.5s ease;
+}
+
+#scanButton {
+  background-color: rgb(55, 92, 194);
+  color: black;
+}
+
+#scanButton:hover {
+  background-color: rgb(42, 97, 247);
+  color: white;
+  transform: scale(1.05); /* Slightly Enlarge Button on Hover */
+  transition: transform 0.2s ease-in-out, background-color 0.5s ease;
+}
+
+#connectionButton:enabled {
+  color: black;
+}
+
+#connectionButton:enabled:hover {
+  color: white;
+  transform: scale(1.05); /* Slightly Enlarge Button on Hover */
+  transition: transform 0.2s ease-in-out;
+}
+
+#idleButton {
+  background-color: rgb(216, 117, 100);
+}
+
+#idleButton:enabled:hover {
+  background-color: rgb(238, 49, 49);
+  color: black
+}
+
+/* Responsive For Larger Screens */
+@media (min-height: 1000px) {
+  h1 {
+    font-size: 70px;
+    margin: 50px 0 10px 0; /* Give Space Above and Below */
+  }
+
+  .login-form {
+    padding : 10% 0 0 0;
+  }
+
+  .submit-button {
+    margin : 25px 0;
+    padding : 5px 5px;
+    font-size : 25px;
+  }
+
+  .device-section {
+    margin : 0 0 150px 0;
+
+    button {
+      font-size: 25px;
+    }
+
+    select {
+      font-size: 25px;
+    }
+
+    select:disabled {
+      color: white;
+    }
+
+    select:enabled {
+      color: black;
+    }
+  }
+
+  .entry-input {
+    font-size: 25px;
+  }
+
+  .move-button {
+    padding: 25px;
+    font-size: 30px;
+  }
+
+  #errorMessage {
+    width: 100%;
+    margin-top: 50px;
+    font-size: 35px;
+  }
+
+  #statusLabel {
+    margin: 50px 0;
+    font-size: 35px;
+  }
+
+  #logoutButton {
+    font-size: 25px;
+    margin: 10px 10px;
+  }
+}
+
+
+/* Responsive For Smaller Screens */
+@media (max-width: 750px) {
+  .device-section {
+    button {
+      font-size: 14px;
+    }
+
+    select {
+      font-size: 14px;
+    }
+  }
+}
+@media (max-width: 650px) {
+  h1 {
+    font-size: 40px;
+    margin: 50px 0 10px 0; /* Give Space Above and Below */
+  }
+
+  button {
+    font-size: 12px;
+  }
+
+  .entry-input {
+    width: 60%;
+    font-size: 14px;
+  }
+
+  .move-button {
+    padding: 25px;
+    font-size: 15px;
+  }
+
+  #logoutButton {
+    font-size: 10px;
+    margin: 5px 0px;
+  }
+
+  #errorMessage {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  h1 {
+    margin: 60px 0 10px 0; /* Give Space Above and Below */
+  }
 }

@@ -10,9 +10,9 @@
 </head>
 
 <body>
-  <div class="logout-container">
-    <form action = "/logout" method = "post">
-      <button type = "submit" class = "logout-button">Logout</button>
+  <div class = "logout-container">
+    <form method = "POST" action = "/logout">
+      <button type = "submit" id = "logoutButton">Logout</button>
     </form>
   </div>
 
@@ -21,7 +21,7 @@
   <div class = "main-content">
     <!-- Device Section -->
     <div class = "device-section">
-      <span id = "statusLabel">No BLE Devices Found</span>
+      <span id = "statusLabel">Search for WALL-E</span>
       <button id = "scanButton">Scan</button>
       <select id = "deviceSelect" disabled>
         <option value = "">Select Device</option>
@@ -30,20 +30,20 @@
     </div>
 
     <div class = "entry-item">
-      <input type = "text" id = "entryInput" placeholder = "CMD: " />
-      <button id = "entryButton" disabled>Send</button>
+      <input type = "text" class = "entry-input" id = "commandInput" placeholder = "Enter Command" />
+      <button class = "submit-button" id = "entryButton" disabled>Send</button>
     </div>
 
     <!-- Movement Buttons -->
     <div class = "move-container">
       <div></div> <!-- (1,1) -->
-      <div><button class = "moveButton" id = "forwardButton" disabled>↑</button></div>
+      <div><button class = "move-button" id = "forwardButton" disabled>↑</button></div>
       <div></div> <!-- (1,3) -->
-      <div><button class = "moveButton" id = "leftButton" disabled>←</button></div>
-      <div><button class = "moveButton" id = "idleButton" disabled>X</div>
-      <div><button class = "moveButton" id = "rightButton" disabled>→</button></div>
+      <div><button class = "move-button" id = "leftButton" disabled>←</button></div>
+      <div><button class = "move-button" id = "idleButton" disabled>X</div>
+      <div><button class = "move-button" id = "rightButton" disabled>→</button></div>
       <div></div> <!-- (3,1) -->
-      <div><button class = "moveButton" id = "reverseButton" disabled>↓</button></div>
+      <div><button class = "move-button" id = "reverseButton" disabled>↓</button></div>
       <div></div> <!-- (3,3) -->
     </div>
   </div>
