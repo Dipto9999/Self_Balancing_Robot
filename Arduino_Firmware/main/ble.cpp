@@ -19,7 +19,7 @@ void setupBLE() {
   pinMode(LED_BUILTIN, OUTPUT); // Init Built-in LED to Indicate Connection Status
 
   if (!BLE.begin()) {
-    Serial.println("Starting BLE Failed!");
+    Serial1.println("Starting BLE Failed!");
     while (1);
   }
 

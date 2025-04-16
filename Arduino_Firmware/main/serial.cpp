@@ -3,18 +3,18 @@
 String serialMsg = "";
 
 void setupSerial() {
-  Serial.begin(115200);
-  Serial.println("Serial Initialized!");
+  Serial1.begin(115200);
+  Serial1.println("Serial Initialized!");
 }
 
 void handleData(char expectedByte, String txData) {
   // Send Data When Rx Byte Received
-  if (Serial.available() > 0) {
+  if (Serial1.available() > 0) {
     // Read Incoming Byte
-    int rxByte = Serial.read();
+    int rxByte = Serial1.read();
     // Receive Byte rxByte to Send Angle Data
     if (rxByte == expectedByte) {
-      Serial.println(txData);
+      Serial1.println(txData);
     }
   }
 }

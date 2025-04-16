@@ -165,33 +165,37 @@ class Dashboard:
         self.master.after(2000, lambda: self.snapshot_button.config(bg = "white"))
 
     def open_serial(self):
-        if self.stripchart.conn is None :  # Check if Serial Connection Already Established
-            port = self.port_entry.get()
-            baudrate = self.baudrate_entry.get()
+        port = self.port_entry.get()
+        baudrate = self.baudrate_entry.get()
 
-            try :
-                self.conn = ArduinoSerial(
-                    port = port, baudrate = int(baudrate)
-                )
+        try :
+            self.conn = ArduinoSerial(
+                port = port, baudrate = int(baudrate)
+            )
 
-                self.stripchart.start(self.conn) # Start StripChart
-                self.stripchart.canvas_widget.grid(row = 0, column = 0)
-                self.open_button.config(state = tk.DISABLED)
-            except serial.SerialException as serial_error:
-                print("Serial Connection Error:", str(serial_error))
-                self.conn = None
-                self.open_button.config(state = tk.NORMAL)
+            self.stripchart.start(self.conn) # Start StripChart
+            self.stripchart.canvas_widget.grid(row = 0, column = 0)
+            self.open_button.config(text = "Close", command = self.close_serial, bg = '#f06e47')
+        except serial.SerialException as serial_error:
+            print("Serial Connection Error:", str(serial_error))
+            self.conn = None
+            self.open_button.config(text = "Open", command = self.open_serial, bg = '#6e9eeb')
+
+    def close_serial(self):
+        if self.stripchart.conn is not None:
+            self.stripchart.stop()
+            self.open_button.config(text = "Open", command = self.open_serial, bg = '#6e9eeb')
 
     def save_data(self):
-        if self.stripchart.data_df.empty:
+        if not self.stripchart.data_df.empty:
+            self.stripchart.stop()
+            self.stripchart.save()
+            self.open_button.config(text = "Open", command = self.open_serial, bg = '#6e9eeb')
+        else:
             print("No Data Available")
-            return
-
-        self.stripchart.stop()
-        self.open_button.config(state = tk.NORMAL)
 
     def cleanup(self):
-        self.stripchart.stop() # Stop StripChart
+        self.save_data()
         self.cam_feed.stop() # Close Camera
 
 class DashboardApp(tk.Tk):

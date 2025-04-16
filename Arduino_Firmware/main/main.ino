@@ -16,7 +16,7 @@ void setup() {
 
   setupMotors();
 
-  Serial.println("Setup Complete!");
+  Serial1.println("Setup Complete!");
 }
 
 void loop() {

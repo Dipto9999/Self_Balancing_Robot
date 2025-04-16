@@ -166,6 +166,7 @@ class StripChart:
             self.conn.reconnect()
 
         try:
+            print(str(read_serial()))
             arduinoStream: list = str(read_serial()).rstrip('\r').split(' ')
             if len(arduinoStream) != 3:
                  raise ValueError
@@ -174,9 +175,9 @@ class StripChart:
             gyroscope_angle = float(arduinoStream[1])
             complementary_angle = float(arduinoStream[2])
 
-            print(f"Accelerometer Angle: {accelerometer_angle}°")
-            print(f"Gyroscope Angle: {gyroscope_angle}°")
-            print(f"Complementary Angle: {complementary_angle}°")
+            print(f"Accelerometer Angle: {accelerometer_angle} (Deg)")
+            print(f"Gyroscope Angle: {gyroscope_angle} (Deg)")
+            print(f"Complementary Angle: {complementary_angle} (Deg)")
 
             # Append Data
             new_sample = (self.sample_data[-1] + 1) if self.sample_data else 1
