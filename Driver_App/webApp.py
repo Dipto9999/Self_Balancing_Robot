@@ -1,5 +1,5 @@
-from generateKey import KeyGenerator
 import os
+import subprocess
 
 from functools import wraps
 from datetime import timedelta
@@ -9,6 +9,8 @@ import threading as td
 
 from bleak import BleakScanner, BleakClient, BleakError
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
+
+from generateKey import KeyGenerator
 
 class BluetoothManager:
     # Define UUIDs for BLE Service and Characteristic
@@ -161,10 +163,13 @@ class RobotDriverApp:
                 return jsonify({"status": "Error", "msg": message}), 400 # Bad Request
 
     def run(self):
+        subprocess.Popen(
+            ["ngrok", "http", "5000"],
+            shell = True,
+            text = True
+        )
         self.app.run(host = "0.0.0.0", port = 5000, debug = False)
 
-app = RobotDriverApp().app  # Exposed for Gunicorn
-
-# if __name__ == "__main__":
-#     KeyGenerator()
-#     RobotDriverApp().run()
+if __name__ == "__main__":
+    KeyGenerator()
+    RobotDriverApp().run()
