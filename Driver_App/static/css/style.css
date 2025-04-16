@@ -173,12 +173,16 @@ button:disabled {
   transition: transform 0.2s ease-in-out, background-color 0.5s ease;
 }
 
-#scanButton {
+#scanButton:disabled {
+  color: white;
+}
+
+#scanButton:enabled {
   background-color: rgb(55, 92, 194);
   color: black;
 }
 
-#scanButton:hover {
+#scanButton:enabled:hover {
   background-color: rgb(42, 97, 247);
   color: white;
   transform: scale(1.05); /* Slightly Enlarge Button on Hover */

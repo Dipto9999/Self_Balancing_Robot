@@ -6,12 +6,15 @@ let connected = false;
 
 /* Device Selection and Connection */
 const statusLabel = document.getElementById('statusLabel');
+
 const scanButton = document.getElementById('scanButton');
 const deviceSelect = document.getElementById('deviceSelect');
 const connectionButton = document.getElementById('connectionButton');
 
 /* Command Buttons */
+const commandInput = document.getElementById('commandInput');
 const entryButton = document.getElementById('entryButton');
+
 const forwardButton = document.getElementById('forwardButton');
 const reverseButton = document.getElementById('reverseButton');
 const idleButton = document.getElementById('idleButton');
@@ -84,6 +87,8 @@ function toggleConnection() {
                 connectionButton.style.backgroundColor = "rgb(212, 77, 54)"; // Change Button Color
 
                 // Enable Command Buttons
+                scanButton.disabled = true;
+
                 entryButton.disabled = false;
                 forwardButton.disabled = false;
                 reverseButton.disabled = false;
@@ -105,9 +110,12 @@ function toggleConnection() {
         .then(res => res.json())
         .then(data => {
             connected = false;
+
             statusLabel.textContent = data.status;
             connectionButton.textContent = "Connect";
             connectionButton.style.backgroundColor = "rgb(55, 92, 194)";
+
+            scanButton.disabled = false;
 
             // Disable Command Buttons
             entryButton.disabled = true;
@@ -151,7 +159,7 @@ function sendCommand(cmd) {
 }
 
 function sendEntryCommand() {
-    const entryCommand = document.getElementById('commandInput').value; // Get Entry Input Value
+    const entryCommand = commandInput.value; // Get Entry Input Value
     if (entryCommand) {
         sendCommand(entryCommand); // Send Entry Command
     } else {

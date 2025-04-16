@@ -43,7 +43,7 @@ class ArduinoSerial(serial.Serial) :
         print('Serial Port is Open')
 
 class StripChart:
-    def __init__(self, master, conn = None, data_size = 25, sample_rate = 0.25, ylim = 30):
+    def __init__(self, master, conn = None, data_size = 25, sample_rate = 0.1, ylim = 30):
         self.master = master
         self.conn = conn
         self.fig, self.ax = plt.subplots(figsize = (900 / 100, 755 / 100))
@@ -71,24 +71,15 @@ class StripChart:
         self.ax.set_title('Real-Time Angle Strip-Chart')
         self.ax.grid(True)
 
-        self.ax.set_xlim(
-            0, # Start at 0s
-            1.25 * (self.sample_rate * self.data_size)
-        )
-        self.ax.set_xticks(
-            np.arange(
-                0,  # Start at 0s
-                1.25 * (self.sample_rate * self.data_size),
-                self.sample_rate * 2
-            )
-        )
+        self.ax.set_xlim(1, 1.25 * self.data_size)
+        self.ax.xaxis.set_major_locator(plt.MultipleLocator(5))
 
         self.ax.set_ylim(-self.ylim, self.ylim) # Angle Expected to be Between -180 Deg and 180 Deg
         self.ax.set_yticks(np.arange(-self.ylim, self.ylim + 1, 5))
 
         self.ax.tick_params(axis = 'both', labelsize = 8)
 
-        self.ax.set_xlabel('Time (s)')
+        self.ax.set_xlabel('Sample (#)')
         self.ax.set_ylabel('Angle (Deg)')
 
         self.accelerometer_line, = self.ax.plot([], [], linestyle = 'dashed', lw = 1.5, label = 'Accelerometer Angle (Deg)', color = 'lightblue')
@@ -135,36 +126,22 @@ class StripChart:
         self.complementary_line.set_data(self.sample_data, self.complementary_data)
 
         # Adjust x Limits to Scroll Forward
-        if (len(self.sample_data) > 0) and (self.sample_data[-1] > (self.sample_rate * self.data_size)):
+        if (len(self.sample_data) > 0) and (self.sample_data[-1] > self.data_size + 1):
             self.ax.set_xlim(
                 self.sample_data[0], # Start at First Data Point
-                self.sample_data[0] + 1.25 * (self.sample_rate * self.data_size)
-            ) # Display 25% More Data
-            self.ax.set_xticks(
-                np.arange(
-                    self.sample_data[0], # Start at First Data Point
-                    self.sample_data[0] + 1.25 * (self.sample_rate * self.data_size),
-                    self.sample_rate * 2
-                )
+                self.sample_data[0] + 1.25 * self.data_size # Display 25% More Data
             )
         else:
-            self.ax.set_xlim(
-                0, # Start at 0s
-                1.25 * (self.sample_rate * self.data_size)
-            )
-            self.ax.set_xticks(
-                np.arange(
-                    0,  # Start at 0s
-                    1.25 * (self.sample_rate * self.data_size),
-                    self.sample_rate * 2
-                )
-            )
-
+            self.ax.set_xlim(1, 1.25 * self.data_size)
     def stop(self):
         """Set Connection to None and Stop Updating."""
         if self.conn is not None:
             self.conn.close()
             self.conn = None
+
+        if hasattr(self, 'animation') and self.animation:
+            self.animation.event_source.stop()
+            self.animation = None
 
     def save(self):
         fig_name = f"Angle_Data_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}"
@@ -202,7 +179,7 @@ class StripChart:
             print(f"Complementary Angle: {complementary_angle}°")
 
             # Append Data
-            new_sample = (self.sample_data[-1] + self.sample_rate) if self.sample_data else 0
+            new_sample = (self.sample_data[-1] + 1) if self.sample_data else 1
 
             self.sample_data.append(new_sample)
             self.accelerometer_data.append(accelerometer_angle)
