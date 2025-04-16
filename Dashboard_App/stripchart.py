@@ -150,10 +150,10 @@ class StripChart:
 
     def rx_angle(self):
         """Read Angle Data from Serial Connection."""
-        def read_serial() :
+        def decode(incoming) :
             """Read Data from Serial Connection."""
             if (self.conn is not None) :
-                return str(self.conn.readline().decode('ascii').strip('\r').strip('\n'))
+                return str(incoming.decode('ascii').strip('\r').strip('\n'))
             else :
                 return None
 
@@ -166,8 +166,9 @@ class StripChart:
             self.conn.reconnect()
 
         try:
-            print(str(read_serial()))
-            arduinoStream: list = str(read_serial()).rstrip('\r').split(' ')
+            incoming = self.conn.readline()
+            print(f"Incoming Data: {incoming}")
+            arduinoStream: list = str(decode(incoming)).rstrip('\r').split(' ')
             if len(arduinoStream) != 3:
                  raise ValueError
 
