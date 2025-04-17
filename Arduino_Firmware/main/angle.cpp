@@ -23,7 +23,7 @@ float initialAngle;
 
 void setupIMU() {
   if (!IMU.begin()) {
-    Serial1.println("Failed to Initialize IMU!");
+    Serial.println("Failed to Initialize IMU!");
     while (1);
   }
 

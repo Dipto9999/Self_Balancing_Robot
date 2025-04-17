@@ -44,7 +44,7 @@ void setupController() {
 void setupMotors() {
     setupPWM(); // Initialize PWM Pins
     setupController(); // Initialize PID Controller
-    Serial1.println("Motors Initialized!");
+    Serial.println("Motors Initialized!");
 }
 
 void balanceRobot(int bleDirection) {
@@ -112,9 +112,9 @@ void updateParamBLE(const char* bleBuff) {
 void updateParamSerial() {
     int parseIndex;
     String paramType, valueStr;
-    if (Serial1.available() > 0) {
+    if (Serial.available() > 0) {
       // Check for PID Parameter Update Command
-      String command = Serial1.readStringUntil('\n');
+      String command = Serial.readStringUntil('\n');
       command.trim(); // Remove Leading/Trailing Whitespace
 
       if (
@@ -131,7 +131,7 @@ void updateParamSerial() {
         float newValue = valueStr.toFloat();
 
         if (valueStr != "0" && newValue == 0) {
-          Serial1.println("Invalid Value!");
+          Serial.println("Invalid Value!");
           return;
         }
 
@@ -141,17 +141,17 @@ void updateParamSerial() {
         else if (paramType == "Ki") Ki = newValue;
         else if (paramType == "Kd") Kd = newValue;
 
-        Serial1.print("\r\nk: ");
-        Serial1.print(k, 3);
-        Serial1.print(" Setpoint: ");
-        Serial1.println(setpointAngle, 3);
+        Serial.print("\r\nk: ");
+        Serial.print(k, 3);
+        Serial.print(" Setpoint: ");
+        Serial.println(setpointAngle, 3);
 
-        Serial1.print("Kp: ");
-        Serial1.print(Kp, 4);
-        Serial1.print(" Ki: ");
-        Serial1.print(Ki, 4);
-        Serial1.print(" Kd: ");
-        Serial1.print(Kd, 4);
+        Serial.print("Kp: ");
+        Serial.print(Kp, 4);
+        Serial.print(" Ki: ");
+        Serial.print(Ki, 4);
+        Serial.print(" Kd: ");
+        Serial.print(Kd, 4);
       }
     }
   }

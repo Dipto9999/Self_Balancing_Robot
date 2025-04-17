@@ -3,8 +3,9 @@
 String serialMsg = "";
 
 void setupSerial() {
-  Serial1.begin(115200);
-  Serial1.println("Serial Initialized!");
+  Serial.begin(115200); // Initialize Serial Monitor
+  Serial1.begin(115200); // Initialize UART1 for Raspberry Pi
+  Serial.println("Serial Initialized!");
 }
 
 void handleData(char expectedByte, String txData) {
@@ -14,7 +15,13 @@ void handleData(char expectedByte, String txData) {
     int rxByte = Serial1.read();
     // Receive Byte rxByte to Send Angle Data
     if (rxByte == expectedByte) {
+      Serial.print("RX Byte: ");
+      Serial.println((char)rxByte);
+
       Serial1.println(txData);
+
+      Serial.print("TX Data: ");
+      Serial.println(txData);
     }
   }
 }
