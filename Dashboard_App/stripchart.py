@@ -52,50 +52,7 @@ class StripChart:
         self.sample_rate = sample_rate
         self.ylim = ylim # Y-Axis Limits (Deg)
 
-        # Angle Data (Additional Storage Preferred Over DataFrame for Speed)
-        self.sample_data = []
-        self.accelerometer_data = []
-        self.gyroscope_data = []
-        self.complementary_data = []
-
-        # DataFrame for Data Export
-        self.data_df = pd.DataFrame(
-            columns = [
-                'Time (PST)',
-                'Accelerometer Angle (Deg)',
-                'Gyroscope Angle (Deg)',
-                'Complementary Angle (Deg)'
-            ]
-        )
-
-        self.ax.set_title('Real-Time Angle Strip-Chart')
-        self.ax.grid(True)
-
-        self.ax.set_xlim(1, 1.25 * self.data_size)
-        self.ax.xaxis.set_major_locator(plt.MultipleLocator(5))
-
-        self.ax.set_ylim(-self.ylim, self.ylim) # Angle Expected to be Between -180 Deg and 180 Deg
-        self.ax.set_yticks(np.arange(-self.ylim, self.ylim + 1, 5))
-
-        self.ax.tick_params(axis = 'both', labelsize = 8)
-
-        self.ax.set_xlabel('Sample (#)')
-        self.ax.set_ylabel('Angle (Deg)')
-
-        self.accelerometer_line, = self.ax.plot([], [], linestyle = 'dashed', lw = 1.5, label = 'Accelerometer Angle (Deg)', color = 'lightblue')
-        self.gyroscope_line, = self.ax.plot([], [], linestyle = 'dashed', lw = 1.5, label = 'Gyroscope Angle (Deg)', color = 'tomato')
-        self.complementary_line, = self.ax.plot([], [], lw = 1.5, label = 'Complementary Angle (Deg)', color = 'purple')
-
-        self.fig.subplots_adjust(bottom = 0.2)
-        self.ax.legend(
-            loc = 'upper center',
-            bbox_to_anchor = (0.5, -0.15), # Position Above Plot with Padding
-            ncol = 3, framealpha = 0.9,  # 3 Columns, Transparent Background
-            fontsize = 10,
-        )
-
-        self.canvas = FigureCanvasTkAgg(self.fig, master=self.master)
-        self.canvas_widget = self.canvas.get_tk_widget()
+        self.refresh() # Refresh Data
 
         self.figures_dir: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Figures")
         self.logbook_dir: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Logbook")
@@ -133,6 +90,54 @@ class StripChart:
             )
         else:
             self.ax.set_xlim(1, 1.25 * self.data_size)
+
+    def refresh(self):
+        """Refresh Data from StripChart."""
+        self.sample_data = []
+        self.accelerometer_data = []
+        self.gyroscope_data = []
+        self.complementary_data = []
+
+        self.data_df = pd.DataFrame(
+            columns = [
+                'Time (PST)',
+                'Accelerometer Angle (Deg)',
+                'Gyroscope Angle (Deg)',
+                'Complementary Angle (Deg)'
+            ]
+        )
+
+        self.ax.cla()
+
+        self.ax.set_title('Real-Time Angle Strip-Chart')
+        self.ax.grid(True)
+
+        self.ax.set_xlim(1, 1.25 * self.data_size)
+        self.ax.xaxis.set_major_locator(plt.MultipleLocator(5))
+
+        self.ax.set_ylim(-self.ylim, self.ylim) # Angle Expected to be Between -180 Deg and 180 Deg
+        self.ax.set_yticks(np.arange(-self.ylim, self.ylim + 1, 5))
+
+        self.ax.tick_params(axis = 'both', labelsize = 8)
+
+        self.ax.set_xlabel('Sample (#)')
+        self.ax.set_ylabel('Angle (Deg)')
+
+        self.accelerometer_line, = self.ax.plot([], [], linestyle = 'dashed', lw = 1.5, label = 'Accelerometer Angle (Deg)', color = 'lightblue')
+        self.gyroscope_line, = self.ax.plot([], [], linestyle = 'dashed', lw = 1.5, label = 'Gyroscope Angle (Deg)', color = 'tomato')
+        self.complementary_line, = self.ax.plot([], [], lw = 1.5, label = 'Complementary Angle (Deg)', color = 'purple')
+
+        self.fig.subplots_adjust(bottom = 0.2)
+        self.ax.legend(
+            loc = 'upper center',
+            bbox_to_anchor = (0.5, -0.15), # Position Above Plot with Padding
+            ncol = 3, framealpha = 0.9,  # 3 Columns, Transparent Background
+            fontsize = 10,
+        )
+
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self.master)
+        self.canvas_widget = self.canvas.get_tk_widget()
+
     def stop(self):
         """Set Connection to None and Stop Updating."""
         if self.conn is not None:
@@ -239,7 +244,6 @@ class StripChart:
 
         csv_df = self.data_df.copy()
         csv_df['Time (PST)'] = self.data_df['Time (PST)'].dt.strftime('%H:%M:%S.%f').str[:-3]
-        # csv_df['Time (PST)'] = self.data_df['Time (PST)'].dt.strftime('%H:%M:%S.%f').str[:-3]
         csv_df.to_csv(file_path, index = False)
 
         print(f"Data Exported to {file_path}\n\nData Preview:\n")
@@ -367,18 +371,18 @@ class StripchartApp(tk.Tk):
     def close_serial(self):
         if self.stripchart.conn is not None:
             self.stripchart.stop()
+            self.stripchart.refresh() # Refresh Data
             self.open_button.config(text = "Open", command = self.open_serial, bg = '#6e9eeb')
 
     def save_data(self):
         if not self.stripchart.data_df.empty:
-            self.stripchart.stop()
             self.stripchart.save()
-            self.open_button.config(text = "Open", command = self.open_serial, bg = '#6e9eeb')
         else:
             print("No Data Available")
 
     def on_close(self):
         """Close Serial Connection on Application Exit."""
+        self.close_serial()
         self.save_data()
 
         # Exit Application
