@@ -16,9 +16,9 @@ import pytz
 
 from IPython.display import display
 class ArduinoSerial(serial.Serial) :
-    PORT = '/dev/ttyS0'
+    PORT = '/dev/serial0'
     BAUDRATE = 115200
-    def __init__(self, port = '/dev/ttyS0', baudrate = 115200):
+    def __init__(self, port = PORT, baudrate = 115200):
         super().__init__(port = port, baudrate = baudrate)
 
     def open(self) :
