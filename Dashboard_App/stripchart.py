@@ -43,6 +43,7 @@ class ArduinoSerial(serial.Serial) :
         print('Serial Port is Open')
 
 class StripChart:
+    REQUEST_BYTE = b'A'
     def __init__(self, master, conn = None, data_size = 25, sample_rate = 0.1, ylim = 30):
         self.master = master
         self.conn = conn
@@ -168,8 +169,10 @@ class StripChart:
         if self.conn is None:
             return
 
+        # Request Data from Arduino
         try:
-            self.conn.write(b'A')
+            print("TX Byte:", StripChart.REQUEST_BYTE)
+            self.conn.write(StripChart.REQUEST_BYTE)
         except serial.SerialException:
             self.conn.reconnect()
 
