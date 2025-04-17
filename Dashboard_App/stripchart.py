@@ -171,17 +171,17 @@ class StripChart:
 
         # Request Data from Arduino
         try:
-            print("TX Byte:", StripChart.REQUEST_BYTE)
+            # print("TX Byte:", StripChart.REQUEST_BYTE)
             self.conn.write(StripChart.REQUEST_BYTE)
         except serial.SerialException:
             self.conn.reconnect()
 
         try:
             incoming = self.conn.readline()
-            print(f"Incoming Data: {incoming}")
+            # print(f"Incoming Data: {incoming}")
 
             decoded = decode(incoming)
-            print(f"Decoded Data: {decoded}")
+            # print(f"Decoded Data: {decoded}")
 
             if decoded is None:
                 raise ValueError(f"Received Invalid: {incoming}")
